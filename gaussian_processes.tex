@@ -1,0 +1,148 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{savesym}
+%\usepackage{amssymb}
+%\savesymbol{arc}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{pict2e}
+\usepackage{epstopdf}
+\usepackage{geometry}
+\usepackage{MnSymbol}
+
+
+\newgeometry{tmargin=1.5cm, bmargin=1.5cm, lmargin=1.5cm, rmargin=1.5cm}
+\pagestyle{empty}
+\linespread{1.2}
+\setlength{\parindent}{0mm}
+
+\newenvironment{dow}{\textbf{\textit{Dowód}}}{\begin{flushright} $\blacksquare$ \end{flushright}}
+
+\begin{document}
+
+% \begin{minipage}[t]{0.5\textwidth}
+% \end{minipage}
+
+\section*{\centering MODELOWANIE REGRESJI PORZĄDKOWEJ \\PRZY UŻYCIU PROCESU GAUSSOWSKIEGO}
+
+$\lbrace f(x_i) \rbrace_{i=1}^{n}$ - realizacja procesu gaussowskiego o średniej $0$ i macierzy kowariancji $\Sigma$ zadanej wzorem:
+
+$$
+\Sigma = \left( K(x_i, x_j) \right)_{i, j=1\ldots n} = \left(e^{-\frac{\kappa}{2}\sum_{\xi=1}^{d}(x_i^\xi-x_i^\xi)^2}\right)_{i, j=1\ldots n},
+$$
+gdzie  $\kappa>0$, a $x_i^\xi$ to $\xi$-ty element $x_i$.
+
+Wtedy $f$ ma rozkład łączny o gęstości:
+
+$$
+\mathbb{P}(f)=\frac{1}{Z_f}e^{-\frac{1}{2}f^T\Sigma^{-1}f}, 
+$$
+gdzie $Z_f=(2\Pi)^{\frac{n}{2}}|\Sigma|^\frac{1}{2}$, a $f=[f(x_1),\ldots,f(x_n)]^T$.
+
+Wtedy:
+$$
+\mathbb{P}(D|f) = \prod_{i=1}^n\mathbb{P}(y_i|f(x_i)),
+$$
+gdzie $D = \lbrace y_1, \ldots, y_r \rbrace$.
+
+Intuicyjnie:
+
+$$
+\mathbb{P}_{ideal} (y_i|f(x_i)) = \mathbb{I}\lbrace f(x_i)\in (b_{y_i-1}, b_{y_i}] \rbrace,
+$$
+gdzie $b_0=-\infty, b_r=+\infty$. 
+
+Można wygodniej sparametryzować $b_i$ jako: $b_1\in\mathbb{R}$, $b_i = \sum_{t=2}^j\Delta_t+b_1$, gdzie $\Delta_t>0$ oraz $j=2, \ldots, r-1$. 
+
+Bardzo rzadko mamy jednak do czynienia z idealną sytuacją, dlatego będziemy budować model zakładając dodatkowy szum $\delta$ o rozkładzie $\mathcal{N}(0, \sigma^2)$. Wtedy prawdopodobieństwo zmienia się następująco:
+
+$$
+\mathbb{P} (y_i|f(x_i)) = \Phi\left( z_1^i \right) - \Phi\left( z_2^i \right),
+$$
+gdzie $z_1^i :=\frac{b_{y_i}-f(x_i)}{\sigma} $ oraz $z_2^i :=\frac{b_{y_i-1}-f(x_i)}{\sigma} $.
+\\
+
+\begin{dow}
+\begin{align*}
+\mathbb{P} (y_i|f(x_i)) 
+&= \int \mathbb{P}_{ideal} (y_i |f(x_i)+\delta_i)d\delta_i = \int \mathbb{P}(\delta_i) \mathbb{I}\lbrace f(x_i)+\delta_i\in (b_{y_i-1}, b_{y_i}] \rbrace d\delta_i =\\
+&= \int \frac{1}{2\Pi\sigma}e^{-\frac{u^2}{2\sigma^2}} \mathbb{I}\lbrace u\in (b_{y_i-1}-f(x_i), b_{y_i}-f(x_i)] \rbrace du = \int \limits_{b_{y_i}-f(x_i)}^{b_{y_i-1}-f(x_i)}\frac{1}{2\Pi\sigma}e^{-\frac{u^2}{2\sigma^2}} du =\\
+&=  \int \limits_{\frac{b_{y_i}-f(x_i)}{\delta}}^{\frac{b_{y_i-1}-f(x_i)}{\delta}}\frac{1}{2\Pi}e^{-\frac{u^2}{2}} du = \Phi\left( \frac{b_{y_i}-f(x_i)}{\sigma} \right) - \Phi\left( \frac{b_{y_i-1}-f(x_i)}{\sigma} \right)
+\end{align*}
+
+\end{dow}
+
+Wprowadźmy następującą funkcję straty:
+$$
+\textit{l}(y_i, f(x_i)) := -\ln\mathbb{P}(y_i| f(x_i))
+$$
+
+Jej pochodne to:
+
+\begin{align*}
+\frac{\partial\textit{l}(y_i, f(x_i))}{\partial f(x_i)} 
+&= \frac{1}{\sigma}\frac{\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)}\\
+\frac{\partial^2\textit{l}(y_i, f(x_i))}{\partial^2 f(x_i)} 
+&= \frac{1}{\sigma^2}\left( \frac{\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)} \right)^2 + \frac{1}{\sigma^2}\frac{z_1^i\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-z_2^i\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)}
+\end{align*}
+
+\begin{dow}
+\begin{align*}
+\frac{\partial\textit{l}(y_i, f(x_i))}{\partial f(x_i)} 
+&= -\ln\left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right] = -\frac{1}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)}\cdot \Phi'\left( z_1^i \right)\cdot \left( -\frac{1}{\sigma} \right) - \Phi'\left( z_2^i \right)\cdot \left( -\frac{1}{\sigma} \right) = \\
+&= \frac{1}{\sigma}\frac{\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)}
+\end{align*}
+
+\begin{align*}
+\frac{\partial^2\textit{l}(y_i, f(x_i))}{\partial^2 f(x_i)} 
+&= \frac{\partial}{\partial f(x_i)}\left( \frac{\partial\textit{l}(y_i, f(x_i))}{\partial f(x_i)} \right) = \frac{\partial}{\partial f(x_i)}\left( \frac{1}{\sigma}\frac{\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)} \right) =\\
+&= \frac{1}{\sigma}\frac{1}{\left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right]^2} \left\lbrace    \left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right]\cdot\right.\\
+&\cdot \left[ 
+\dfrac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}\left(-\frac{1}{\not{2}}\cdot \not{2}z_1^i\right)\left(-\frac{1}{\sigma} \right) -     
+ \dfrac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}\left(-\frac{1}{\not{2}}\cdot \not{2}z_2^i\right)\left(-\frac{1}{\sigma} \right) \right] -\\
+&- 
+\left. 
+\left( 
+\frac{1}{2\Pi}
+e^{-\frac{z_1^{i^2}}{2}}
+-
+\frac{1}{2\Pi}
+e^{-\frac{z_2^{i^2}}{2}} 
+\right)
+\cdot
+\left(
+-\frac{1}{\sigma} 
+\right) 
+\cdot 
+\left( 
+\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}} 
+\right)
+\right\rbrace =\\
+&=\frac{1}{\sigma^2}\left( \frac{\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)} \right)^2 + \frac{1}{\sigma^2}\frac{z_1^i\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-z_2^i\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)}
+\end{align*}
+
+\end{dow}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
