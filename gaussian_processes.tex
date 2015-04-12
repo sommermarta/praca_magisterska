@@ -48,9 +48,9 @@ gdzie $Z_f=(2\Pi)^{\frac{n}{2}}|\Sigma|^\frac{1}{2}$, a $f=[f(x_1),\ldots,f(x_n)
 
 Wtedy:
 $$
-\mathbb{P}(D|f) = \prod_{i=1}^n\mathbb{P}(y_i|f(x_i)),
+\mathbb{P}(\mathcal{D}|f) = \prod_{i=1}^n\mathbb{P}(y_i|f(x_i)),
 $$
-gdzie $D = \lbrace y_1, \ldots, y_r \rbrace$.
+gdzie $\mathcal{D} = \lbrace y_1, \ldots, y_r \rbrace$.
 
 Intuicyjnie:
 
@@ -103,7 +103,23 @@ Jej pochodne to:
 \begin{align*}
 \frac{\partial^2\textit{l}(y_i, f(x_i))}{\partial^2 f(x_i)} 
 &= \frac{\partial}{\partial f(x_i)}\left( \frac{\partial\textit{l}(y_i, f(x_i))}{\partial f(x_i)} \right) = \frac{\partial}{\partial f(x_i)}\left( \frac{1}{\sigma}\frac{\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}}{\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)} \right) =\\
-&= \frac{1}{\sigma}\frac{1}{\left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right]^2} \left\lbrace    \left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right]\cdot\right.\\
+&= \frac{1}{\sigma}\frac{1}{\left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right]^2} \left\lbrace  
+\vphantom{\left( 
+\frac{1}{2\Pi}
+e^{-\frac{z_1^{i^2}}{2}}
+-
+\frac{1}{2\Pi}
+e^{-\frac{z_2^{i^2}}{2}} 
+\right)
+\cdot
+\left(
+-\frac{1}{\sigma} 
+\right) 
+\cdot 
+\left( 
+\frac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}-\frac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}} 
+\right)}
+  \left[\Phi\left( z_1^i \right) - \Phi\left( z_2^i \right)\right]\cdot\right.\\
 &\cdot \left[ 
 \dfrac{1}{2\Pi}e^{-\frac{z_1^{i^2}}{2}}\left(-\frac{1}{\not{2}}\cdot \not{2}z_1^i\right)\left(-\frac{1}{\sigma} \right) -     
  \dfrac{1}{2\Pi}e^{-\frac{z_2^{i^2}}{2}}\left(-\frac{1}{\not{2}}\cdot \not{2}z_2^i\right)\left(-\frac{1}{\sigma} \right) \right] -\\
@@ -129,6 +145,12 @@ e^{-\frac{z_2^{i^2}}{2}}
 \end{align*}
 
 \end{dow}
+
+Prawdopodobieństwo a posteriori wygląda następująco:
+$$
+\mathbb{P}(f|\mathcal{D}) = \frac{\mathbb{P}(f)\prod_{i=1}^n\mathbb{P}(y_i|f(x_i))}{\mathbb{P}(\mathcal{D})}
+$$
+
 \end{document}
 
 
