@@ -16,6 +16,7 @@
 \usepackage{epstopdf}
 \usepackage{geometry}
 \usepackage{MnSymbol}
+\usepackage[makeroom]{cancel}
 
 
 \newgeometry{tmargin=1.5cm, bmargin=1.5cm, lmargin=1.5cm, rmargin=1.5cm}
@@ -216,8 +217,25 @@ $$
 
 Korzystając z przybliżenia Laplace'a otrzymujemy:
 $$
-\mathbb{P}(\mathcal{D}|\mathbf{\Theta})
+\mathbb{P}(\mathcal{D}|\mathbf{\Theta}) \simeq e^{-S(\mathbf{f}_{MAP})} \left\vert \mathbf{I} + \mathbf{\Sigma}\mathbf{\Lambda}_{MAP} \right\vert^{-\frac{1}{2}},
 $$
+gdzie $\mathbf{I}$ jest macierzą jednostkową $n\times n$.
+
+\begin{dow}
+\begin{align*}
+\mathbb{P}(\mathcal{D}|\mathbf{\Theta}) &= 
+\int \mathbb{P}(\mathcal{D}|\mathbf{f})\mathbb{P}(\mathbf{f}) d\mathbf{f} =
+\int  \frac{1}{Z_f}e^{-\frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f}}\prod_{i=1}^n\mathbb{P}(y_i|f(x_i)) d\mathbf{f} = \\  &=
+\int  \frac{1}{Z_f}e^{-\frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f}}e^{\ln\left[\prod_{i=1}^n\mathbb{P}(y_i|f(x_i))\right]} d\mathbf{f} =
+\int  \frac{1}{Z_f}e^{-\frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f}+\sum_{i=1}^n\left[-\ln\mathbb{P}(y_i|f(x_i))\right]} d\mathbf{f} = \\ &=
+\int  \frac{1}{Z_f}e^{-\frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f}+\sum_{i=1}^n\textit{l}(y_i|f(x_i))} d\mathbf{f} =
+\int  \frac{1}{Z_f}e^{-S(\mathbf{f})}d\mathbf{f} \stackrel{\text{przybliżenie}}{\stackrel{\text{Laplace'a}}{\approx}} \\ &\approx
+\frac{1}{Z_f}(2\Pi)^{\frac{n}{2}} \left\vert \mathbf{\Sigma}^{-1}+\mathbf{\Lambda}_{MAP} \right\vert^{-\frac{1}{2}}e^{-S(\mathbf{f}_{MAP})} =
+\frac{1}{\cancel{(2\Pi)^{\frac{n}{2}}}|\mathbf{\Sigma}|^{\frac{1}{2}}}\cancel{(2\Pi)^{\frac{n}{2}}} \left\vert \mathbf{\Sigma}^{-1}(\mathbf{I}+\mathbf{\Sigma}\mathbf{\Lambda}_{MAP} \right\vert^{-\frac{1}{2}}e^{-S(\mathbf{f}_{MAP})} = \\ &=
+\frac{1}{\cancel{|\mathbf{\Sigma}|^{\frac{1}{2}}}} \cancel{|\mathbf{\Sigma}|^{\frac{1}{2}}}\left\vert \mathbf{I}+\mathbf{\Sigma}\mathbf{\Lambda}_{MAP} \right\vert^{-\frac{1}{2}}e^{-S(\mathbf{f}_{MAP})} =
+\left\vert \mathbf{I}+\mathbf{\Sigma}\mathbf{\Lambda}_{MAP} \right\vert^{-\frac{1}{2}}e^{-S(\mathbf{f}_{MAP})}
+\end{align*}
+\end{dow}
 
 \end{document}
 
