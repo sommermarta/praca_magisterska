@@ -1,0 +1,75 @@
+\documentclass{mini}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+
+%------------------------------------------------------------------------------%
+\title{Statystyczne metody regresji porządkowej}
+\author{Marta Sommer}
+\tytsupervisor{prof. nzw. dr hab.}
+\supervisor{Przemysław Grzegorzewski}
+\type{magisters}
+\discipline{matematyka}
+\monthyear{czerwiec 2015}
+\date{\today}
+\album{237503}
+%------------------------------------------------------------------------------%
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter*{Wstęp}
+
+Regresja porządkowa (ang. \textit{ordinal regression}) jest jednym z działów uczenia maszynowego. Od problemu klasycznej regresji różni ją to, że zmienna odpowiedzi jest dyskretna, natomiast od problemu klasyfikacji to, że zmienna odpowiedzi ma pewien naturalny porządek. Regresja porządkowa zajmuje się zatem uczeniem i oceną jakości predyktora, który modeluje zmienną uporządkowaną i skończoną. Problem regresji porządkowej rozwija się dość szybko m.in. dlatego, że ma on bardzo wiele zastosowań, choćby w systemach rekomendacji, czy bardzo popularnych wyszukiwarkach internetowych. Prześledźmy to na konkretnym przykładzie. Wyobraźmy sobie sytuację, że chcielibyśmy określić, w jakim stopniu danemu człowiekowi spodoba się sprzedawany przez nas produkt. Mamy do dyspozycji zbiór treningowy składający się z wektora zmiennej objaśniającej $\textbf{x}=(x_1, \ldots, x_d)$, gdzie $x_i$ są różnymi cechami określającymi daną osobę (np. płeć, wiek, wykształcenie, ...). Cechy te -- podobnie jak w przypadku zwykłej regresji -- mogą być zarówno ciągłe, jak i dyskretne. Mamy również dostęp do zmiennej objaśnianej $\textbf{y}=(y_1, \ldots, y_r)$, będącej wektorem zero-jedynkowym, wskazującym która klasa została przypisana danemu rekordowi. W naszym przykładzie, zmienną odpowiedzi mogłyby być na przykład: \textit{zdecydowanie mi się nie podoba}, \textit{nie podoba mi się}, \textit{nie mam zdania}, \textit{podoba mi się}, \textit{zdecydowanie mi się podoba}. Widać wyraźnie, że są one uporządkowane.
+
+Najprostszym podejściem do tego typu problemu byłoby zignorowanie kolejności zmiennej odpowiedzi i potraktowanie go, jak zwykłą klasyfikację. W takim przypadku tracimy jednak pewną informację, która prawdopodobnie mogłaby przyczynić się do poprawy naszego klasyfikatora. Idąc w drugą stronę, można potraktować nasz problem, jak zwykłą regresję, zamieniając zmienną odpowiedzi na pewną zmienną ciągłą i to ją modelując, a następnie z powrotem dyskretyzować. Pojawia się tu jednak problem, jak optymalnie zrobić taką transformację, uwzględniając chociażby fakt, że nasza odpowiedź niekoniecznie jest monotoniczna (tzn. np. różnica między \textit{nie podoba mi się} a \textit{nie mam zdania} wcale mnie musi być taka sama, jak między \textit{podoba mi się} a \textit{zdecydowanie mi się podoba}). 
+
+Możemy wyróżnić dwa główne nurty w regresji porządkowej:
+\begin{itemize}
+	\item prognoza konkretnej obserwacji (nacisk kładziony jest tu na wyznaczenie konkretnego $\textbf{y}$ dla konkretnego $\textbf{x}$ np. czy potencjalnemu klientowi spodoba się dany produkt),
+	\item uszeregowanie kilku obserwacji (celem nie jest poznanie estymacji konkretnej zmiennej odpowiedzi, ale takie uszeregowanie kilku rekordów, by te najbardziej preferowane znalazły się na samej górze, a te najmniej na samym dole np. w jakiej kolejności powinny wyświetlić się znalezione strony w wyszukiwarce). 
+\end{itemize}
+
+W mojej pracy zajmować się będę przede wszystkim pierwszym punktem, lecz nakreślę też kilka podejść dotyczących drugiego. 
+
+
+\chapter{Opis teoretyczny dostepnych metod}
+
+W tym rozdziale opracuję kilka znanych i opisanych w literaturze podejść do regresji porządkowej. Można je podzielić na kilka grup:
+\begin{itemize}
+	\item korzystające z dostępnych metod klasyfikacji, m.in.:
+		\begin{itemize}
+			\item metoda zaproponowana przez E. Franka i M. Halla,
+		\end{itemize}
+	\item modyfikujące dostępne metody klasyfikacji, m.in.:
+		\begin{itemize}
+			\item SVM,
+			\item sieci neuronowe,
+			\item procesy gaussowskie,
+		\end{itemize}
+	\item metody stworzone specjalnie dla regresji porząckowej, m.in.:
+		\begin{itemize}
+			\item model proporcjonalnych szans.
+		\end{itemize}
+\end{itemize}  
+
+\section{Metoda zaproponowana przez E. Franka i M. Halla}
+
+Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej opiera się nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwoma klasami. Przekształcamy zatem $r$--klasowy model regresji porządkowej do $(r-1)$--dwuklasowych problemów klasyfikacji.
+
+\textcolor{red}{bla bla bla... przepisac to, co było na slajdach ;D}
+
+\section{Sieci bayesowskie}
+
+Sieci bayesowskie to bardzo proste i szeroko stosowane narzędzie zarówno w problemach regresji, jaki i klasyfikacji. Znalazlo również swoje zastosowanie w regresji porządkowej (por. \cite{nna}). Idea jest podobna do modelu proporcjonalnych szans.
+
+%-----------------------------------------------------------------------------%
+
+\begin{thebibliography}{9}
+	\bibitem{fh} Frank E., Hall M., A simple approach to ordinal classification, \emph{Proceedings of the European Conference on Machine Learning}, Freibourg, Niemcy, 2001, str. 146--156.
+	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neutral network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
+\end{thebibliography}
+
+%-----------------------------------------------------------------------------%
+
+\makestatement
+\end{document}
