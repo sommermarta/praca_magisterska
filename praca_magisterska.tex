@@ -1,6 +1,11 @@
 \documentclass{mini}
 \usepackage[utf8]{inputenc}
 \usepackage{color}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc, shapes, backgrounds, arrows}
+
+\definecolor{mojkolor}{rgb}{0.99, 1, 0.99}
 
 %------------------------------------------------------------------------------%
 \title{Statystyczne metody regresji porządkowej}
@@ -58,15 +63,108 @@ Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej 
 
 \textcolor{red}{bla bla bla... przepisac to, co było na slajdach ;D}
 
-\section{Sieci bayesowskie}
+\section{Sieci neuronowe}
 
-Sieci bayesowskie to bardzo proste i szeroko stosowane narzędzie zarówno w problemach regresji, jaki i klasyfikacji. Znalazlo również swoje zastosowanie w regresji porządkowej (por. \cite{nna}). Idea jest podobna do modelu proporcjonalnych szans.
+Sieci neuronowe to bardzo proste i szeroko stosowane narzędzie zarówno w problemach regresji, jaki i klasyfikacji. Znalazło ono również swoje zastosowanie w regresji porządkowej (por. \cite{nna}). 
+
+Standardowo, na wejściu otrzymujemy zbiór uczący w postaci $n$ par $(\textbf{x},\textbf{y})$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ jest wektorem cech, a $\textbf{y} = (y_1, \ldots, y_r)^T$ wektorem zero-jedynkowym reprezentującym klasę, do której należy dana obserwacja. Zakładamy rosnący porządek na zbiorze $\lbrace y_1, \ldots, y_r \rbrace$, tzn. $y_1 \prec \ldots \prec y_r$.
+
+W przeciwieństwie do zwykłej klasyfikacji, nasza sieć neuronowa będzie zakładać porządek zmiennej odpowiedzi. W jaki sposób? Podobnie, jak w metodzie proporcjonalnych szans, jako wektor wyjściowy, zamiast wektora $\textbf{y} = (0, 0, \ldots, 1, \ldots, 0)^T$, mającego jedynkę na $i$--tym miejscu, jeśli obserwacja należała do $i$--tej klasy, rozważać będziemy wektor $\textbf{y} = (1, 1, \ldots, 1, \ldots, 0)^T$, mający jedynki na miejscach od pierwszego do $i$--tego.
+
+Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej, z których każdy reprezentuje inną cechę z wektora $\textbf{x}$, jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. Może się zdarzyć, że wyjściowy wektor nie będzie ciągiem malejącym (co przeczył intuicji), jednak nie jest to konieczne do robienia predykcji. 
+
+\begin{figure}
+\begin{center}
+
+	\def\layersep{6cm}
+
+\begin{tikzpicture}[shorten >=1pt, ->, draw=black!50, node distance=\layersep]
+    \tikzstyle{neuron}=[circle, fill=black!25, minimum size=17pt, inner sep=0pt]
+    \tikzstyle{input neuron}=[neuron, fill=green!50];
+    \tikzstyle{output neuron}=[neuron, fill=red!50];
+    \tikzstyle{hidden neuron}=[neuron, fill=blue!50];
+    \tikzstyle{annot} = [text width=5em, text centered]
+
+    \foreach \name / \y in {1/1,K/3}
+        \node[input neuron] (I-\y) at (0,-3*\y) {$\text{wyjscie}^{(0)}_\name$};
+    \node[draw=none, scale=4, text height=0.333cm] (I-2) at (0,-3*2) {$\vdots$};
+
+	\foreach \name / \y in {1/1, 2/2, m/4}
+        \path[yshift=1.4cm]
+            node[hidden neuron] (H-\y) at (\layersep,-3*\y cm) {$\text{wyjscie}^{(1)}_{\name}$};
+    \path[yshift=1.4cm]
+            node[draw=none, scale=4, text height=0.333cm] (H-3) at (\layersep,-3*3 cm) {$\vdots$};
+
+	\foreach \name / \y in {1/1, r/3}
+        \path[yshift=0cm]
+            node[output neuron] (O-\y) at (2*\layersep,-3*\y cm) {$\text{wyjscie}^{(2)}_{\name}$};
+    \path[yshift=0cm]
+            node[draw=none, scale=4, text height=0.333cm] (O-2) at (2*\layersep,-3*2 cm) {$\vdots$};
+
+	\foreach \source / \sname in {1/1,3/K}
+        \foreach \dest / \dname in {1/1,2/2,4/m}
+            \path (I-\source) edge node[pos=0.25, sloped, fill=mojkolor, opacity=0.9, text opacity=1]{$w_{\sname\rightarrow\dname}^{(1)}$} (H-\dest);
+    \foreach \source / \sname in {1/1,2/2,4/m}
+    	\foreach \dest / \dname in {1/1,3/r}
+        \path (H-\source) edge node[pos=0.75, sloped, fill=mojkolor, opacity=0.9, text opacity=1]{$w_{\sname\rightarrow\dname}^{(2)}$} (O-\dest);
+        
+    \node[annot,above of=H-1, node distance=1.5cm] (hl) {Warstwa ukryta};
+    \node[annot,left of=hl] {Warstwa wejściowa};
+    \node[annot,right of=hl] {Warstwa wyjściowa};
+
+\end{tikzpicture}
+\end{center}
+\caption{Przykładowa sieć neuronowa.}
+\end{figure}
+
+Uczenie sieci neuronowej będzie się odbywało algorytmem propagacji wstecznej z kwadratową funkcją straty (można też użyć jakiejś innej np. entropii). Algorytm wygląda następująco:
+\begin{enumerate}
+\item Wybieramy małe wagi początkowe oraz niewielki współczynnik $\eta>0$.
+\item Losujemy parę $(\textbf{x},\textbf{y})$ ze zbioru uczącego.
+\item Przebiegamy sieć w przód.
+\item Przebiegamy sieć w tył (licząc błąd dla każdego neuronu).
+\item Zmieniamy wagi.
+\item Dopóki nie osiągniemy zadowalająco niskiego błędu, wracamy do punktu $2)$.
+\end{enumerate} 
+
+\underline{Ad. $3)$} 
+
+Dla każdego neuronu obliczamy wartość wejściową ze wzoru:
+$$
+wejscie_j^{(i)} = \sum_{k:\hspace{2mm}\exists\hspace{2mm} w^{(i)}_{k\rightarrow j}} \left( w^{(i)}_{k\rightarrow j}\cdot wyjscie_k^{(i-1)} \right),
+$$
+gdzie $wyjscie_i^{(0)} = x_i$. A następnie wyjściową:
+$$
+wyjscie_j^{(i)} = f\left(wyjscie_j^{(i)}\right). 
+$$
+
+\underline{Ad. $4)$}
+
+Dla warstwy wyjściowej błąd ma postać:
+$$
+\delta_j = -2\cdot wyjscie_j^2\cdot \left( 1- wyjscie_j \right)^2\cdot(y_j - wyjscie_j),
+$$
+zaś dla warstw ukrytych:
+$$
+\delta_j^{(i)} =  wyjscie_j^{(i)}\cdot \left( 1- wyjscie_j^{(i)} \right) \cdot \sum_{k:\hspace{2mm}\exists\hspace{2mm} w^{(i+1)}_{j\rightarrow k}} \left( w^{(i+1)}_{j\rightarrow k}\cdot \delta_k^{(i-1)} \right).
+$$
+
+\underline{Ad. $5)$}
+
+Modyfikacja wag przebiega następująco:
+$$
+w_{k\rightarrow j}^{(i)^{(new)}} = w_{k\rightarrow j}^{(i)^{(old)}} - \eta\cdot\delta_j^{(i)}\cdot wyjscie^{(i-1)}_k.
+$$
+
+Predykcja opiera się już tylko na przejściu algorytmu w przód z nowymi obserwacjami wejściowymi $\textbf{x}$ i ustaleniu progu (najczęściej równego $0,5$), klasyfikującego neuron wyjściowy jako jedynkę. Skanujemy wektor wyjściowy zaczynając od $y_1$ i kończymy, gdy pierwszy raz natkniemy się na $0$. Przypisujemy obserwacji taką klasę, ile wynosił znaleziony przez nas ciąg jedynek.
+
+
 
 %-----------------------------------------------------------------------------%
 
 \begin{thebibliography}{9}
 	\bibitem{fh} Frank E., Hall M., A simple approach to ordinal classification, \emph{Proceedings of the European Conference on Machine Learning}, Freibourg, Niemcy, 2001, str. 146--156.
-	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neutral network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
+	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neural network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
