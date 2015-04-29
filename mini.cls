@@ -245,7 +245,7 @@ Nr albumu \@album
 \par\vspace{15mm}
 O{\'s}wiadczam, {\.z}e prac{\k e} \@type k{\k a} pod
 tytu{\l}em ,,\@title'', kt{\'o}rej promotorem jest  \@tytsupervisor\ \@supervisor\
-wykona{\l}{\ifthenelse{\boolean{lady}}{a}{e}}m
+wykona{\l}am
 samodzielnie, co po{\'s}wiadczam w{\l}asnor{\k e}cznym podpisem.
 \vspace{15mm}
 \begin{flushright}

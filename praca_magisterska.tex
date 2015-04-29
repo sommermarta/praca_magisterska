@@ -1,9 +1,12 @@
 \documentclass{mini}
+
 \usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{tikz}
-\usetikzlibrary{calc, shapes, backgrounds, arrows}
+\usepackage{tikz-qtree}
+
+\usetikzlibrary{calc, shapes, backgrounds, arrows, positioning, calc}
 
 \definecolor{mojkolor}{rgb}{0.99, 1, 0.99}
 
@@ -18,6 +21,7 @@
 \date{\today}
 \album{237503}
 %------------------------------------------------------------------------------%
+
 \begin{document}
 \maketitle
 \tableofcontents
@@ -59,9 +63,90 @@ W tym rozdziale opracuję kilka znanych i opisanych w literaturze podejść do r
 
 \section{Metoda zaproponowana przez E. Franka i M. Halla}
 
-Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej opiera się nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwoma klasami. Przekształcamy zatem $r$--klasowy model regresji porządkowej do $(r-1)$--dwuklasowych problemów klasyfikacji.
+Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej opiera się nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwoma klasami. Przekształcamy zatem $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji. 
 
-\textcolor{red}{bla bla bla... przepisac to, co było na slajdach ;D}
+Na wejściu otrzymujemy $n$ par $(\textbf{x},y)$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ jest wektorem cech, a $y \in \lbrace y_1, \ldots, y_r \rbrace$ reprezentuje klasę, do której należy dana obserwacja. Zakładamy rosnący porządek na zbiorze $\lbrace y_1, \ldots, y_r \rbrace$, tzn. $y_1 \prec \ldots \prec y_r$. Algorytm do budowy modelu wygląda następująco:
+
+\begin{enumerate}
+\item Modyfikujemy zbiór uczący (otrzymując $r-1$ nowych zbiorów uczących).
+\item Dla każdego nowo uzyskanego zbioru danych dopasowujemy zwykły model klasyfikacyjny (np. drzewo) taki, który zwraca prawdopodobieństwa przynależności do klas.
+\item Robimy predykcję dla nowej obserwacji. 
+\end{enumerate}
+
+\begin{figure}[h]
+\begin{center}
+	\begin{tikzpicture}
+		\node(gora) {\begin{tabular}{c|c}
+					$\mathcal{X}$ & $\mathcal{Y}$ \\
+					[1ex] \hline \\ [-1.5ex] 
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $y_1$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $y_r$ \\
+					[1ex] \vdots & $\vdots$ \\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $y_2$\\
+				\end{tabular}};
+		\node [below= 4cm of gora] (srodek) {$\ldots$};
+		\node [right= 3cm of srodek] (prawo) {\begin{tabular}{c|c}
+					$\mathcal{X}$ & $\mathcal{Y}^{(r-1)}$ \\
+					[1ex] \hline \\ [-1.5ex] 
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
+					[1ex] \vdots & $\vdots$ \\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $0$\\
+				\end{tabular}};
+		\node [left= 3cm of srodek] (lewo) {\begin{tabular}{c|c}
+					$\mathcal{X}$ & $\mathcal{Y}^{(1)}$ \\
+					[1ex] \hline \\ [-1.5ex] 
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
+					[1ex] \vdots & $\vdots$ \\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $1$\\
+				\end{tabular}};
+		\path[draw, -latex',thick] (gora) -- (lewo);
+		\path[draw, -latex',thick] (gora) -- (prawo);
+	\end{tikzpicture}
+\end{center}
+\caption{Modyfikacja przykładowego zbioru uczącego.}
+\end{figure}
+
+\underline{Ad. $1)$}
+
+Chcemy otrzymać $r-1$ nowych zbiorów o zero-jedynkowej zmiennej odpowiedzi. W jaki sposób to zrobić?
+Macierz atrybutów pozostaje bez zmian, zmienia się jedynie wektor zmiennej odpowiedzi według zasady:
+\begin{eqnarray*}
+y_i^{(1)} &=& \mathbb{I}\lbrace y_i>y_1 \rbrace\\
+&\vdots& \\
+y_i^{(r-1)} &=& \mathbb{I}\lbrace y_i>y_{r-1} \rbrace\\
+\end{eqnarray*}
+
+\underline{Ad. $3)$}
+
+Dla nowego wektora atrybutów $\textbf{x}$ robimy predykcję na $r-1$ modelach uzyskanych w punkcie $2)$. Zwracamy jednak nie predykcję klasy, ale prawdopodobieństwo przynależności do klasy pierwszej. Uzyskujemy w ten sposób $r-1$ następuących prawdopodobieństw:
+\begin{eqnarray*}
+\mathbb{P}(y &>& y_{1})\\
+&\vdots& \\
+\mathbb{P}(y &>& y_{r-1}).\\
+\end{eqnarray*}
+
+Nas natomiast interesują prawdopodobieństwa:
+\begin{eqnarray*}
+\mathbb{P}(y &=& y_{1})\\
+&\vdots& \\
+\mathbb{P}(y &=& y_{r-1}).\\
+\end{eqnarray*}
+
+Łatwo otrzymamy korzystając z następującego wzoru łańcuchowego:
+\begin{eqnarray*}
+\mathbb{P}(y = y_{1}) &=& 1 - \mathbb{P}(y > y_{1})\\
+&\vdots& \\
+\mathbb{P}(y = y_{i}) &=& \mathbb{P}(y > y_{i-1}) - \mathbb{P}(y > y_{i}) \qquad \text{dla}\hspace{5mm} i=2, \ldots, r-1\\
+&\vdots& \\
+\mathbb{P}(y = y_{r}) &=& \mathbb{P}(y = y_{r-1}).\\
+\end{eqnarray*}
+
+Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo ($\mathbb{P}(y=y_i)$) było największe.
+
+
+
 
 \section{Sieci neuronowe}
 
@@ -73,7 +158,7 @@ W przeciwieństwie do zwykłej klasyfikacji, nasza sieć neuronowa będzie zakł
 
 Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej, z których każdy reprezentuje inną cechę z wektora $\textbf{x}$, jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. Może się zdarzyć, że wyjściowy wektor nie będzie ciągiem malejącym (co przeczył intuicji), jednak nie jest to konieczne do robienia predykcji. 
 
-\begin{figure}
+\begin{figure}[h]
 \begin{center}
 
 	\def\layersep{6cm}
