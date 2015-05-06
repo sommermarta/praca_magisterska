@@ -41,122 +41,100 @@ Możemy wyróżnić dwa główne nurty w regresji porządkowej:
 W mojej pracy zajmować się będę przede wszystkim pierwszym punktem, lecz nakreślę też kilka podejść dotyczących drugiego. 
 
 
-\chapter{Opis teoretyczny dostepnych metod}
+\chapter{Opis teoretyczny dostępnych metod}
 
-W tym rozdziale opracuję kilka znanych i opisanych w literaturze podejść do regresji porządkowej. Można je podzielić na kilka grup:
+
+\section{Postawienie problemu i podstawowe oznaczenia}
+
+Na wejściu dany mamy zbiór $\mathcal{D} = (\mathbf{x}^{(i)}, y^{(i)})_{i=1}^n$, składający się z $n$ par $(\mathbf{x}, y)$, gdzie:
 \begin{itemize}
-	\item korzystające z dostępnych metod klasyfikacji, m.in.:
-		\begin{itemize}
-			\item metoda zaproponowana przez E. Franka i M. Halla,
-		\end{itemize}
-	\item modyfikujące dostępne metody klasyfikacji, m.in.:
-		\begin{itemize}
-			\item SVM,
-			\item sieci neuronowe,
-			\item procesy gaussowskie,
-		\end{itemize}
-	\item metody stworzone specjalnie dla regresji porząckowej, m.in.:
-		\begin{itemize}
-			\item model proporcjonalnych szans.
-		\end{itemize}
-\end{itemize}  
+\item $\mathbf{x}^{(i)}$ jest $K$--wymiarowym wektorem cech (częstym założeniem będzie, że $\mathbf{x}^{(i)}\in \mathbb{R}^K$),  
+\item $y^{(i)}$ jest liczbą symbolizującą kategorię, do której przyporządkowana została $i$--ta obserwacja, tzn. $y^{(i)}\in\mathcal{Y}$, gdzie $\mathcal{Y} = \lbrace 1,\ldots ,r \rbrace$ jest zbiorem uporządkowanym według pewnego porządku ,,$\prec$''. 
+\end{itemize}
+Naszym celem będzie stworzenie modelu, który pozwoli na wybranie najlepszej (nieznanej) kategorii $y_{\ast}\in\mathcal{Y}$ dla nowej obserwacji o zadanym wektorze cech $\mathbf{x}_{\ast}$. 
 
-\section{Metoda zaproponowana przez E. Franka i M. Halla}
+W tym rozdziale opracujemy kilka rozwiązań, które pozwolą nam się z tym problemem uporać.
 
-Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej opiera się nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwoma klasami. Przekształcamy zatem $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji. 
+\section{Model proporcjonalnych szans}
 
-Na wejściu otrzymujemy $n$ par $(\textbf{x},y)$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ jest wektorem cech, a $y \in \lbrace y_1, \ldots, y_r \rbrace$ reprezentuje klasę, do której należy dana obserwacja. Zakładamy rosnący porządek na zbiorze $\lbrace y_1, \ldots, y_r \rbrace$, tzn. $y_1 \prec \ldots \prec y_r$. Algorytm do budowy modelu wygląda następująco:
+Najbardziej rozpowszechnionym sposobem modelowania regresji porządkowej jest model proporcjonalnych szans. Jest to jedna z metod uogólnionych modeli liniowych, bardzo silnie opierająca się na regresji logistycznej. Interesują nas prawdopodobieństwa: 
+$$
+\Pi_j(\mathbf{x}):=\mathbb{P}(y_=j\hspace{1mm}|\hspace{1mm}\mathbf{x}),\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r.
+$$
+Idea polega nie na bezpośrednim modelowaniu prawdopodobieństw $\Pi_j(\mathbf{x})$, lecz na wcześniejszym modelowaniu tzw. prawdopodobieństw skumulowanych:
+$$
+\mathbb{P}(y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})=\Pi_1(\mathbf{x})+\ldots+\Pi_j(\mathbf{x}),\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r-1.
+$$
+Następnie rozważa się poniższy model logitowy:
+$$
+\log\dfrac{\mathbb{P}(y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})}{1 - \mathbb{P}(Y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})} = \alpha_j+\mathbf{\beta}^T\mathbf{x},\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r-1,
+$$
+gdzie $\alpha_j\in \mathbb{R}$ i $\mathbf{\beta}\in \mathbb{R}^K$ są parametrami modelu. Należy zauważyć, że parametr $\beta$ jest stały dla każdego $j=1, \ldots, r-1$.
 
-\begin{enumerate}
-\item Modyfikujemy zbiór uczący (otrzymując $r-1$ nowych zbiorów uczących).
-\item Dla każdego nowo uzyskanego zbioru danych dopasowujemy zwykły model klasyfikacyjny (np. drzewo) taki, który zwraca prawdopodobieństwa przynależności do klas.
-\item Robimy predykcję dla nowej obserwacji. 
-\end{enumerate}
+Współczynniki modelu -- jak w przypadku regresji logistycznej -- wyliczamy metodą Raphsona-Newtona, a skumulowane prawdopodobieństwa -- po prostym przeliczeniu -- dostaniemy ze~wzoru:
+$$
+\mathbb{P}(y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})=\dfrac{e^{\alpha_j+\mathbf{\beta}^T\mathbf{x}}}{1+e^{\alpha_j+\mathbf{\beta}^T\mathbf{x}}},\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r-1.
+$$ 
+Szukane prawdopodobieństwa $\Pi_j(\mathbf{x})$ otrzymamy w poniższy sposób:
+\begin{eqnarray*}
+\Pi_1(\mathbf{x}) &=& \mathbb{P}(Y\leq 1 \hspace{1mm}|\hspace{1mm}\mathbf{x}),\\
+&\vdots&\\
+\Pi_i(\mathbf{x}) &=& \mathbb{P}(Y\leq i \hspace{1mm}|\hspace{1mm} \mathbf{x}) - \mathbb{P}(Y\leq i-1 \hspace{1mm}|\hspace{1mm} \mathbf{x}),\\
+&\vdots&\\
+\Pi_r(\mathbf{x}) &=& 1 - \mathbb{P}(Y\leq r-1 \hspace{1mm}|\hspace{1mm} \mathbf{x}).
+\end{eqnarray*}
+
+Dla nowej obserwacji $\mathbf{x}_{\ast}$ wybieramy oczywiście klasę $y_{\ast}$, która maksymalizuje prawdopodobieństwa $\Pi_j(\mathbf{x}_{\ast})$.
+
+\section{Wektory maszyn podpierających (SVM)}
+
+Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji. W dużym uproszczeniu, polega ona na konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn w taki sposób, by minimalizować kwadrat odległości między nimi. By móc obsługiwać przypadki, w których brak liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
+$$
+\min\left\lbrace\dfrac{1}{2}||\textbf{w}||^2+C\sum_{i=1}^{n}\xi_i\right\rbrace
+$$
+przy ograniczeniach:
+$$
+\begin{cases}
+\mathbf{x}^{(i)^T}\textbf{w}+b &\geq 1-\xi_i\\
+\mathbf{x}^{(i)^T}\textbf{w}+b &\leq -1+\xi_i,
+\end{cases}
+$$    
+gdzie $\mathbf{w}\in\mathbb{R}^K$, $b\in\mathbb{R}$, $C\in\mathbb{R}$ i $\xi_i\geq 0$ są parametrami modelu.
+
+Tak to wyglądało w przypadku dwuklasowej klasyfikacji. Przyjrzyjmy się teraz, jak w łatwy sposób można zaadaptować powyższą metodę do rozważanej przez nas regresji porządkowej.
 
 \begin{figure}[h]
 \begin{center}
-	\begin{tikzpicture}
-		\node(gora) {\begin{tabular}{c|c}
-					$\mathcal{X}$ & $\mathcal{Y}$ \\
-					[1ex] \hline \\ [-1.5ex] 
-					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $y_1$ \\
-					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $y_r$ \\
-					[1ex] \vdots & $\vdots$ \\
-					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $y_2$\\
-				\end{tabular}};
-		\node [below= 4cm of gora] (srodek) {$\ldots$};
-		\node [right= 3cm of srodek] (prawo) {\begin{tabular}{c|c}
-					$\mathcal{X}$ & $\mathcal{Y}^{(r-1)}$ \\
-					[1ex] \hline \\ [-1.5ex] 
-					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
-					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
-					[1ex] \vdots & $\vdots$ \\
-					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $0$\\
-				\end{tabular}};
-		\node [left= 3cm of srodek] (lewo) {\begin{tabular}{c|c}
-					$\mathcal{X}$ & $\mathcal{Y}^{(1)}$ \\
-					[1ex] \hline \\ [-1.5ex] 
-					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
-					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
-					[1ex] \vdots & $\vdots$ \\
-					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $1$\\
-				\end{tabular}};
-		\path[draw, -latex',thick] (gora) -- (lewo);
-		\path[draw, -latex',thick] (gora) -- (prawo);
-	\end{tikzpicture}
+\includegraphics[width=\textwidth]{svm3.png}
 \end{center}
-\caption{Modyfikacja przykładowego zbioru uczącego.}
+\caption{Przykładowa klasyfikacja metodą SVM.}
 \end{figure}
 
-\underline{Ad. $1)$}
+Tym razem optymalizować będziemy następujące wyrażenie:
+$$
+\min_{\textbf{w}, b_k}\left\lbrace \dfrac{1}{2}||\textbf{w}||^2+C\sum_{j=1}^{r-1}\left( \sum_{k=1}^{j}\sum_{i=1}^{n_k}\xi_{ki}^j+\sum_{k=j+1}^{r}\sum_{i=1}^{n_k}\xi_{ki}^{*j}\right)\right\rbrace
+$$
+przy ograniczeniach:
+$$
+\begin{cases}
+\textbf{w}x^{(i)}_k-b_j&\leq -1 +\xi^j_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=1,\ldots,j \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k \\
+\textbf{w}x^{(i)}_k-b_j&\geq +1 -\xi^{*j}_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=j+1,\ldots,r \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k 
+\end{cases}
+$$
 
-Chcemy otrzymać $r-1$ nowych zbiorów o zero-jedynkowej zmiennej odpowiedzi. W jaki sposób to zrobić?
-Macierz atrybutów pozostaje bez zmian, zmienia się jedynie wektor zmiennej odpowiedzi według zasady:
-\begin{eqnarray*}
-y_i^{(1)} &=& \mathbb{I}\lbrace y_i>y_1 \rbrace\\
-&\vdots& \\
-y_i^{(r-1)} &=& \mathbb{I}\lbrace y_i>y_{r-1} \rbrace\\
-\end{eqnarray*}
+Przyjrzyjmy się, czym różni się nasz nowy problem od problemu optymalizacyjnego w standardowej klasyfikacji. Przede wszystkim -- podobnie jak w modelu proporcjonalnych szans -- mamy tu do czynienia z $(r-1)$--hiperpłaszczyznami, rzutowanymi na jeden, wspólny dla wszystkich obserwacji, kierunek $\mathbf{w}$. Przy wyznaczaniu kolejnych hiperpłaszczyzn, bierzemy pod uwagę wszystkie klasy. Kary naliczane są więc w następujący sposób. Dla progu $b_j$, wartości funkcji $\textbf{w}x^{(i)}_k$ dla obserwacji z niższych klas, powinny być niższe niż dolna granica $b_j-1$. Jeśli tak nie jest, wtedy jako błąd próbki $\xi^j_{ki}$ dla progu $b_j$ uznaje się $\xi^j_{ki} = \textbf{w}x^{(i)}_k-(b_j - 1)$. Analogicznie, dla obserwacji z wyższych klas, otrzymujemy błędy $\xi^{*j}_{ki}$.
 
-\underline{Ad. $3)$}
-
-Dla nowego wektora atrybutów $\textbf{x}$ robimy predykcję na $r-1$ modelach uzyskanych w punkcie $2)$. Zwracamy jednak nie predykcję klasy, ale prawdopodobieństwo przynależności do klasy pierwszej. Uzyskujemy w ten sposób $r-1$ następuących prawdopodobieństw:
-\begin{eqnarray*}
-\mathbb{P}(y &>& y_{1})\\
-&\vdots& \\
-\mathbb{P}(y &>& y_{r-1}).\\
-\end{eqnarray*}
-
-Nas natomiast interesują prawdopodobieństwa:
-\begin{eqnarray*}
-\mathbb{P}(y &=& y_{1})\\
-&\vdots& \\
-\mathbb{P}(y &=& y_{r-1}).\\
-\end{eqnarray*}
-
-Łatwo otrzymamy korzystając z następującego wzoru łańcuchowego:
-\begin{eqnarray*}
-\mathbb{P}(y = y_{1}) &=& 1 - \mathbb{P}(y > y_{1})\\
-&\vdots& \\
-\mathbb{P}(y = y_{i}) &=& \mathbb{P}(y > y_{i-1}) - \mathbb{P}(y > y_{i}) \qquad \text{dla}\hspace{5mm} i=2, \ldots, r-1\\
-&\vdots& \\
-\mathbb{P}(y = y_{r}) &=& \mathbb{P}(y = y_{r-1}).\\
-\end{eqnarray*}
-
-Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo ($\mathbb{P}(y=y_i)$) było największe.
-
-
-
+Budowa modelu i tym razem sprowadza się więc do problemu optymalizacyjnego.
 
 \section{Sieci neuronowe}
+ 
+Sieci neuronowe to bardzo proste i szeroko stosowane narzędzie zarówno w problemach regresji, jak i klasyfikacji. Znalazło ono również swoje zastosowanie w regresji porządkowej (por. \cite{nna}). 
 
-Sieci neuronowe to bardzo proste i szeroko stosowane narzędzie zarówno w problemach regresji, jaki i klasyfikacji. Znalazło ono również swoje zastosowanie w regresji porządkowej (por. \cite{nna}). 
+Standardowo, na wejściu otrzymujemy zbiór uczący w postaci $n$ par $(\textbf{x},y)$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ jest wektorem cech, a $y$ numerem klasy. Tym razem jednak, dodatkowo modyfikujemy zmienną odpowiedzi w taki sposób, by zamiast liczby rzeczywistej otrzymać zero-jedynkowy wektor odpowiedzi $\textbf{y} = (y_1, \ldots, y_r)^T$ reprezentujący klasę, do której należy dana obserwacja, tzn. $y_i = \mathbb{I}\lbrace y =i \rbrace$.
 
-Standardowo, na wejściu otrzymujemy zbiór uczący w postaci $n$ par $(\textbf{x},\textbf{y})$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ jest wektorem cech, a $\textbf{y} = (y_1, \ldots, y_r)^T$ wektorem zero-jedynkowym reprezentującym klasę, do której należy dana obserwacja. Zakładamy rosnący porządek na zbiorze $\lbrace y_1, \ldots, y_r \rbrace$, tzn. $y_1 \prec \ldots \prec y_r$.
+W przeciwieństwie do zwykłej klasyfikacji, nasza sieć neuronowa będzie zakładać porządek zmiennej odpowiedzi. W jaki sposób? Mianowicie, jako wektor wyjściowy, zamiast wektora $\textbf{y} = (0, 0, \ldots, 1, \ldots, 0)^T$, mającego jedynkę na $i$--tym miejscu, jeśli obserwacja należała do $i$--tej klasy, rozważać będziemy wektor $\textbf{y} = (1, 1, \ldots, 1, \ldots, 0)^T$, mający jedynki na miejscach od pierwszego do $i$--tego.
 
-W przeciwieństwie do zwykłej klasyfikacji, nasza sieć neuronowa będzie zakładać porządek zmiennej odpowiedzi. W jaki sposób? Podobnie, jak w metodzie proporcjonalnych szans, jako wektor wyjściowy, zamiast wektora $\textbf{y} = (0, 0, \ldots, 1, \ldots, 0)^T$, mającego jedynkę na $i$--tym miejscu, jeśli obserwacja należała do $i$--tej klasy, rozważać będziemy wektor $\textbf{y} = (1, 1, \ldots, 1, \ldots, 0)^T$, mający jedynki na miejscach od pierwszego do $i$--tego.
-
-Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej, z których każdy reprezentuje inną cechę z wektora $\textbf{x}$, jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. Może się zdarzyć, że wyjściowy wektor nie będzie ciągiem malejącym (co przeczył intuicji), jednak nie jest to konieczne do robienia predykcji. 
+Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej, z których każdy reprezentuje inną cechę z wektora $\textbf{x}$, jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. Może się zdarzyć, że wyjściowy wektor nie będzie ciągiem malejącym (co trochę przeczy intuicji), jednak nie jest to konieczne do robienia predykcji. 
 
 \begin{figure}[h]
 \begin{center}
@@ -241,7 +219,92 @@ $$
 w_{k\rightarrow j}^{(i)^{(new)}} = w_{k\rightarrow j}^{(i)^{(old)}} - \eta\cdot\delta_j^{(i)}\cdot wyjscie^{(i-1)}_k.
 $$
 
-Predykcja opiera się już tylko na przejściu algorytmu w przód z nowymi obserwacjami wejściowymi $\textbf{x}$ i ustaleniu progu (najczęściej równego $0,5$), klasyfikującego neuron wyjściowy jako jedynkę. Skanujemy wektor wyjściowy zaczynając od $y_1$ i kończymy, gdy pierwszy raz natkniemy się na $0$. Przypisujemy obserwacji taką klasę, ile wynosił znaleziony przez nas ciąg jedynek.
+Predykcja opiera się już tylko na przejściu algorytmu w przód z nowymi obserwacjami wejściowymi $\textbf{x}_{\ast}$ i ustaleniu progu (najczęściej równego $0,5$), klasyfikującego neuron wyjściowy jako jedynkę. Skanujemy wektor wyjściowy zaczynając od $y_1$ i kończymy, gdy pierwszy raz natkniemy się na $0$. Przypisujemy obserwacji taką klasę, jaką długość miał znaleziony przez nas ciąg jedynek.
+
+\section{Metoda zaproponowana przez E. Franka i M. Halla}
+
+Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej jest nieco inne, niż przedstawione do tej pory metody. Opiera się bowiem nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwoma klasami. Przekształcamy zatem $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji. 
+
+Algorytm do budowy modelu wygląda następująco:
+
+\begin{enumerate}
+\item Modyfikujemy zbiór uczący (otrzymując $r-1$ nowych zbiorów uczących).
+\item Dla każdego nowo uzyskanego zbioru danych dopasowujemy zwykły model klasyfikacyjny (np. drzewo) taki, który zwraca prawdopodobieństwa przynależności do klas.
+\item Robimy predykcję dla nowej obserwacji. 
+\end{enumerate}
+
+\begin{figure}[h]
+\begin{center}
+	\begin{tikzpicture}
+		\node(gora) {\begin{tabular}{c|c}
+					$\mathbf{x}$ & $y$ \\
+					[1ex] \hline \\ [-1.5ex] 
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $y_1$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $y_r$ \\
+					[1ex] \vdots & $\vdots$ \\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $y_2$\\
+				\end{tabular}};
+		\node [below= 4cm of gora] (srodek) {$\ldots$};
+		\node [right= 3cm of srodek] (prawo) {\begin{tabular}{c|c}
+					$\mathbf{x}$ & $y^{(r-1)}$ \\
+					[1ex] \hline \\ [-1.5ex] 
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
+					[1ex] \vdots & $\vdots$ \\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $0$\\
+				\end{tabular}};
+		\node [left= 3cm of srodek] (lewo) {\begin{tabular}{c|c}
+					$\mathbf{x}$ & $y^{(1)}$ \\
+					[1ex] \hline \\ [-1.5ex] 
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
+					[1ex] \vdots & $\vdots$ \\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $1$\\
+				\end{tabular}};
+		\path[draw, -latex',thick] (gora) -- (lewo);
+		\path[draw, -latex',thick] (gora) -- (prawo);
+	\end{tikzpicture}
+\end{center}
+\caption{Modyfikacja przykładowego zbioru uczącego.}
+\end{figure}
+
+\underline{Ad. $1)$}
+
+Chcemy otrzymać $r-1$ nowych zbiorów o zero-jedynkowej zmiennej odpowiedzi. W jaki sposób to zrobić?
+Macierz atrybutów pozostaje bez zmian, zmienia się jedynie wektor zmiennej odpowiedzi według zasady:
+\begin{eqnarray*}
+y_i^{(1)} &=& \mathbb{I}\lbrace y_i>1 \rbrace\\
+&\vdots& \\
+y_i^{(r-1)} &=& \mathbb{I}\lbrace y_i>r-1 \rbrace\\
+\end{eqnarray*}
+
+\underline{Ad. $3)$}
+
+Dla nowego wektora atrybutów $\textbf{x}$ robimy predykcję na $r-1$ modelach uzyskanych w punkcie $2)$. Zwracamy jednak nie predykcję klasy, ale prawdopodobieństwo przynależności do klasy pierwszej. Uzyskujemy w ten sposób $r-1$ następuących prawdopodobieństw:
+\begin{eqnarray*}
+\mathbb{P}(y &>& 1)\\
+&\vdots& \\
+\mathbb{P}(y &>& r-1).\\
+\end{eqnarray*}
+
+Nas natomiast interesują prawdopodobieństwa:
+\begin{eqnarray*}
+\mathbb{P}(y &=& 1)\\
+&\vdots& \\
+\mathbb{P}(y &=& r-1).\\
+\end{eqnarray*}
+
+Łatwo otrzymamy korzystając z następującego wzoru łańcuchowego:
+\begin{eqnarray*}
+\mathbb{P}(y = 1) &=& 1 - \mathbb{P}(y > 1)\\
+&\vdots& \\
+\mathbb{P}(y = i) &=& \mathbb{P}(y > i-1) - \mathbb{P}(y > i) \qquad \text{dla}\hspace{5mm} i=2, \ldots, r-1\\
+&\vdots& \\
+\mathbb{P}(y = r) &=& \mathbb{P}(y > r-1).\\
+\end{eqnarray*}
+
+Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo $\mathbb{P}(y=i)$ było największe.
+
 
 
 
@@ -250,6 +313,8 @@ Predykcja opiera się już tylko na przejściu algorytmu w przód z nowymi obser
 \begin{thebibliography}{9}
 	\bibitem{fh} Frank E., Hall M., A simple approach to ordinal classification, \emph{Proceedings of the European Conference on Machine Learning}, Freibourg, Niemcy, 2001, str. 146--156.
 	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neural network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
+	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001 
+	\bibitem{svm} Chu W., Sathiya Keerthi S., \emph{Support Vector Ordinal Regression}
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
