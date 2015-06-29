@@ -305,8 +305,26 @@ Nas natomiast interesują prawdopodobieństwa:
 
 Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo $\mathbb{P}(y=i)$ było największe.
 
+\section{Procesy gaussowskie}
 
+Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloetykietowej. Chu i Ghahramani w pracy \cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
 
+Procesem gaussowskim nazywamy proces stochastyczny, którego rozkłady skończenie wielowymiarowe są normalne. Ktoś mógłby spytać: ,,W porządku, ale gdzie w klasyfikacji, w której jest skończenie wiele odpowiedzi, jest miejsce na rozkład normalny?" Otóż pomysł sam w sobie jest dość prosty. Mianowicie, zamiast bezpośrednio wnioskować ze zmiennych objaśniających $\textbf{X}$ o zmiennej odpowiedzi $\textbf{y}$, dodajemy krok pośredni tzw. zmienną ukrytą $\textbf{f}$. W uproszczony sposób predykcja wygląda zatem następująco: 
+\begin{enumerate}
+\item otrzymujemy na wejściu nową obserwację o danym wektorze cech $\textbf{x}_{\ast}$, 
+\item w jakiś sposób wyliczamy dla niej liczbę rzeczywistą $f(x_{\ast})$,
+\item  za pomocą pewnego przekształcenia prostej rzeczywistej na $r$ podzbiorów, wyznaczamy najlepszego $y_{\ast}$.
+\end{enumerate}
+ 
+Spróbujmy teraz zagłębić się w szczegóły. Interesuje nas obliczenie $\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast})$. Przy pomocy zmiennej ukrytej, możemy to rozpisać w następujący sposób:
+$$
+\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast}) = \int \mathbb{P}(y_{\ast} | f(x_{\ast}))\mathbb{P}(f(x_{\ast}) | \textbf{X}, \textbf{y}) df(x_{\ast}).
+$$  
+Musimy zatem wyestymować dwa prawdopodobieństwa pod powyższą całką, przy czym drugie z nich da się rozpisać w analogiczny sposób:
+$$
+\mathbb{P}(f(x_{\ast}) | \textbf{X}, \textbf{y}) = \int \mathbb{P}(f(x_{\ast}) | \mathbf{f})\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) df.
+$$ 
+Szukamy więc trzech prawdopodobieństw: $\mathbb{P}(y_{\ast} | f(x_{\ast}))$, $\mathbb{P}(f(x_{\ast}) | \mathbf{f})$ oraz $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Przyjrzyjmy się im po kolei.
 
 %-----------------------------------------------------------------------------%
 
@@ -315,6 +333,7 @@ Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo $
 	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neural network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
 	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001 
 	\bibitem{svm} Chu W., Sathiya Keerthi S., \emph{Support Vector Ordinal Regression}
+	\bibitem{reg} Chu W., Ghahramani Z., \emph{Gaussian Processes for Ordinal Regression}
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
