@@ -9,6 +9,9 @@
 \usetikzlibrary{calc, shapes, backgrounds, arrows, positioning, calc}
 
 \definecolor{mojkolor}{rgb}{0.99, 1, 0.99}
+\newenvironment{dow}{\textbf{\textit{Dowód}}}{\begin{flushright} $\blacksquare$ \end{flushright}}
+\newcommand{\argmin}{\arg\!\min}
+\newcommand{\argmax}{\arg\!\max}
 
 %------------------------------------------------------------------------------%
 \title{Statystyczne metody regresji porządkowej}
@@ -309,22 +312,151 @@ Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo $
 
 Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloetykietowej. Chu i Ghahramani w pracy \cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
 
-Procesem gaussowskim nazywamy proces stochastyczny, którego rozkłady skończenie wielowymiarowe są normalne. Ktoś mógłby spytać: ,,W porządku, ale gdzie w klasyfikacji, w której jest skończenie wiele odpowiedzi, jest miejsce na rozkład normalny?" Otóż pomysł sam w sobie jest dość prosty. Mianowicie, zamiast bezpośrednio wnioskować ze zmiennych objaśniających $\textbf{X}$ o zmiennej odpowiedzi $\textbf{y}$, dodajemy krok pośredni tzw. zmienną ukrytą $\textbf{f}$. W uproszczony sposób predykcja wygląda zatem następująco: 
+Pomysł modelowania regresji porządkowej polega na wprowadzeniu tzw. zmiennej ukrytej, będącej niejako krokiem pośrednim w modelowaniu zmiennej odpowiedzi. W celu wyrobienia sobie intuicji, przeanalizujmy całe rozumowanie nieco od tyłu, zaczynając od predykcji. Podstawowym założeniem \textit{a priori} tej metody jest to, że zmienna ukryta $f$ jest procesem gaussowskim tzn., że jej rozkłady skończenie wymiarowe są normalne. Pełną charakteryzację takiego procesu tworzą dwie informacje -- średnia (standardowo przyjmuje się $0$) oraz macierz kowariancji $\mathbf{\Sigma}$. Dla celów tej pracy przyjmiemy, że elementy macierzy kowariancji definiowane są w następujący sposób:
+$$
+\mathbf{\Sigma}_{ij} = \mathbf{\Sigma}(x_i, x_j) = \exp \left\lbrace -\frac{\kappa}{2}\sum_{\xi=1}^K (x_i^{\xi} - x_j^{\xi})^2\right\rbrace,
+$$
+gdzie $\kappa>0$, a $x_i^{\xi}$ oznacza $\xi$-ty element wektora $\mathbf{x}_i$. Zatem $\mathbf{f} | \mathbf{X} \sim \mathcal{N}(0, \mathbf{\Sigma})$, czyli:
+\begin{equation}\label{apriori}
+\mathbb{P}(\mathbf{f} | \mathbf{X}) = \frac{1}{(2\Pi)^{\frac{n}{2}}|\mathbf{\Sigma}|^{\frac{1}{2}}}\exp\left\lbrace -\frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f} \right\rbrace,
+\end{equation}
+gdzie $\mathbf{f} = [f(\mathbf{x}_1), \ldots, f(\mathbf{x}_n)]^T$ to wektor zawierający realizację zmiennej ukrytej, odpowiadający kolejnym obserwacjom ze zbioru uczącego.
+
+Wyobraźmy sobie teraz, że dopasowaliśmy model i znamy wszystkie niezbędne parametry. W uproszczony sposób predykcja wygląda następująco: 
 \begin{enumerate}
-\item otrzymujemy na wejściu nową obserwację o danym wektorze cech $\textbf{x}_{\ast}$, 
-\item w jakiś sposób wyliczamy dla niej liczbę rzeczywistą $f(x_{\ast})$,
-\item  za pomocą pewnego przekształcenia prostej rzeczywistej na $r$ podzbiorów, wyznaczamy najlepszego $y_{\ast}$.
+\item na wejściu otrzymujemy nową obserwację o danym wektorze cech $\textbf{x}_{\ast}$,
+\item w pewien sposób wyliczamy dla niej liczbę rzeczywistą $f(\mathbf{x}_{\ast})$,
+\item  za pomocą przekształcenia prostej rzeczywistej na $r$ podzbiorów, wyznaczamy najlepszy $y_{\ast}$.
 \end{enumerate}
- 
-Spróbujmy teraz zagłębić się w szczegóły. Interesuje nas obliczenie $\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast})$. Przy pomocy zmiennej ukrytej, możemy to rozpisać w następujący sposób:
+
+A teraz prześledźmy wszystko krok po kroku. Interesuje nas wyznaczenie $y_{\ast}$, dla którego prawdopodobieństwo $\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast})$ jest największe. Przy pomocy zmiennej ukrytej rozpiszmy je w następujący sposób:
 $$
-\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast}) = \int \mathbb{P}(y_{\ast} | f(x_{\ast}))\mathbb{P}(f(x_{\ast}) | \textbf{X}, \textbf{y}) df(x_{\ast}).
+\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast}) = \int \mathbb{P}(y_{\ast} | f(\mathbf{x}_{\ast}))\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) df(\mathbf{x}_{\ast}).
 $$  
-Musimy zatem wyestymować dwa prawdopodobieństwa pod powyższą całką, przy czym drugie z nich da się rozpisać w analogiczny sposób:
+Analogicznie:
+\begin{equation}\label{calka2}
+\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) = \int \mathbb{P}(f(\mathbf{x}_{\ast}) | \mathbf{f})\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) d\mathbf{f}.
+\end{equation}
+Szukamy więc powyższych prawdopodobieństw, by następnie całość scałkować. 
+
+Korzystając z informacji, że zmienna $f$ jest procesem gaussowskim, czyli:
 $$
-\mathbb{P}(f(x_{\ast}) | \textbf{X}, \textbf{y}) = \int \mathbb{P}(f(x_{\ast}) | \mathbf{f})\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) df.
+\left[
+	\begin{array}{c}
+		\mathbf{f}\\
+		f(\mathbf{x}_{\ast})
+	\end{array}
+\right] \sim \mathcal{N}
+\left[
+\left(
+	\begin{array}{c}
+		\mathbf{0}\\
+		0
+	\end{array}
+\right)
+,
+\left(
+	\begin{array}{cc}
+		\mathbf{\Sigma} & \mathbf{\Sigma}_{\ast}\\
+		\mathbf{\Sigma}_{\ast}^T & \Sigma_{\ast\ast}
+	\end{array}
+\right)
+\right],
 $$ 
-Szukamy więc trzech prawdopodobieństw: $\mathbb{P}(y_{\ast} | f(x_{\ast}))$, $\mathbb{P}(f(x_{\ast}) | \mathbf{f})$ oraz $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Przyjrzyjmy się im po kolei.
+gdzie $\mathbf{\Sigma}_{\ast} = [\Sigma(\mathbf{x}_1, \mathbf{x}_{\ast}), \ldots, \Sigma(\mathbf{x}_n, \mathbf{x}_{\ast})]^T$, a $\Sigma_{\ast\ast} = \Sigma(x_{\ast}, x_{\ast})$, otrzymujemy, że: 
+$$
+f(x_{\ast}) | \mathbf{f} \sim \mathcal{N}(\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{\Sigma}_{\ast}, \Sigma_{\ast\ast} - \mathbf{\Sigma}\mathbf{\Sigma}^{-1}\mathbf{\Sigma}_{\ast} ).
+$$
+
+Zajmijmy się teraz prawdopodobieństwem $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Korzystając z podejścia bayesowskiego, rozpiszmy je jako:
+\begin{align}\label{bayes}
+\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) 
+=
+\frac{
+\mathbb{P}(\mathbf{y} | \textbf{f})
+\mathbb{P}(\mathbf{f} | \textbf{X})
+}{
+\mathbb{P}(\mathbf{y} | \textbf{X})
+}. 
+\end{align}
+Znamy już $\mathbb{P}(\mathbf{f} | \textbf{X})$ -- jest to prawdopodobieństwo \textit{a priori} \eqref{apriori}. $\mathbb{P}(\mathbf{y} | \textbf{X})$, jako stała niezależna od $\mathbf{f}$, nie jest nam potrzebne do wyznaczenia $\mathbf{\hat{f}}$. Zostawmy je więc na razie i wróćmy do niego później, kiedy będziemy estymować parametry modelu. Zostaje nam więc do znalezienia $\mathbb{P}(\mathbf{y} | \textbf{f})$ tzw. wiarogodność. Ponieważ wszystkie obserwacje są niezależne, otrzymujemy:
+\begin{align}\label{prod}
+\mathbb{P}(\mathbf{y} | \textbf{f}) 
+=
+\prod^n_{i=1}\mathbb{P}(y_i | f(\mathbf{x}_i)).
+\end{align}
+Gdybyśmy zakładali idealną sytuację, wtedy $\mathbb{P}_{ideal} (y_i|f(\mathbf{x}_i)) = \mathbb{I}_{\lbrace f(\mathbf{x}_i)\in (b_{y_i-1}, b_{y_i}] \rbrace}$, gdzie $b_0=-\infty, b_r=+\infty$, a $b_i\in\mathbb{R}$ dla $i=1, \ldots, r-1$ to parametry modelu. Wygodniej, można $b_i$ sparametryzować jako: $b_1\in\mathbb{R}$ oraz $b_i = \sum_{t=2}^j\Delta_t+b_1$, gdzie $\Delta_t>0$ oraz $j=2, \ldots, r-1$. Bardzo rzadko mamy jednak do czynienia z sytuacją idealną, dlatego będziemy budować model, zakładając dodatkowy szum $\delta$ o rozkładzie $\mathcal{N}(0, \sigma^2)$. Wtedy prawdopodobieństwo zmienia się następująco:
+\begin{align*}
+\mathbb{P}(y_i|f(\mathbf{x}_i)) 
+&= 
+\int \mathbb{P}_{ideal} (y_i,\delta_i | f(\mathbf{x}_i))d\delta_i
+=
+\int \mathbb{P}_{ideal} (y_i | f(\mathbf{x}_i),\delta_i)\mathbb{P}(\delta_i)  d\delta_i=\\
+&=
+\int \mathbb{P}(\delta_i)\mathbb{I}_{\lbrace f(\mathbf{x}_i)+\delta_i\in (b_{y_i-1}, b_{y_i}] \rbrace}  d\delta_i
+=
+\Phi\left(\frac{b_{y_i}-f(x_i)}{\sigma} \right) 
+- 
+\Phi\left( \frac{b_{y_i-1}-f(x_i)}{\sigma} \right),
+\end{align*}
+gdzie $\Phi(\cdot)$ to dystrybuanta standardowego rozkładu normalnego.
+
+Przejdźmy teraz do szukania najlepszej estymacji $\mathbf{\hat{f}}$. Zdefiniujmy $S(\mathbf{f}) := -\ln\mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y})$, wtedy mamy, że: 
+$$
+\mathbf{\hat{f}} 
+:= \underset{\mathbf{f}}\argmax \lbrace \mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y}) \rbrace 
+= \underset{\mathbf{f}}\argmax \lbrace \ln\mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y}) \rbrace
+= \underset{\mathbf{f}}\argmin \lbrace -\ln\mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y}) \rbrace
+= \underset{\mathbf{f}}\argmin \lbrace S(\mathbf{f}) \rbrace.
+$$
+Korzystając z równań \eqref{apriori}, \eqref{bayes} i \eqref{prod} można łatwo zobaczyć, że:
+$$
+S(\mathbf{f}) \propto 
+\sum_{i=1}^n\textit{l}(y_i, f(\mathbf{x}_i)) + \frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f},
+$$
+gdzie $\textit{l}(y_i, f(\mathbf{x}_i)) := -\ln\mathbb{P}(y_i | f(\mathbf{x}_i))$.
+Nie da się znaleźć minimum tej funkcji analitycznie, ponieważ $\textit{l}(y_i, f(\mathbf{x}_i))$ nie jest gaussowska. Natomiast, żeby uzyskać najlepsze przybliżenie $\mathbf{\hat{f}}$, wystarczy zastosować do funkcji $S(\mathbf{f})$ dowolny algorytm optymalizacyjny (np. algorytm Newtona-Raphsona).
+
+Przypomnijmy, że naszym celem jest w tej chwili wyznaczenie $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Ponieważ później będziemy chcieli obliczyć całkę \eqref{calka2}, nie wystarczy nam jedynie estymator $\mathbf{\hat{f}}$, wygodnie byłoby dla nas, gdyby to prawdopodobieństwo okazało się gaussowskie. Da się to osiągnąć dzięki przybliżeniu Laplace'a. 
+
+Na początku zauważmy, że:
+$$
+\frac{\partial^2 S(\mathbf{f})}{\partial \mathbf{f}\partial \mathbf{f}^T} = 
+\mathbf{\Sigma}^{-1}+\mathbf{\Lambda},
+$$
+gdzie
+$$
+\mathbf{\Lambda} = 
+	\left[
+        \begin{array}{ccc}
+         \frac{\partial^2\textit{l}(y_1, f(\mathbf{x}_1))}{\partial^2 f(\mathbf{x}_1)} & \ldots & 0\\
+         \vdots & \ddots & \vdots \\
+         0 & \ldots & \frac{\partial^2\textit{l}(y_n, f(\mathbf{x}_n))}{\partial^2 f(\mathbf{x}_n)} \\
+        \end{array}
+    \right]. 
+$$
+Rozwijając funkcję $S(\mathbf{f})$ w szereg Taylora w punkcie $\mathbf{\hat{f}}$ i pamiętając, że $S'(\mathbf{\hat{f}})=0$, otrzymamy następujące przybliżenie:
+$$
+S(\mathbf{f}) = S(\mathbf{\hat{f}}) + \frac{1}{2}(\mathbf{f} - \mathbf{\hat{f}})^T(\mathbf{\Sigma}^{-1}+\hat{\mathbf{\Lambda}})(\mathbf{f}-\mathbf{\hat{f}}),
+$$
+gdzie $\hat{\mathbf{\Lambda}}$ jest macierzą $\mathbf{\Lambda}$ wyznaczoną dla $\mathbf{\hat{f}}$. Z powyższego równania bezpośrednio wynika, że:
+$$
+\mathbf{f} | \textbf{X}, \textbf{y} \sim \mathcal{N}\left(  \mathbf{\hat{f}}, (\mathbf{\Sigma}^{-1}+\hat{\mathbf{\Lambda}})^{-1}  \right).
+$$
+Tak więc zostało nam już tylko zoptymalizowanie $\mathbb{P}(\mathbf{y} | \textbf{X})$ tak, by wyznaczyć najlepszy wektor parametrów $\mathbf{\Theta} = [\kappa, \sigma, b_1, \Delta_2, \ldots, \Delta_{r-1}]^T$, który przyda nam się przy predykcji. Znów, odwołując się do przybliżenia Laplace'a, otrzymujemy, że:
+$$
+\mathbb{P}(\mathbf{y} | \textbf{X}) = ...
+$$ 
+
+
+
+
+% ---------------------------------------------------------------------------------------------------------------------------
+
+
+\appendix
+
+\chapter{ahdgkhakf}
 
 %-----------------------------------------------------------------------------%
 
