@@ -330,9 +330,9 @@ Wyobraźmy sobie teraz, że dopasowaliśmy model i znamy wszystkie niezbędne pa
 \end{enumerate}
 
 A teraz prześledźmy wszystko krok po kroku. Interesuje nas wyznaczenie $y_{\ast}$, dla którego prawdopodobieństwo $\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast})$ jest największe. Przy pomocy zmiennej ukrytej rozpiszmy je w następujący sposób:
-$$
+\begin{equation}\label{calka1}
 \mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast}) = \int \mathbb{P}(y_{\ast} | f(\mathbf{x}_{\ast}))\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) df(\mathbf{x}_{\ast}).
-$$  
+\end{equation}
 Analogicznie:
 \begin{equation}\label{calka2}
 \mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) = \int \mathbb{P}(f(\mathbf{x}_{\ast}) | \mathbf{f})\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) d\mathbf{f}.
@@ -364,9 +364,9 @@ $$
 \right],
 $$ 
 gdzie $\mathbf{\Sigma}_{\ast} = [\Sigma(\mathbf{x}_1, \mathbf{x}_{\ast}), \ldots, \Sigma(\mathbf{x}_n, \mathbf{x}_{\ast})]^T$, a $\Sigma_{\ast\ast} = \Sigma(x_{\ast}, x_{\ast})$, otrzymujemy, że: 
-$$
+\begin{equation}\label{calka21}
 f(x_{\ast}) | \mathbf{f} \sim \mathcal{N}(\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{\Sigma}_{\ast}, \Sigma_{\ast\ast} - \mathbf{\Sigma}\mathbf{\Sigma}^{-1}\mathbf{\Sigma}_{\ast} ).
-$$
+\end{equation}
 
 Zajmijmy się teraz prawdopodobieństwem $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Korzystając z podejścia bayesowskiego, rozpiszmy je jako:
 \begin{align}\label{bayes}
@@ -386,19 +386,21 @@ Znamy już $\mathbb{P}(\mathbf{f} | \textbf{X})$ -- jest to prawdopodobieństwo 
 \prod^n_{i=1}\mathbb{P}(y_i | f(\mathbf{x}_i)).
 \end{align}
 Gdybyśmy zakładali idealną sytuację, wtedy $\mathbb{P}_{ideal} (y_i|f(\mathbf{x}_i)) = \mathbb{I}_{\lbrace f(\mathbf{x}_i)\in (b_{y_i-1}, b_{y_i}] \rbrace}$, gdzie $b_0=-\infty, b_r=+\infty$, a $b_i\in\mathbb{R}$ dla $i=1, \ldots, r-1$ to parametry modelu. Wygodniej, można $b_i$ sparametryzować jako: $b_1\in\mathbb{R}$ oraz $b_i = \sum_{t=2}^j\Delta_t+b_1$, gdzie $\Delta_t>0$ oraz $j=2, \ldots, r-1$. Bardzo rzadko mamy jednak do czynienia z sytuacją idealną, dlatego będziemy budować model, zakładając dodatkowy szum $\delta$ o rozkładzie $\mathcal{N}(0, \sigma^2)$. Wtedy prawdopodobieństwo zmienia się następująco:
-\begin{align*}
+\begin{align}\label{dystryb}
+\begin{split}
 \mathbb{P}(y_i|f(\mathbf{x}_i)) 
 &= 
 \int \mathbb{P}_{ideal} (y_i,\delta_i | f(\mathbf{x}_i))d\delta_i
 =
 \int \mathbb{P}_{ideal} (y_i | f(\mathbf{x}_i),\delta_i)\mathbb{P}(\delta_i)  d\delta_i=\\
 &=
-\int \mathbb{P}(\delta_i)\mathbb{I}_{\lbrace f(\mathbf{x}_i)+\delta_i\in (b_{y_i-1}, b_{y_i}] \rbrace}  d\delta_i
-=
+\int \mathbb{P}(\delta_i)\mathbb{I}_{\lbrace f(\mathbf{x}_i)+\delta_i\in (b_{y_i-1}, b_{y_i}] \rbrace}  d\delta_i=\\
+&=
 \Phi\left(\frac{b_{y_i}-f(x_i)}{\sigma} \right) 
 - 
 \Phi\left( \frac{b_{y_i-1}-f(x_i)}{\sigma} \right),
-\end{align*}
+\end{split}
+\end{align}
 gdzie $\Phi(\cdot)$ to dystrybuanta standardowego rozkładu normalnego.
 
 Przejdźmy teraz do szukania najlepszej estymacji $\mathbf{\hat{f}}$. Zdefiniujmy $S(\mathbf{f}) := -\ln\mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y})$, wtedy mamy, że: 
@@ -440,16 +442,32 @@ $$
 S(\mathbf{f}) = S(\mathbf{\hat{f}}) + \frac{1}{2}(\mathbf{f} - \mathbf{\hat{f}})^T(\mathbf{\Sigma}^{-1}+\hat{\mathbf{\Lambda}})(\mathbf{f}-\mathbf{\hat{f}}),
 $$
 gdzie $\hat{\mathbf{\Lambda}}$ jest macierzą $\mathbf{\Lambda}$ wyznaczoną dla $\mathbf{\hat{f}}$. Z powyższego równania bezpośrednio wynika, że:
-$$
+\begin{equation}\label{calka22}
 \mathbf{f} | \textbf{X}, \textbf{y} \sim \mathcal{N}\left(  \mathbf{\hat{f}}, (\mathbf{\Sigma}^{-1}+\hat{\mathbf{\Lambda}})^{-1}  \right).
+\end{equation}
+Tak więc zostało nam już tylko zoptymalizowanie $\mathbb{P}(\mathbf{y} | \textbf{X})$ tak, by wyznaczyć najlepszy wektor parametrów $\mathbf{\Theta} = [\kappa, \sigma, b_1, \Delta_2, \ldots, \Delta_{r-1}]^T$, który przyda nam się przy predykcji. Znów, odwołując się do przybliżenia Laplace'a i do faktu, że:
 $$
-Tak więc zostało nam już tylko zoptymalizowanie $\mathbb{P}(\mathbf{y} | \textbf{X})$ tak, by wyznaczyć najlepszy wektor parametrów $\mathbf{\Theta} = [\kappa, \sigma, b_1, \Delta_2, \ldots, \Delta_{r-1}]^T$, który przyda nam się przy predykcji. Znów, odwołując się do przybliżenia Laplace'a, otrzymujemy, że:
-$$
-\mathbb{P}(\mathbf{y} | \textbf{X}) = ...
+\mathbb{P}(\mathbf{y} | \textbf{X}) = 
+\int \mathbb{P}(\mathbf{y}|\mathbf{f}, \textbf{X})\mathbb{P}(\mathbf{f}|\textbf{X}) d\mathbf{f},
 $$ 
+otrzymujemy:
+$$
+\mathbb{P}(\mathbf{y} | \textbf{X}) \simeq e^{-S(\mathbf{\hat{f}})} \left\vert \mathbf{I} + \mathbf{\Sigma}\mathbf{\hat{\Lambda}} \right\vert^{-\frac{1}{2}},
+$$
+gdzie $\mathbf{I}$ jest macierzą jednostkową $n\times n$. Bez problemu możemy teraz znaleźć maksimum prawdopodobieństwa $\mathbb{P}(\mathbf{y} | \textbf{X})$ optymalizacyjnie lub nawet analitycznie (por.\cite{reg}).  
 
-
-
+Wróćmy teraz do szukanych przez nas całek \eqref{calka1} i \eqref{calka2}. Korzystając z równań \eqref{calka21} i \eqref{calka22} dostaniemy, że w przybliżeniu:
+$$
+f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y} \sim \mathcal{N}(\mu_{\ast}, \sigma_{\ast}^2),
+$$
+gdzie $\mu_{\ast} = \mathbf{\Sigma}^T \mathbf{\Sigma^{-1}} \mathbf{\hat{f}}$ oraz $\sigma_{\ast}^2 = \Sigma_{\ast\ast}-\mathbf{\Sigma}^T(\mathbf{\Sigma + \mathbf{\hat{\Lambda}}^{-1}})^{-1}\mathbf{\Sigma}$. Natomiast, korzystając jeszcze z równania \eqref{dystryb}, otrzymujemy rozkład predykcyjny następującej postaci:
+$$
+\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast}) = 
+\Phi\left(\frac{b_{y_{\ast}}-\mu_{\ast}}{\sqrt{\sigma^2+\sigma^2_{\ast}}} \right) 
+- 
+\Phi\left( \frac{b_{y_{\ast}-1}-\mu_{\ast}}{\sqrt{\sigma^2+\sigma^2_{\ast}}} \right).
+$$
+Dla nowej obserwacji wystarczy teraz jedynie wyznaczyć $\underset{i}\argmax \mathbb{P}(y_{\ast}=i | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast})$.
 
 % ---------------------------------------------------------------------------------------------------------------------------
 
@@ -466,6 +484,9 @@ $$
 	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001 
 	\bibitem{svm} Chu W., Sathiya Keerthi S., \emph{Support Vector Ordinal Regression}
 	\bibitem{reg} Chu W., Ghahramani Z., \emph{Gaussian Processes for Ordinal Regression}
+	\bibitem{reg2} Ebden M., \emph{Gaussian Processes for Classification: A Quick Introduction}, August 2008.
+	\bibitem{reg3} Ebden M., \emph{Gaussian Processes for Regression: A Quick Introduction}, August 2008.
+	\bibitem{reg4} Rasmussen C., Williams C., \emph{Gaussian Processes for Machine Learning}, 2006.
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
