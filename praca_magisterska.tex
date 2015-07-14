@@ -476,12 +476,12 @@ Dla nowej obserwacji wystarczy teraz jedynie wyznaczyć $\underset{i}\argmax \ma
 
 \chapter{Diagnostyka modelu}
 
-W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od danych. W przypadku dwuklasowym najczęściej stosowaną metodą oceny jest krzywa ROC (ang. \textit{Receiver Operating Characteristic}) i pole pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można uogólnić ją na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
+W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od konkretnych danych. W przypadku dwuklasowym najczęściej stosowaną metodą oceny jest krzywa ROC (ang. \textit{Receiver Operating Characteristic}) i pole pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można uogólnić ją na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
 
 \section{Krzywa ROC w przypadku dwuklasowym}
 
 
-Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy sobie najpierw, jak to się działo w najprostszej, dwuklasowej sytuacji. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (patrz Tab.\ref{tabeladopasowania}).
+Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy sobie najpierw, jak to się działo w najprostszej, dwuklasowej sytuacji. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (patrz Rys.\ref{tabeladopasowania}).
 
 \begin{figure}[h]
 		\begin{Large}
@@ -510,34 +510,34 @@ W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji po
 	\begin{center}
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{roc1.png}
-    \caption{Przypadek dwuklasowy.}
+    \caption{Duże TPR, ale małe TNR.}
     \label{fig:f11}
   \end{subfigure}\\
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{roc2.png}
-    \caption{Przypadek trzyklasowy.}
+    \caption{Zrównoważone TPR i TNR.}
     \label{fig:f22}
   \end{subfigure}\\
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{roc3.png}
-    \caption{Przypadek trzyklasowy.}
+    \caption{Małe TPR, ale duże TNR.}
     \label{fig:f22}
   \end{subfigure}
   \end{center}
-  \caption{Sposób konstruowania krzywej ROC w przypadku dwu- i trzyklasowym.}
+  \caption{Sposób konstruowania krzywej ROC w przypadku dwuklasowym.}
   \label{wszystkietrzy}
 \end{figure}
 
 \vfill
 \clearpage
 
-Do stworzenia krzywej ROC, potrzebne nam będą dwa wskaźniki -- czułość (TPR ang. \textit{True Positive Rate}) i specyficzność (TNR ang. \textit{True Negative Rate}). Czułość definiować będziemy jako prawdopodobieństwo, że pozytywny rekord zostanie poprawnie zakwalifikowany jako pozytywny, a specyficzność jako prawdopodobieństwo, że negatywny rekord zostanie poprawnie zakwalifikowany jako negatywny. Inaczej mówiąc, czułość i specyficzność to procent poprawnie sklasyfikowanych rekordów, odpowiednio w grupie pozytywnej i negatywnej. Korzystając z tabeli \ref{tabeladopasowania}, otrzymujemy:
+Do stworzenia krzywej ROC, potrzebne nam będą dwa wskaźniki -- czułość (TPR, ang. \textit{True Positive Rate}) i specyficzność (TNR, ang. \textit{True Negative Rate}). Czułość definiować będziemy jako prawdopodobieństwo, że pozytywny rekord zostanie poprawnie zakwalifikowany jako pozytywny, a specyficzność jako prawdopodobieństwo, że negatywny rekord zostanie poprawnie zakwalifikowany jako negatywny. Inaczej mówiąc, czułość i specyficzność to procent poprawnie sklasyfikowanych rekordów, odpowiednio w grupie pozytywnej i negatywnej. Korzystając z tabeli jakości dopasowania (patrz Rys. \ref{tabeladopasowania}), otrzymujemy:
 \begin{eqnarray*}
-	TPR&=&\dfrac{TP}{TP+FN}\\
-	TNR&=&\dfrac{TN}{FP+TN}		
+	TPR&=&\dfrac{TP}{TP+FN},\\
+	TNR&=&\dfrac{TN}{FP+TN}.		
 \end{eqnarray*}  
 
-Ale jak stworzyć krzywą, mając tylko dwa wskaźniki? Otóż krzywa ROC to wykres punktów ($1-$TNR, TPR), wyliczonych dla różnych progów odcięcia. Czym jest zatem próg odcięcia? W większości przypadków, model generuje nam nie tylko klasę, do której powinniśmy zaklasyfikować daną obserwację, ale przede wszystkim prawdopodobieństwo, z jakim możemy coś zakwalifikować do klasy pozytywnej. Standardowo przyjmuje się, że to prawdopodobieństwo wynosi $0.5$, ale niekoniecznie musi tak być. Czasem wystarczy nam $40\%$ pewności, żeby coś zaklasyfikować jako pozytywne. Dużo tu zależy od historii, która stoi za naszymi danymi. I właśnie ten procent pewności to liczba, którą będziemy nazywać progiem odcięcia. 
+Ale jak stworzyć krzywą, mając tylko dwa wskaźniki? Otóż krzywa ROC to wykres punktów ($1-$TNR, TPR), wyliczonych dla różnych progów odcięcia. Czym jest zatem próg odcięcia? W większości przypadków, model generuje nam nie tylko klasę, do której powinniśmy zaklasyfikować daną obserwację, ale przede wszystkim prawdopodobieństwo, z jakim możemy coś zakwalifikować do klasy pozytywnej. Standardowo przyjmuje się, że to prawdopodobieństwo wynosi $0,5$, ale niekoniecznie musi tak być. Czasem wystarczy nam $40\%$ pewności, żeby coś zaklasyfikować jako pozytywne. Dużo tu zależy od historii, która stoi za naszymi danymi. I właśnie ten procent pewności to liczba, którą będziemy nazywać progiem odcięcia. 
 
 \begin{figure}[h]
   \begin{subfigure}[b]{0.4\textwidth}
@@ -548,37 +548,37 @@ Ale jak stworzyć krzywą, mając tylko dwa wskaźniki? Otóż krzywa ROC to wyk
   \hfill
   \begin{subfigure}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{roc2.pdf}
-    \caption{Krzywa ROC ze specyficznością (zamiast $1-$specyficzność) na osi OX.}
+    \caption{Krzywa ROC z TNR (zamiast FPR) na osi OX.}
     \label{fig:f2}
   \end{subfigure}
   \caption{Przykładowe krzywe ROC.}
   \label{krzyweroc}
 \end{figure}
 
-Przyjrzyjmy się rysunkowi \ref{wszystkietrzy}. Mamy tu wykresy gęstości obserwacji pozytywnych i negatywnych, w zależności od przyjętego progu odcięcia. Większość obserwacji pozytywnych osiąga około $60-$procentowe prawdopodobieństwo przynależności do klasy pozytywnej, a negatywnych $40-$procentowe. Z wykresów wyraźnie widać, że poruszanie tym progiem w prawo zwiększy nam czułość, ale zmniejszy specyficzność, natomiast poruszanie w lewo odwrotnie. Patrząc na krzywą ROC, możemy zobaczyć ich zależność od siebie i wybrać taki próg, jaki nam najbardziej odpowiada (tzn. który jest dobrym kompromisem między czułością a specyficznością). Standardowo, krzywą ROC rysuje się nie w zależności od specyficzności, tylko od $1-$specyficzności, nazywanej FPR (ang. \textit{False Positive Rate}). My jednak, by łatwiej było nam uogólnić ją na więcej wymiarów, zastosujemy tę mniej popularną reprezentację, czyli na osi OX będziemy mieć specyficzność (patrz Rys.\ref{krzyweroc}). 
+Przyjrzyjmy się rysunkowi \ref{wszystkietrzy}. Mamy tu wykresy gęstości obserwacji pozytywnych i negatywnych, w zależności od przyjętego progu odcięcia. Większość obserwacji pozytywnych osiąga około $60-$procentowe prawdopodobieństwo przynależności do klasy pozytywnej, a negatywnych $40-$procentowe prawdopodobieństwo przynależności do klasy negatywnej. Z wykresów wyraźnie widać, że poruszanie tym progiem odcięcia w prawo zwiększy nam czułość, ale zmniejszy specyficzność, natomiast poruszanie w lewo odwrotnie. Patrząc na krzywą ROC, możemy zobaczyć ich zależność od siebie na jednym wykresie i wybrać taki próg, jaki nam najbardziej odpowiada (najczęściej taki, który jest dobrym kompromisem między czułością a specyficznością). Standardowo, krzywą ROC rysuje się nie w zależności od specyficzności, tylko od $1-$specyficzności, nazywanej FPR (ang. \textit{False Positive Rate}). My jednak, by łatwiej było nam uogólnić ją na więcej wymiarów, zastosujemy tę mniej popularną reprezentację, czyli na osi OX będziemy przedstawiać specyficzność (patrz Rys.\ref{krzyweroc}). 
 
-Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat jednostkowy. Zła krzywa, czyli taka, która powstaje, gdy model daje losowe wyniki, to taka, która jest przekątną tego kwadratu. Ponieważ, patrząc na dwie często wielokrotnie przecinające się krzywe ROC, odpowiadające różnym modelom, ciężko jest stwierdzić, która krzywa jest lepsza, wprowadzono współczynnik AUC, czyli pole pod tą krzywą, która pozwala łatwiej to ocenić. Idealny model ma współczynnik AUC równy $1$, a model losowy charakteryzuje się AUC równym $0$. Łatwo widać na rysunku \ref{krzyweroc}, że w naszym przypadku współczynnik AUC definiuje się identycznie.       
+Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat jednostkowy. Zła krzywa, czyli taka, która powstaje, gdy model daje losowe wyniki, to taka, która jest przekątną tego kwadratu. Ponieważ, patrząc na dwie często wielokrotnie przecinające się krzywe ROC, odpowiadające różnym modelom, ciężko jest stwierdzić, która krzywa jest lepsza, wprowadzono współczynnik AUC, czyli pole pod tą krzywą, który pozwala łatwiej to ocenić. Idealny model ma współczynnik AUC równy $1$, a model losowy charakteryzuje się AUC równym $0,5$. Na rysunku \ref{krzyweroc} łatwo widać, że w naszym przypadku (czyli z inaczej zdefiniowaną osią OX) współczynnik AUC definiuje się identycznie.       
 
 \section{Krzywa ROC w przypadku regresji porządkowej}
 
-W przypadku regresji porządkowej nie będzie już tak łatwo. Przede wszystkim nie mamy tu podziału na klasę pozytywną i negatywną (jak więc stworzyć współczynnik FPR?). Można próbować robić to parami tzn. traktować jedną z klas jako pozytywną, a pozostałe połączyć w jedną i traktować jako negatywną. Robiąc w ten sposób z każdą klasą, otrzymamy $r$ (bo tyle jest możliwych poziomów zmiennej odpowiedzi) krzywych ROC, a tym samym $r$ współczynników AUC. Jako ostateczne AUC przyjmuje się wtedy średnią z nich. Nie jest to jednak dobry wskaźnik. Może się bowiem zdarzyć tak, że współczynnik między środkowymi klasami wyjdzie duży, natomiast ten między klasami skrajnymi słaby, tworząc tym samym nienajgorszą średnią. Nie jest to dobre, gdyż często zależy nam na dobrym odróżnieniu właśnie klas skrajnych. Wyobraźmy sobie, że chcemy sprawdzić, czy komuś spodobałaby się sprzedawana przez nas książka. Możliwe odpowiedzi to: bardzo mi się podoba, podoba mi się, nie mam zdania, nie podoba mi się, bardzo mi się nie podoba. Jasne jest, że wolelibyśmy oddzielić klientów, którym bardzo spodobałaby się książka od tych, którym bardzo by się nie spodobała, a nie na przykład tych, którym by się nie spodobała od tych, którym by się bardzo nie spodobała. Żeby udało nam się poradzić sobie z takim problemem, trzeba spojrzeć na niego globalnie, a nie tylko parami.   
-
-\begin{figure}[ht]
+\begin{figure}[h]
 	\begin{center}
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{roc_trzy1.png}
-    \caption{Przypadek dwuklasowy.}
   \end{subfigure}\\
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{roc_trzy2.png}
-    \caption{Przypadek trzyklasowy.}
   \end{subfigure}
   \end{center}
-  \caption{Sposób konstruowania krzywej ROC w przypadku dwu- i trzyklasowym.}
+  \caption{Sposób konstruowania krzywej ROC w przypadku trzyklasowym.}
   \label{trzyklasowy}
 \end{figure}
 
-\begin{figure}
+W przypadku regresji porządkowej nie będzie już tak łatwo. Przede wszystkim nie mamy tu podziału na klasę pozytywną i negatywną, jak więc stworzyć współczynnik FPR? Można próbować robić to parami tzn. traktować jedną z klas jako pozytywną, a pozostałe połączyć w jedną i traktować jako negatywną. Robiąc w ten sposób z każdą klasą, otrzymamy $r$ (bo tyle jest możliwych poziomów zmiennej odpowiedzi) krzywych ROC, a tym samym $r$ współczynników AUC. Jako ostateczne AUC przyjmuje się wtedy średnią z nich. Nie jest to jednak dobry wskaźnik. Może się bowiem zdarzyć tak, że współczynnik między środkowymi klasami wyjdzie duży, natomiast ten między klasami skrajnymi słaby, tworząc tym samym nienajgorszą średnią. Nie jest to dobre, gdyż często zależy nam na dobrym odróżnieniu właśnie klas skrajnych. Wyobraźmy sobie, że chcemy sprawdzić, czy komuś spodobałaby się sprzedawana przez nas książka. Możliwe odpowiedzi to: bardzo mi się podoba, podoba mi się, nie mam zdania, nie podoba mi się, bardzo mi się nie podoba. Jasne jest, że wolelibyśmy oddzielić klientów, którym bardzo spodobałaby się książka od tych, którym bardzo by się nie spodobała, a nie na przykład tych, którym by się nie spodobała od tych, którym by się bardzo nie spodobała. Żeby udało nam się poradzić sobie z takim problemem, trzeba spojrzeć na niego globalnie.   
+
+Opisując krzywą ROC w przypadku dwuklasowym powiedzieliśmy sobie, że będziemy rozważać nie zależność TPR od FPR, ale TPR od TNR. Dlaczego? Właśnie po to, żebyśmy teraz mogli ją łatwiej uogólnić. Zarówno TPR, jak i TNR jest to procent poprawnie sklasyfikowanych odpowiednio pozytywnych bądź negatywnych obserwacji. Nic nie staje zatem na przeszkodzie, by stworzyć $r$ takich współczynników ($\text{TPR}1, \ldots, \text{TPR}r$), każdy odpowiadający procentowi poprawnie sklasyfikowanych obserwacji z $i-$tej klasy. Przyjmując różne progi odcięcia (patrz Rys. \ref{trzyklasowy}), których tym razem będzie $r-1$, możemy narysować krzywą ROC, a raczej pewną hiperpowierzchnię. Oczywiście jest to możliwe tylko w przypadku trzyklasowym (patrz Rys. \ref{3d}), ale rysunek taki i tak jest raczej mało czytelny. 
+
+\begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.5]{roc3d.png}
 \end{center}
@@ -586,7 +586,18 @@ W przypadku regresji porządkowej nie będzie już tak łatwo. Przede wszystkim 
 \label{3d}
 \end{figure}
 
+\section{Współczynnik VUS}
 
+Po co zatem tworzyć wielowymiarową krzywą ROC, skoro i tak trudno cokolwiek z niej odczytać? Otóż głównie po to, by otrzymać współczynnik AUC, który, będąc konkretną liczbą, jest znacznie prostszy w interpretacji. W przypadku więcej niż dwuwymiarowym będziemy go nazywać VUS (ang. \textit{Volume Under the Surface}). 
+
+Jako, że liczenie objętości pod hiperpłaszczyzną jest numerycznie raczej trudnym zadaniem, w celu wyliczenia współczynnika VUS, skorzystamy z jego nieco innej interpretacji niż tylko pole pod krzywą ROC. Wróćmy znów do przypadku dwuklasowego i przyjrzyjmy się wykresowi \ref{fig:f2}. Na osi OY mamy współczynnik TNR, czyli prawdopodobieństwo, że wyestymujemy klasę negatywną pod warunkiem, że klasa rzeczywiście jest negatywna. Równoważnie, można to zapisać jako prawdopodobieństwo, że prawdopodobieństwo odpowiadające negatywnej obserwacji jest mniejsze niż pewien próg odcięcia. Analogicznie TPR to prawdopodobieństwo, że prawdopodobieństwo odpowiadające pozytywnej obserwacji jest większe niż próg odcięcia. Łącząc oba wyniki otrzymamy, że współczynnik AUC to nic innego tylko prawdopodobieństwo, że losowo wybrana pozytywna obserwacja będzie mieć wyższe prawdopodobieństwo niż losowo wybrana negatywna obserwacja. Innymi słowy, będą one dobrze uporządkowane. Łatwo to już uogólnić na więcej, w naturalny sposób uporządkowanych, wymiarów. Interesować nas będzie pewna estymacja tego prawdopodobieństwa. Łatwo można zauważyć, że będzie nią tzw. statystyka $U$  Manna–Whitney'a–Wilcoxona (por. \cite{roc1}, \cite{roc2}), czyli wyrażenie:
+
+$$
+VUS = \dfrac{1}{n_1n_2\cdot\ldots\cdot n_r}\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\ldots\sum_{i_r=1}^{n_r}\mathbb{I}_{\lbrace f(\mathbf{x}_{i_1}^1)<\ldots<f(\mathbf{x}_{i_r}^r)\rbrace},
+$$
+gdzie $\textbf{x}_i^j$ oznacza $i-$ty wektor cech $\mathbf{x}$ o prawdziwej klasie $j$, $n_i$ to liczba obserwacji zaklasyfikowanych przez nas jako klasa $i$, a $f$ to pewna funkcja, która zwraca liczbę rzeczywistą, mającą estymować uporządkowanie obserwacji. 
+
+Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpretowalnym i pomocnym narzędziem do oceny jakości modelu i podejmowania decyzji, który model jest najlepszy. Największą jego wadą wydaje się konieczność znania prawdopodobieństw przynależności do klas (lub po prostu funkcji, która pozwoli nasze obserwacje uporządkować), a nie każda metoda takie prawdopodobieństwa zwraca (np. nie robią tego sieci neuronowe). Trzeba wtedy odwołać się do prostszych metod (takich jak procent poprawności dopasowania lub czułość). Większość modeli oferuje jednak taką możliwość, więc niewątpliwie warto z tego narzędzia diagnostycznego korzystać.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -606,6 +617,8 @@ W przypadku regresji porządkowej nie będzie już tak łatwo. Przede wszystkim 
 	\bibitem{reg2} Ebden M., \emph{Gaussian Processes for Classification: A Quick Introduction}, August 2008.
 	\bibitem{reg3} Ebden M., \emph{Gaussian Processes for Regression: A Quick Introduction}, August 2008.
 	\bibitem{reg4} Rasmussen C., Williams C., \emph{Gaussian Processes for Machine Learning}, 2006.
+	\bibitem{roc1} Waegman W., De Baets B., A survey on ROC-based ordinal regression, w: Fürnkranz J., Hüllermeier E. (Eds.), \emph{Preference Learning}, Springer, 2010, str. 127-154.
+	\bibitem{roc2} Nakas C.T., Yiannoutsos C.T., Ordered Multiple Class Receiver Operating Characteristic (ROC) Analysis, \emph{Encyclopedia of Biopharmaceutical Statistics}, Taylor and Francis, 2006.
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
