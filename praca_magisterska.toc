@@ -3,8 +3,8 @@
 \contentsline {section}{\numberline {1.1}Postawienie problemu i podstawowe oznaczenia}{7}{section.1.1}
 \contentsline {section}{\numberline {1.2}Model proporcjonalnych szans}{7}{section.1.2}
 \contentsline {section}{\numberline {1.3}Wektory maszyn podpieraj\IeC {\k a}cych (SVM)}{8}{section.1.3}
-\contentsline {section}{\numberline {1.4}Sieci neuronowe}{9}{section.1.4}
-\contentsline {section}{\numberline {1.5}Metoda zaproponowana przez E. Franka i M. Halla}{11}{section.1.5}
+\contentsline {section}{\numberline {1.4}Sieci neuronowe}{10}{section.1.4}
+\contentsline {section}{\numberline {1.5}Metoda zaproponowana przez E. Franka i M. Halla}{12}{section.1.5}
 \contentsline {section}{\numberline {1.6}Procesy gaussowskie}{13}{section.1.6}
 \contentsline {chapter}{\numberline {2}Diagnostyka modelu}{17}{chapter.2}
 \contentsline {section}{\numberline {2.1}Krzywa ROC w przypadku dwuklasowym}{17}{section.2.1}

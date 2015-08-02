@@ -94,43 +94,54 @@ Dla nowej obserwacji $\mathbf{x}_{\ast}$ wybieramy oczywiście klasę $y_{\ast}$
 
 \section{Wektory maszyn podpierających (SVM)}
 
-Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji. W dużym uproszczeniu, polega ona na konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn w taki sposób, by minimalizować kwadrat odległości między nimi. By móc obsługiwać przypadki, w których brak liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
+Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji (patrz \cite{koronacki}). W dużym uproszczeniu, polega ona na konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn rozdzielających klasy w taki sposób, by minimalizować kwadrat odległości między nimi. By móc obsługiwać przypadki, w których brak liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
 $$
-\min\left\lbrace\dfrac{1}{2}||\textbf{w}||^2+C\sum_{i=1}^{n}\xi_i\right\rbrace
+\min_{\mathbf{w}, b}\left\lbrace\dfrac{1}{2}||\textbf{w}||^2+C\sum_{i=1}^{n}\xi_i\right\rbrace,
 $$
 przy ograniczeniach:
 $$
 \begin{cases}
-\mathbf{x}^{(i)^T}\textbf{w}+b &\geq 1-\xi_i\\
-\mathbf{x}^{(i)^T}\textbf{w}+b &\leq -1+\xi_i,
+\mathbf{x}^T_{1i}\textbf{w}+b &\geq +1-\xi_i, \hspace{6mm} \text{dla}\hspace{3mm}i=1\ldots n_1 \\
+\mathbf{x}^T_{2i}\textbf{w}+b &\leq -1+\xi_i, \hspace{6mm} \text{dla}\hspace{3mm}i=1\ldots n_2
 \end{cases}
 $$    
-gdzie $\mathbf{w}\in\mathbb{R}^K$, $b\in\mathbb{R}$, $C\in\mathbb{R}$ i $\xi_i\geq 0$ są parametrami modelu.
+gdzie $\mathbf{w}\in\mathbb{R}^K$, $b\in\mathbb{R}$ i $C\in\mathbb{R}$ są parametrami modelu, $\xi_i\geq 0$ dla $i=1\ldots n$ są karą mierzoną dla każdej obserwacji przy ustalonej hiperpłaszczyźnie, $\mathbf{x}_{1i}$ oznacza wektor cech obserwacji należących do klasy pierwszej, a $\mathbf{x}_{2i}$ wektor cech obserwacji należących do klasy drugiej, zaś $n_1$ i $n_2$ to liczności tych klas. 
 
-Tak to wyglądało w przypadku dwuklasowej klasyfikacji. Przyjrzyjmy się teraz, jak w łatwy sposób można zaadaptować powyższą metodę do rozważanej przez nas regresji porządkowej.
+Tak to wygląda w przypadku klasyfikacji dwuklasowej. Przyjrzyjmy się teraz, jak w łatwy sposób można zaadaptować powyższą metodę do rozważanej przez nas regresji porządkowej.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth]{graphics/svm3.png}
 \end{center}
 \caption{Przykładowa klasyfikacja metodą SVM.}
+\label{svm}
 \end{figure}
 
-Tym razem optymalizować będziemy następujące wyrażenie:
+Tym razem, powołując się na \cite{pom} i \cite{svm}, optymalizować będziemy następujące wyrażenie:
 $$
-\min_{\textbf{w}, b_k}\left\lbrace \dfrac{1}{2}||\textbf{w}||^2+C\sum_{j=1}^{r-1}\left( \sum_{k=1}^{j}\sum_{i=1}^{n_k}\xi_{ki}^j+\sum_{k=j+1}^{r}\sum_{i=1}^{n_k}\xi_{ki}^{*j}\right)\right\rbrace
+\min_{\textbf{w}, b_1, \ldots, b_{r-1}}\left\lbrace \dfrac{1}{2}||\textbf{w}||^2+C\sum_{j=1}^{r-1}\left( \sum_{k=1}^{j}\sum_{i=1}^{n_k}\xi_{ki}^j+\sum_{k=j+1}^{r}\sum_{i=1}^{n_k}\xi_{ki}^{*j}\right)\right\rbrace,
 $$
 przy ograniczeniach:
 $$
 \begin{cases}
-\textbf{w}x^{(i)}_k-b_j&\leq -1 +\xi^j_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=1,\ldots,j \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k \\
-\textbf{w}x^{(i)}_k-b_j&\geq +1 -\xi^{*j}_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=j+1,\ldots,r \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k 
+\mathbf{x}^T_{ki}\textbf{w}-b_j&\leq -1 +\xi^j_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=1,\ldots,j \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k \\
+\mathbf{x}^T_{ki\textbf{w}}-b_j&\geq +1 -\xi^{*j}_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=j+1,\ldots,r \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k, 
+\end{cases}
+$$
+gdzie $\textbf{w}\in \mathbb{R}^K, b_1\in\mathbb{R}, \ldots, b_{r-1}\in\mathbb{R}, C\in\mathbb{R}$ są parametrami modelu, $\mathbf{x}^T_{ki}$ oznacza $i-$tą obserwację należącą do $k-$tej klasy, $n_k$ to liczność $k-$tej klasy, $j=1\ldots r-1$, a $\xi$ to kary, których konstrukcję wyjaśnimy poniżej.
+
+Przyjrzyjmy się, czym różni się nasz nowy problem od problemu optymalizacyjnego w standardowej klasyfikacji. Przede wszystkim -- podobnie jak w modelu proporcjonalnych szans -- mamy tu do czynienia z $(r-1)$--hiperpłaszczyznami, rzutowanymi na jeden, wspólny dla wszystkich obserwacji, kierunek $\mathbf{w}$. Przy wyznaczaniu kolejnych hiperpłaszczyzn, bierzemy pod uwagę wszystkie klasy. Kary naliczane są więc w następujący sposób (patrz rysunek \ref{svm}). Dla ustalonego progu $b_j$ obserwujemy wartości funkcji $x_{ki}^T\textbf{w}$. Dla obserwacji z niższych klas (tzn. klas $1,\ldots, j$), wartości te powinny być niższe niż dolna granica $b_j-1$. Jeśli tak nie jest, wtedy jako błąd próbki $\xi^j_{ki}$ dla progu $b_j$ uznaje się $\xi^j_{ki}$, czyli odległość tego punktu od rozpatrywanej dolnej granicy. Analogicznie, dla obserwacji z wyższych klas wartości $\textbf{w}x_{ki}$ powinny być wyższe niż górna granica $b_j+1$. Jeśli tak nie jest, to otrzymujemy błędy $\xi^{*j}_{ki}$.
+
+Budowa modelu i tym razem sprowadza się więc do problemu optymalizacyjnego. Wyznaczywszy, przy użyciu pewnego algorytmu, szukane parametry, dostaniemy równania $r-1$ hiperpłaszczyzn:
+
+$$\begin{cases}
+\textbf{x}^T\textbf{w}-b_1 &=0\\
+&\vdots \\
+\textbf{x}^T\textbf{w}-b_{r-1} &=0
 \end{cases}
 $$
 
-Przyjrzyjmy się, czym różni się nasz nowy problem od problemu optymalizacyjnego w standardowej klasyfikacji. Przede wszystkim -- podobnie jak w modelu proporcjonalnych szans -- mamy tu do czynienia z $(r-1)$--hiperpłaszczyznami, rzutowanymi na jeden, wspólny dla wszystkich obserwacji, kierunek $\mathbf{w}$. Przy wyznaczaniu kolejnych hiperpłaszczyzn, bierzemy pod uwagę wszystkie klasy. Kary naliczane są więc w następujący sposób. Dla progu $b_j$, wartości funkcji $\textbf{w}x^{(i)}_k$ dla obserwacji z niższych klas, powinny być niższe niż dolna granica $b_j-1$. Jeśli tak nie jest, wtedy jako błąd próbki $\xi^j_{ki}$ dla progu $b_j$ uznaje się $\xi^j_{ki} = \textbf{w}x^{(i)}_k-(b_j - 1)$. Analogicznie, dla obserwacji z wyższych klas, otrzymujemy błędy $\xi^{*j}_{ki}$.
-
-Budowa modelu i tym razem sprowadza się więc do problemu optymalizacyjnego.
+Dla nowej obserwacji $\textbf{x}_\ast$ wystarczy policzyć $\textbf{x}_\ast^T\textbf{w}$ i sprawdzić między którymi dwoma hiperpłaszczyznami się znajduje i przypisać jej odpowiednią klasę.
 
 \section{Sieci neuronowe}
  
@@ -609,14 +620,20 @@ Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpr
 %-----------------------------------------------------------------------------%
 
 \begin{thebibliography}{9}
+	% simple approach
 	\bibitem{fh} Frank E., Hall M., A simple approach to ordinal classification, \emph{Proceedings of the European Conference on Machine Learning}, Freibourg, Niemcy, 2001, str. 146--156.
+	% neutral network
 	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neural network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
-	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001 
+	% svm
+	\bibitem{koronacki} Koronacki J., Ćwik J., Statystyczne systemy uczące się, Warszawa, 2005.
+	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001. 
 	\bibitem{svm} Chu W., Sathiya Keerthi S., \emph{Support Vector Ordinal Regression}
-	\bibitem{reg} Chu W., Ghahramani Z., \emph{Gaussian Processes for Ordinal Regression}
+	% gaussian process	
+	\bibitem{reg} Chu W., Ghahramani Z., \emph{Gaussian Processes for Ordinal Regression}.
 	\bibitem{reg2} Ebden M., \emph{Gaussian Processes for Classification: A Quick Introduction}, August 2008.
 	\bibitem{reg3} Ebden M., \emph{Gaussian Processes for Regression: A Quick Introduction}, August 2008.
 	\bibitem{reg4} Rasmussen C., Williams C., \emph{Gaussian Processes for Machine Learning}, 2006.
+	% krzywa roc	
 	\bibitem{roc1} Waegman W., De Baets B., A survey on ROC-based ordinal regression, w: Fürnkranz J., Hüllermeier E. (Eds.), \emph{Preference Learning}, Springer, 2010, str. 127-154.
 	\bibitem{roc2} Nakas C.T., Yiannoutsos C.T., Ordered Multiple Class Receiver Operating Characteristic (ROC) Analysis, \emph{Encyclopedia of Biopharmaceutical Statistics}, Taylor and Francis, 2006.
 \end{thebibliography}
