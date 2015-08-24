@@ -63,11 +63,11 @@ W tym rozdziale opracujemy kilka rozwiązań, które pozwolą nam się z tym pro
 
 \section{Model proporcjonalnych szans}
 
-Najbardziej rozpowszechnionym sposobem modelowania regresji porządkowej jest model proporcjonalnych szans. Jest to jedna z metod uogólnionych modeli liniowych, bardzo silnie opierająca się na regresji logistycznej. Interesują nas prawdopodobieństwa: 
+Najbardziej rozpowszechnionym sposobem modelowania regresji porządkowej jest model proporcjonalnych szans (ang. \textit{proportional odds model}), patrz \cite{pom}. Jest to jedna z metod uogólnionych modeli liniowych, bardzo silnie opierająca się na regresji logistycznej. Interesują nas prawdopodobieństwa: 
 $$
-\Pi_j(\mathbf{x}):=\mathbb{P}(y_=j\hspace{1mm}|\hspace{1mm}\mathbf{x}),\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r.
+\Pi_j(\mathbf{x}):=\mathbb{P}(y=j\hspace{1mm}|\hspace{1mm}\mathbf{x}),\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r.
 $$
-Idea polega nie na bezpośrednim modelowaniu prawdopodobieństw $\Pi_j(\mathbf{x})$, lecz na wcześniejszym modelowaniu tzw. prawdopodobieństw skumulowanych:
+Idea tej metody polega nie na bezpośrednim szukaniu prawdopodobieństw $\Pi_j(\mathbf{x})$, lecz na wcześniejszym modelowaniu tzw. prawdopodobieństw skumulowanych:
 $$
 \mathbb{P}(y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})=\Pi_1(\mathbf{x})+\ldots+\Pi_j(\mathbf{x}),\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r-1.
 $$
@@ -90,11 +90,11 @@ Szukane prawdopodobieństwa $\Pi_j(\mathbf{x})$ otrzymamy w poniższy sposób:
 \Pi_r(\mathbf{x}) &=& 1 - \mathbb{P}(Y\leq r-1 \hspace{1mm}|\hspace{1mm} \mathbf{x}).
 \end{eqnarray*}
 
-Dla nowej obserwacji $\mathbf{x}_{\ast}$ wybieramy oczywiście klasę $y_{\ast}$, która maksymalizuje prawdopodobieństwa $\Pi_j(\mathbf{x}_{\ast})$.
+Dla nowej obserwacji $\mathbf{x}_{\ast}$ wybieramy, oczywiście, tę klasę $y_{\ast}$, która maksymalizuje prawdopodobieństwa $\Pi_j(\mathbf{x}_{\ast})$.
 
 \section{Wektory maszyn podpierających (SVM)}
 
-Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji (patrz \cite{koronacki}). W dużym uproszczeniu, polega ona na konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn rozdzielających klasy w taki sposób, by minimalizować kwadrat odległości między nimi. By móc obsługiwać przypadki, w których brak liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
+Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji (patrz \cite{koronacki}). W dużym uproszczeniu, polega ona na konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn rozdzielających klasy. By móc obsługiwać przypadki, w których brak liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym (patrz Rys.\ref{svm1}) budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
 $$
 \min_{\mathbf{w}, b}\left\lbrace\dfrac{1}{2}||\textbf{w}||^2+C\sum_{i=1}^{n}\xi_i\right\rbrace,
 $$
@@ -107,6 +107,20 @@ $$
 $$    
 gdzie $\mathbf{w}\in\mathbb{R}^K$, $b\in\mathbb{R}$ i $C\in\mathbb{R}$ są parametrami modelu, $\xi_i\geq 0$ dla $i=1\ldots n$ są karą mierzoną dla każdej obserwacji przy ustalonej hiperpłaszczyźnie, $\mathbf{x}_{1i}$ oznacza wektor cech obserwacji należących do klasy pierwszej, a $\mathbf{x}_{2i}$ wektor cech obserwacji należących do klasy drugiej, zaś $n_1$ i $n_2$ to liczności tych klas. 
 
+\begin{figure}[]
+  \begin{subfigure}[]{\textwidth}
+    \includegraphics[width=\textwidth]{graphics/svm1.png}
+    \caption{Przypadek separowalny.}
+  \end{subfigure}
+  %\hfill
+  \begin{subfigure}[]{\textwidth}
+    \includegraphics[width=\textwidth]{graphics/svm1eps.png}
+    \caption{Przypadek nieseparowalny.}
+  \end{subfigure}
+  \caption{Przykładowe rozdzielenie klas metodą SVM. W przypadku nieseparowalnym dokładamy karę, będącą odległością źle zaklasyfikowanej obserwacji od odpowiedniego marginesu.}
+  \label{svm1}
+\end{figure}
+
 Tak to wygląda w przypadku klasyfikacji dwuklasowej. Przyjrzyjmy się teraz, jak w łatwy sposób można zaadaptować powyższą metodę do rozważanej przez nas regresji porządkowej.
 
 \begin{figure}[h]
@@ -117,7 +131,7 @@ Tak to wygląda w przypadku klasyfikacji dwuklasowej. Przyjrzyjmy się teraz, ja
 \label{svm}
 \end{figure}
 
-Tym razem, powołując się na \cite{pom} i \cite{svm}, optymalizować będziemy następujące wyrażenie:
+Tym razem, powołując się na \cite{pom} i \cite{svm}, będziemy rozwiązywać następujący problem optymalizacyjny:
 $$
 \min_{\textbf{w}, b_1, \ldots, b_{r-1}}\left\lbrace \dfrac{1}{2}||\textbf{w}||^2+C\sum_{j=1}^{r-1}\left( \sum_{k=1}^{j}\sum_{i=1}^{n_k}\xi_{ki}^j+\sum_{k=j+1}^{r}\sum_{i=1}^{n_k}\xi_{ki}^{*j}\right)\right\rbrace,
 $$
@@ -149,9 +163,9 @@ Sieci neuronowe to bardzo proste i szeroko stosowane narzędzie zarówno w probl
 
 Standardowo, na wejściu otrzymujemy zbiór uczący w postaci $n$ par $(\textbf{x},y)$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ jest wektorem cech, a $y$ numerem klasy. Tym razem jednak, dodatkowo modyfikujemy zmienną odpowiedzi w taki sposób, by zamiast liczby rzeczywistej otrzymać zero-jedynkowy wektor odpowiedzi $\textbf{y} = (y_1, \ldots, y_r)^T$ reprezentujący klasę, do której należy dana obserwacja, tzn. $y_i = \mathbb{I}\lbrace y =i \rbrace$.
 
-W przeciwieństwie do zwykłej klasyfikacji, nasza sieć neuronowa będzie zakładać porządek zmiennej odpowiedzi. W jaki sposób? Mianowicie, jako wektor wyjściowy, zamiast wektora $\textbf{y} = (0, 0, \ldots, 1, \ldots, 0)^T$, mającego jedynkę na $i$--tym miejscu, jeśli obserwacja należała do $i$--tej klasy, rozważać będziemy wektor $\textbf{y} = (1, 1, \ldots, 1, \ldots, 0)^T$, mający jedynki na miejscach od pierwszego do $i$--tego.
+W przeciwieństwie do zwykłej klasyfikacji, nasza sieć neuronowa będzie zakładać porządek zmiennej odpowiedzi. W jaki sposób? Mianowicie, jako wektor wyjściowy, zamiast wektora $\textbf{y} = (\underbrace{0, \ldots, 0}_{i-1}, 1, \ldots, 0)^T$, mającego jedynkę na $i$--tym miejscu, jeśli obserwacja należała do $i$--tej klasy, rozważać będziemy wektor $\textbf{y} = (\underbrace{1, \ldots, 1}_{i}, 0, \ldots, 0)^T$, mający jedynki na miejscach od pierwszego do $i$--tego.
 
-Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej, z których każdy reprezentuje inną cechę z wektora $\textbf{x}$, jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. Może się zdarzyć, że wyjściowy wektor nie będzie ciągiem malejącym (co trochę przeczy intuicji), jednak nie jest to konieczne do robienia predykcji. 
+Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej (z których każdy reprezentuje inną cechę z wektora $\textbf{x}$), jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej, zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. 
 
 \begin{figure}[h]
 \begin{center}
@@ -195,11 +209,12 @@ Otrzymujemy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowe
 \end{tikzpicture}
 \end{center}
 \caption{Przykładowa sieć neuronowa.}
+\label{siec}
 \end{figure}
 
-Uczenie sieci neuronowej będzie się odbywało algorytmem propagacji wstecznej z kwadratową funkcją straty (można też użyć jakiejś innej np. entropii). Algorytm wygląda następująco:
+Uczenie sieci neuronowej będzie się odbywało algorytmem propagacji wstecznej z kwadratową funkcją straty (można też użyć jakiejś innej, np. entropii). W dużym uproszczeniu, algorytm wygląda następująco (szczegóły każdego kroku będą wyjaśnione poniżej):
 \begin{enumerate}
-\item Wybieramy małe wagi początkowe oraz niewielki współczynnik $\eta>0$.
+\item Wybieramy małe wagi początkowe oraz pewnie niewielki współczynnik $\eta>0$.
 \item Losujemy parę $(\textbf{x},\textbf{y})$ ze zbioru uczącego.
 \item Przebiegamy sieć w przód.
 \item Przebiegamy sieć w tył (licząc błąd dla każdego neuronu).
@@ -207,22 +222,25 @@ Uczenie sieci neuronowej będzie się odbywało algorytmem propagacji wstecznej 
 \item Dopóki nie osiągniemy zadowalająco niskiego błędu, wracamy do punktu $2)$.
 \end{enumerate} 
 
+Wyjaśnijmy teraz ważniejsze punkty powyższego algorytmu.
+
 \underline{Ad. $3)$} 
 
-Dla każdego neuronu obliczamy wartość wejściową ze wzoru:
+Dla każdego neuronu obliczamy wartość wejściową ze wzoru (patrz Rys.\ref{siec}):
 $$
 wejscie_j^{(i)} = \sum_{k:\hspace{2mm}\exists\hspace{2mm} w^{(i)}_{k\rightarrow j}} \left( w^{(i)}_{k\rightarrow j}\cdot wyjscie_k^{(i-1)} \right),
 $$
-gdzie $wyjscie_i^{(0)} = x_i$. A następnie wyjściową:
+gdzie $wyjscie_i^{(j)}$ to wartość $i$--tego neuronu w $j$--tej warstwie, a $wyjscie_i^{(0)} = x_i$, zaś $w^{(i)}_{k\rightarrow j}$ oznacza wagę między $k$--tym neuronem $(i-1)$--warstwy i $j$--tym neuronem $i$-tej warstwy. Następnie wyznaczamy wartość wyjściową:
 $$
-wyjscie_j^{(i)} = f\left(wyjscie_j^{(i)}\right). 
+wyjscie_j^{(i)} = f\left(wejscie_j^{(i)}\right),
 $$
+gdzie $f(\cdot)$ to wybrana przez nas funkcja sigmoidalna -- w naszym przypadku $f(x) = \frac{1}{1+e^{-x}}$.
 
 \underline{Ad. $4)$}
 
 Dla warstwy wyjściowej błąd ma postać:
 $$
-\delta_j = -2\cdot wyjscie_j^2\cdot \left( 1- wyjscie_j \right)^2\cdot(y_j - wyjscie_j),
+\delta_j = wyjscie_j^{(i)}\cdot \left( 1- wyjscie_j^{(i)} \right)\cdot(wyjscie_j^{(i)} - y_j),
 $$
 zaś dla warstw ukrytych:
 $$
@@ -233,20 +251,20 @@ $$
 
 Modyfikacja wag przebiega następująco:
 $$
-w_{k\rightarrow j}^{(i)^{(new)}} = w_{k\rightarrow j}^{(i)^{(old)}} - \eta\cdot\delta_j^{(i)}\cdot wyjscie^{(i-1)}_k.
+w_{k\rightarrow j}^{(i)} := w_{k\rightarrow j}^{(i)} - \eta\cdot\delta_j^{(i)}\cdot wyjscie^{(i-1)}_k.
 $$
 
-Predykcja opiera się już tylko na przejściu algorytmu w przód z nowymi obserwacjami wejściowymi $\textbf{x}_{\ast}$ i ustaleniu progu (najczęściej równego $0,5$), klasyfikującego neuron wyjściowy jako jedynkę. Skanujemy wektor wyjściowy zaczynając od $y_1$ i kończymy, gdy pierwszy raz natkniemy się na $0$. Przypisujemy obserwacji taką klasę, jaką długość miał znaleziony przez nas ciąg jedynek.
+Predykcja polega już tylko na przejściu algorytmu w przód z nowymi obserwacjami wejściowymi $\textbf{x}_{\ast}$ i ustaleniu progu (najczęściej równego $0,5$, gdyż wartość neuronu wyjściowego reprezentuje pewne prawdopodobieństwo), klasyfikującego neuron wyjściowy jako jedynkę. Skanujemy wektor wyjściowy zaczynając od $y_1$ i kończymy, gdy pierwszy raz natkniemy się na $0$. Przypisujemy obserwacji taką klasę, jaką długość miał znaleziony przez nas ciąg jedynek. Może się zdarzyć, że wyjściowy wektor nie będzie ciągiem malejącym, tzn. zamiast łatwo interpretowalnego wektora $(1,\ldots,1,0,\ldots,0)$ otrzymamy na przykład wektor $(1,1,0,1,1,1,0,\ldots,0)$, co trochę przeczy intuicji, bo sugeruje, że obserwacja należy do klasy czwartej, piątej i szóstej, ale do trzeciej już nie. W takim wypadku, tak jak zostało to opisane powyżej, zaklasyfikowalibyśmy ją do klasy drugiej, przymykając niejako oko na to, co dzieje się później.  
 
-\section{Metoda zaproponowana przez E. Franka i M. Halla}
+\section{Metoda Franka i Halla}
 
-Podejście Franka i Halla (por. \cite{fh}) do zagadnienia regresji porządkowej jest nieco inne, niż przedstawione do tej pory metody. Opiera się bowiem nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwoma klasami. Przekształcamy zatem $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji. 
+Podejście zaproponowane przez E. Franka i M. Halla (por. \cite{fh}) do zagadnienia regresji porządkowej jest nieco inne, niż w metodach przedstawionych do tej pory metody. Polega bowiem nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwiema klasami. Dokładniej, przekształcamy $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji. 
 
-Algorytm do budowy modelu wygląda następująco:
+Uproszczony algorytm budowy modelu wygląda następująco:
 
 \begin{enumerate}
 \item Modyfikujemy zbiór uczący (otrzymując $r-1$ nowych zbiorów uczących).
-\item Dla każdego nowo uzyskanego zbioru danych dopasowujemy zwykły model klasyfikacyjny (np. drzewo) taki, który zwraca prawdopodobieństwa przynależności do klas.
+\item Dla każdego nowo uzyskanego zbioru danych dopasowujemy zwykły model klasyfikacyjny (np. drzewo klasyfikacyjne) taki, który zwraca prawdopodobieństwa przynależności do poszczególnych klas.
 \item Robimy predykcję dla nowej obserwacji. 
 \end{enumerate}
 
@@ -256,17 +274,19 @@ Algorytm do budowy modelu wygląda następująco:
 		\node(gora) {\begin{tabular}{c|c}
 					$\mathbf{x}$ & $y$ \\
 					[1ex] \hline \\ [-1.5ex] 
-					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $y_1$ \\
-					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $y_r$ \\
+					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $1$ \\
+					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $5$ \\
+					[1ex] $x_1^{(3)}$ $\ldots$ $x_K^{(3)}$ & $1$ \\
 					[1ex] \vdots & $\vdots$ \\
-					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $y_2$\\
+					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $2$\\
 				\end{tabular}};
 		\node [below= 4cm of gora] (srodek) {$\ldots$};
 		\node [right= 3cm of srodek] (prawo) {\begin{tabular}{c|c}
-					$\mathbf{x}$ & $y^{(r-1)}$ \\
+					$\mathbf{x}$ & $y^{(4)}$ \\
 					[1ex] \hline \\ [-1.5ex] 
 					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
 					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
+					[1ex] $x_1^{(3)}$ $\ldots$ $x_K^{(3)}$ & $0$ \\
 					[1ex] \vdots & $\vdots$ \\
 					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $0$\\
 				\end{tabular}};
@@ -275,6 +295,7 @@ Algorytm do budowy modelu wygląda następująco:
 					[1ex] \hline \\ [-1.5ex] 
 					$x_1^{(1)}$ $\ldots$ $x_K^{(1)}$ & $0$ \\
 					[1ex] $x_1^{(2)}$ $\ldots$ $x_K^{(2)}$ & $1$ \\
+					[1ex] $x_1^{(3)}$ $\ldots$ $x_K^{(3)}$ & $0$ \\
 					[1ex] \vdots & $\vdots$ \\
 					[1ex] $x_1^{(n)}$ $\ldots$ $x_K^{(n)}$ & $1$\\
 				\end{tabular}};
@@ -283,35 +304,29 @@ Algorytm do budowy modelu wygląda następująco:
 	\end{tikzpicture}
 \end{center}
 \caption{Modyfikacja przykładowego zbioru uczącego.}
+\label{fh}
 \end{figure}
+
+Przyjrzyjmy się teraz kolejnym krokom algorytmu dokładniej.
 
 \underline{Ad. $1)$}
 
 Chcemy otrzymać $r-1$ nowych zbiorów o zero-jedynkowej zmiennej odpowiedzi. W jaki sposób to zrobić?
-Macierz atrybutów pozostaje bez zmian, zmienia się jedynie wektor zmiennej odpowiedzi według zasady:
+Macierz atrybutów pozostaje bez zmian, a zmienia się jedynie wektor zmiennej odpowiedzi (patrz Rys.\ref{fh}) według zasady:
 \begin{eqnarray*}
 y_i^{(1)} &=& \mathbb{I}\lbrace y_i>1 \rbrace\\
 &\vdots& \\
-y_i^{(r-1)} &=& \mathbb{I}\lbrace y_i>r-1 \rbrace\\
+y_i^{(r-1)} &=& \mathbb{I}\lbrace y_i>r-1 \rbrace,
 \end{eqnarray*}
+gdzie $y_i^{(j)}$ to $i$-ta odpowiedź w $j$-tym, utworzonym przez nas, zbiorze oraz $i=1,\ldots,n$, zaś $j=1,\ldots, r-1$. 
 
 \underline{Ad. $3)$}
 
-Dla nowego wektora atrybutów $\textbf{x}$ robimy predykcję na $r-1$ modelach uzyskanych w punkcie $2)$. Zwracamy jednak nie predykcję klasy, ale prawdopodobieństwo przynależności do klasy pierwszej. Uzyskujemy w ten sposób $r-1$ następuących prawdopodobieństw:
-\begin{eqnarray*}
-\mathbb{P}(y &>& 1)\\
-&\vdots& \\
-\mathbb{P}(y &>& r-1).\\
-\end{eqnarray*}
+Dla nowego wektora atrybutów $\textbf{x}$ robimy predykcję na $r-1$ modelach uzyskanych w punkcie drugim. Zwracamy jednak nie predykcję klasy, ale prawdopodobieństwo przynależności do klasy oznaczonej przez nas jako pierwszej. Uzyskujemy w ten sposób $r-1$ następuących prawdopodobieństw: $\mathbb{P}(y > 1), \ldots, \mathbb{P}(y > r-1)$.
 
-Nas natomiast interesują prawdopodobieństwa:
-\begin{eqnarray*}
-\mathbb{P}(y &=& 1)\\
-&\vdots& \\
-\mathbb{P}(y &=& r-1).\\
-\end{eqnarray*}
+Nas natomiast interesują prawdopodobieństwa: $\mathbb{P}(y = 1), \ldots, \mathbb{P}(y = r-1)$,
 
-Łatwo otrzymamy korzystając z następującego wzoru łańcuchowego:
+które łatwo otrzymamy, korzystając z następującego wzoru łańcuchowego:
 \begin{eqnarray*}
 \mathbb{P}(y = 1) &=& 1 - \mathbb{P}(y > 1)\\
 &\vdots& \\
@@ -320,21 +335,21 @@ Nas natomiast interesują prawdopodobieństwa:
 \mathbb{P}(y = r) &=& \mathbb{P}(y > r-1).\\
 \end{eqnarray*}
 
-Ostatecznie, nowej obserwacji przypisujemy klasę, której prawdopodobieństwo $\mathbb{P}(y=i)$ było największe.
+Ostatecznie, nowej obserwacji przypisujemy tę klasę, której prawdopodobieństwo $\mathbb{P}(y=i)$ było największe.
 
 \section{Procesy gaussowskie}
 
 Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloetykietowej. Chu i Ghahramani w pracy \cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
 
-Pomysł modelowania regresji porządkowej polega na wprowadzeniu tzw. zmiennej ukrytej, będącej niejako krokiem pośrednim w modelowaniu zmiennej odpowiedzi. W celu wyrobienia sobie intuicji, przeanalizujmy całe rozumowanie nieco od tyłu, zaczynając od predykcji. Podstawowym założeniem \textit{a priori} tej metody jest to, że zmienna ukryta $f$ jest procesem gaussowskim tzn., że jej rozkłady skończenie wymiarowe są normalne. Pełną charakteryzację takiego procesu tworzą dwie informacje -- średnia (standardowo przyjmuje się $0$) oraz macierz kowariancji $\mathbf{\Sigma}$. Dla celów tej pracy przyjmiemy, że elementy macierzy kowariancji definiowane są w następujący sposób:
+Pomysł modelowania regresji porządkowej polega na wprowadzeniu tzw. zmiennej ukrytej, będącej niejako krokiem pośrednim w modelowaniu zmiennej odpowiedzi. Mianowicie, zamiast dawać od razu odpowiedź, do której klasy przypisujemy daną obserwację, próbujemy ją najpierw scharakteryzować jako liczbę rzeczywistą, by móc ją niejako umieścić na prostej. Dzięki temu uzyskamy pewne uporządkowanie między naszymi obserwacjami, by następnie wybrać progi, które będą już klasyfikować obserwacje. W celu wyrobienia sobie intuicji przeanalizujmy całe rozumowanie ,,od tyłu", zaczynając od predykcji. Podstawowym założeniem \textit{a priori} tej metody jest to, że zmienna ukryta $F$ jest procesem gaussowskim tzn., że jej rozkłady skończenie wymiarowe są normalne. Pełną charakteryzację takiego procesu tworzą dwie informacje -- średnia (standardowo przyjmuje się $0$) oraz macierz kowariancji $\mathbf{\Sigma}$. Dla celów tej pracy przyjmiemy, że elementy macierzy kowariancji definiowane są w następujący sposób:
 $$
-\mathbf{\Sigma}_{ij} = \mathbf{\Sigma}(x_i, x_j) = \exp \left\lbrace -\frac{\kappa}{2}\sum_{\xi=1}^K (x_i^{\xi} - x_j^{\xi})^2\right\rbrace,
+\mathbf{\Sigma}_{ij} = \mathbf{\Sigma}(\textbf{x}^{(i)}, \textbf{x}^{(j)}) = \exp \left\lbrace -\frac{\kappa}{2}\sum_{\xi=1}^K (x^{(i)}_{\xi} - x^{(j)}_{\xi})^2\right\rbrace,
 $$
-gdzie $\kappa>0$, a $x_i^{\xi}$ oznacza $\xi$-ty element wektora $\mathbf{x}_i$. Zatem $\mathbf{f} | \mathbf{X} \sim \mathcal{N}(0, \mathbf{\Sigma})$, czyli:
+gdzie $\kappa>0$, a $x^{(i)}_{\xi}$ oznacza $\xi$-ty element wektora $\mathbf{x}^{(i)}$. Zatem $F | \mathbf{X} \sim \mathcal{N}(0, \mathbf{\Sigma})$, czyli:
 \begin{equation}\label{apriori}
 \mathbb{P}(\mathbf{f} | \mathbf{X}) = \frac{1}{(2\Pi)^{\frac{n}{2}}|\mathbf{\Sigma}|^{\frac{1}{2}}}\exp\left\lbrace -\frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f} \right\rbrace,
 \end{equation}
-gdzie $\mathbf{f} = [f(\mathbf{x}_1), \ldots, f(\mathbf{x}_n)]^T$ to wektor zawierający realizację zmiennej ukrytej, odpowiadający kolejnym obserwacjom ze zbioru uczącego.
+gdzie $\mathbf{f} = [f(\mathbf{x}^{(1)}), \ldots, f(\mathbf{x}^{(n)})]^T$ to wektor zawierający realizację zmiennej ukrytej, odpowiadający kolejnym obserwacjom ze zbioru uczącego.
 
 Wyobraźmy sobie teraz, że dopasowaliśmy model i znamy wszystkie niezbędne parametry. W uproszczony sposób predykcja wygląda następująco: 
 \begin{enumerate}
@@ -343,15 +358,16 @@ Wyobraźmy sobie teraz, że dopasowaliśmy model i znamy wszystkie niezbędne pa
 \item  za pomocą przekształcenia prostej rzeczywistej na $r$ podzbiorów, wyznaczamy najlepszy $y_{\ast}$.
 \end{enumerate}
 
-A teraz prześledźmy wszystko krok po kroku. Interesuje nas wyznaczenie $y_{\ast}$, dla którego prawdopodobieństwo $\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast})$ jest największe. Przy pomocy zmiennej ukrytej rozpiszmy je w następujący sposób:
+A teraz prześledźmy wszystko krok po kroku. Interesuje nas wyznaczenie $y_{\ast}$, dla którego prawdopodobieństwo $\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, x_{\ast})$ jest największe. Za pomocą zmiennej ukrytej rozpiszmy je w następujący sposób:
 \begin{equation}\label{calka1}
-\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast}) = \int \mathbb{P}(y_{\ast} | f(\mathbf{x}_{\ast}))\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) df(\mathbf{x}_{\ast}).
+\mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast}) = \int_{\mathbb{R}} \mathbb{P}(y_{\ast} | f(\mathbf{x}_{\ast}))\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) df(\mathbf{x}_{\ast}).
 \end{equation}
 Analogicznie:
 \begin{equation}\label{calka2}
-\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) = \int \mathbb{P}(f(\mathbf{x}_{\ast}) | \mathbf{f})\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) d\mathbf{f}.
+\mathbb{P}(f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y}) = \int_{\mathbb{R}^n} \mathbb{P}(f(\mathbf{x}_{\ast}) | \mathbf{f})\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) d\mathbf{f}.
 \end{equation}
-Szukamy więc powyższych prawdopodobieństw, by następnie całość scałkować. 
+
+By móc policzyć powyższe całki, poszukamy kolejno prawdopodobieństw, których iloczyny je tworzą.
 
 Korzystając z informacji, że zmienna $f$ jest procesem gaussowskim, czyli:
 $$
@@ -382,7 +398,7 @@ gdzie $\mathbf{\Sigma}_{\ast} = [\Sigma(\mathbf{x}_1, \mathbf{x}_{\ast}), \ldots
 f(x_{\ast}) | \mathbf{f} \sim \mathcal{N}(\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{\Sigma}_{\ast}, \Sigma_{\ast\ast} - \mathbf{\Sigma}\mathbf{\Sigma}^{-1}\mathbf{\Sigma}_{\ast} ).
 \end{equation}
 
-Zajmijmy się teraz prawdopodobieństwem $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Korzystając z podejścia bayesowskiego, rozpiszmy je jako:
+Zajmijmy się teraz prawdopodobieństwem $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Korzystając z podejścia bayesowskiego (patrz \ref{app1}), rozpiszmy je jako:
 \begin{align}\label{bayes}
 \mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y}) 
 =
@@ -393,31 +409,31 @@ Zajmijmy się teraz prawdopodobieństwem $\mathbb{P}(\mathbf{f} | \textbf{X}, \t
 \mathbb{P}(\mathbf{y} | \textbf{X})
 }. 
 \end{align}
-Znamy już $\mathbb{P}(\mathbf{f} | \textbf{X})$ -- jest to prawdopodobieństwo \textit{a priori} \eqref{apriori}. $\mathbb{P}(\mathbf{y} | \textbf{X})$, jako stała niezależna od $\mathbf{f}$, nie jest nam potrzebne do wyznaczenia $\mathbf{\hat{f}}$. Zostawmy je więc na razie i wróćmy do niego później, kiedy będziemy estymować parametry modelu. Zostaje nam więc do znalezienia $\mathbb{P}(\mathbf{y} | \textbf{f})$ tzw. wiarogodność. Ponieważ wszystkie obserwacje są niezależne, otrzymujemy:
+Znamy już $\mathbb{P}(\mathbf{f} | \textbf{X})$ -- jest to prawdopodobieństwo \textit{a priori} \eqref{apriori}. $\mathbb{P}(\mathbf{y} | \textbf{X})$, jako stała niezależna od $\mathbf{f}$, nie jest nam potrzebne do wyznaczenia $\mathbf{\hat{f}}$. Zostawmy je więc na razie i wróćmy do niego później, kiedy będziemy estymować parametry modelu. Zostaje nam więc do znalezienia $\mathbb{P}(\mathbf{y} | \textbf{f})$, tzw. wiarogodność. Ponieważ wszystkie obserwacje są niezależne, otrzymujemy:
 \begin{align}\label{prod}
 \mathbb{P}(\mathbf{y} | \textbf{f}) 
 =
-\prod^n_{i=1}\mathbb{P}(y_i | f(\mathbf{x}_i)).
+\prod^n_{i=1}\mathbb{P}(y^{(i)} | f(\mathbf{x}^{(i)})).
 \end{align}
-Gdybyśmy zakładali idealną sytuację, wtedy $\mathbb{P}_{ideal} (y_i|f(\mathbf{x}_i)) = \mathbb{I}_{\lbrace f(\mathbf{x}_i)\in (b_{y_i-1}, b_{y_i}] \rbrace}$, gdzie $b_0=-\infty, b_r=+\infty$, a $b_i\in\mathbb{R}$ dla $i=1, \ldots, r-1$ to parametry modelu. Wygodniej, można $b_i$ sparametryzować jako: $b_1\in\mathbb{R}$ oraz $b_i = \sum_{t=2}^j\Delta_t+b_1$, gdzie $\Delta_t>0$ oraz $j=2, \ldots, r-1$. Bardzo rzadko mamy jednak do czynienia z sytuacją idealną, dlatego będziemy budować model, zakładając dodatkowy szum $\delta$ o rozkładzie $\mathcal{N}(0, \sigma^2)$. Wtedy prawdopodobieństwo zmienia się następująco:
+Gdybyśmy zakładali idealną sytuację, wtedy $\mathbb{P}_{ideal} (y^{(i)}|f(\mathbf{x}^{(i)})) = \mathbb{I}_{\lbrace f(\mathbf{x}^{(i)})\in (b_{y^{(i)}-1}, b_{y^{(i)}}] \rbrace}$, gdzie $b_0=-\infty, b_r=+\infty$, a $b_i\in\mathbb{R}$ dla $i=1, \ldots, r-1$ to parametry modelu. Wygodniej, można $b_i$ sparametryzować jako: $b_1\in\mathbb{R}$ oraz $b_i = \sum_{t=2}^j\Delta_t+b_1$, gdzie $\Delta_t>0$ oraz $j=2, \ldots, r-1$. Bardzo rzadko mamy jednak do czynienia z sytuacją idealną, dlatego będziemy budować model, zakładając dodatkowy szum $\delta$ o rozkładzie $\mathcal{N}(0, \sigma^2)$. Wtedy prawdopodobieństwo zmienia się następująco:
 \begin{align}\label{dystryb}
 \begin{split}
-\mathbb{P}(y_i|f(\mathbf{x}_i)) 
+\mathbb{P}(y^{(i)}|f(\mathbf{x}^{(i)})) 
 &= 
-\int \mathbb{P}_{ideal} (y_i,\delta_i | f(\mathbf{x}_i))d\delta_i
+\int_\mathbb{R} \mathbb{P}_{ideal} (y^{(i)},\delta_i | f(\mathbf{x}^{(i)}))d\delta_i
 =
-\int \mathbb{P}_{ideal} (y_i | f(\mathbf{x}_i),\delta_i)\mathbb{P}(\delta_i)  d\delta_i=\\
+\int_\mathbb{R} \mathbb{P}_{ideal} (y^{(i)} | f(\mathbf{x}^{(i)}),\delta_i)\mathbb{P}(\delta_i)  d\delta_i=\\
 &=
-\int \mathbb{P}(\delta_i)\mathbb{I}_{\lbrace f(\mathbf{x}_i)+\delta_i\in (b_{y_i-1}, b_{y_i}] \rbrace}  d\delta_i=\\
+\int_\mathbb{R} \mathbb{P}(\delta_i)\mathbb{I}_{\lbrace f(\mathbf{x}^{(i)})+\delta_i\in (b_{y^{(i)}-1}, b_{y^{(i)}}] \rbrace}  d\delta_i=\\
 &=
-\Phi\left(\frac{b_{y_i}-f(x_i)}{\sigma} \right) 
+\Phi\left(\frac{b_{y^{(i)}}-f(x^{(i)})}{\sigma} \right) 
 - 
-\Phi\left( \frac{b_{y_i-1}-f(x_i)}{\sigma} \right),
+\Phi\left( \frac{b_{y^{(i)}-1}-f(x^{(i)})}{\sigma} \right),
 \end{split}
 \end{align}
 gdzie $\Phi(\cdot)$ to dystrybuanta standardowego rozkładu normalnego.
 
-Przejdźmy teraz do szukania najlepszej estymacji $\mathbf{\hat{f}}$. Zdefiniujmy $S(\mathbf{f}) := -\ln\mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y})$, wtedy mamy, że: 
+Przejdźmy teraz do szukania najlepszej estymacji $\mathbf{\hat{f}}$. Zdefiniujmy $S(\mathbf{f}) := -\ln\mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y})$, wtedy: 
 $$
 \mathbf{\hat{f}} 
 := \underset{\mathbf{f}}\argmax \lbrace \mathbb{P}(\mathbf{f}|\mathbf{X}, \mathbf{y}) \rbrace 
@@ -428,10 +444,10 @@ $$
 Korzystając z równań \eqref{apriori}, \eqref{bayes} i \eqref{prod} można łatwo zobaczyć, że:
 $$
 S(\mathbf{f}) \propto 
-\sum_{i=1}^n\textit{l}(y_i, f(\mathbf{x}_i)) + \frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f},
+\sum_{i=1}^n\textit{l}(y^{(i)}, f(\mathbf{x}^{(i)})) + \frac{1}{2}\mathbf{f}^T\mathbf{\Sigma}^{-1}\mathbf{f},
 $$
-gdzie $\textit{l}(y_i, f(\mathbf{x}_i)) := -\ln\mathbb{P}(y_i | f(\mathbf{x}_i))$.
-Nie da się znaleźć minimum tej funkcji analitycznie, ponieważ $\textit{l}(y_i, f(\mathbf{x}_i))$ nie jest gaussowska. Natomiast, żeby uzyskać najlepsze przybliżenie $\mathbf{\hat{f}}$, wystarczy zastosować do funkcji $S(\mathbf{f})$ dowolny algorytm optymalizacyjny (np. algorytm Newtona-Raphsona).
+gdzie $\textit{l}(y^{(i)}, f(\mathbf{x}^{(i)})) := -\ln\mathbb{P}(y^{(i)} | f(\mathbf{x}^{(i)}))$.
+Nie da się znaleźć minimum tej funkcji analitycznie. Natomiast, żeby uzyskać najlepsze przybliżenie $\mathbf{\hat{f}}$, wystarczy zastosować do funkcji $S(\mathbf{f})$ dowolny algorytm optymalizacyjny (np. algorytm Newtona-Raphsona).
 
 Przypomnijmy, że naszym celem jest w tej chwili wyznaczenie $\mathbb{P}(\mathbf{f} | \textbf{X}, \textbf{y})$. Ponieważ później będziemy chcieli obliczyć całkę \eqref{calka2}, nie wystarczy nam jedynie estymator $\mathbf{\hat{f}}$, wygodnie byłoby dla nas, gdyby to prawdopodobieństwo okazało się gaussowskie. Da się to osiągnąć dzięki przybliżeniu Laplace'a. 
 
@@ -445,9 +461,9 @@ $$
 \mathbf{\Lambda} = 
 	\left[
         \begin{array}{ccc}
-         \frac{\partial^2\textit{l}(y_1, f(\mathbf{x}_1))}{\partial^2 f(\mathbf{x}_1)} & \ldots & 0\\
+         \frac{\partial^2\textit{l}(y^{(1)}, f(\mathbf{x}^{(1)}))}{\partial^2 f(\mathbf{x}^{(1)})} & \ldots & 0\\
          \vdots & \ddots & \vdots \\
-         0 & \ldots & \frac{\partial^2\textit{l}(y_n, f(\mathbf{x}_n))}{\partial^2 f(\mathbf{x}_n)} \\
+         0 & \ldots & \frac{\partial^2\textit{l}(y^{(n)}, f(\mathbf{x}^{(n)}))}{\partial^2 f(\mathbf{x}^{(n)})} \\
         \end{array}
     \right]. 
 $$
@@ -457,24 +473,24 @@ S(\mathbf{f}) = S(\mathbf{\hat{f}}) + \frac{1}{2}(\mathbf{f} - \mathbf{\hat{f}})
 $$
 gdzie $\hat{\mathbf{\Lambda}}$ jest macierzą $\mathbf{\Lambda}$ wyznaczoną dla $\mathbf{\hat{f}}$. Z powyższego równania bezpośrednio wynika, że:
 \begin{equation}\label{calka22}
-\mathbf{f} | \textbf{X}, \textbf{y} \sim \mathcal{N}\left(  \mathbf{\hat{f}}, (\mathbf{\Sigma}^{-1}+\hat{\mathbf{\Lambda}})^{-1}  \right).
+F | \textbf{X}, \textbf{y} \sim \mathcal{N}\left(  \mathbf{\hat{f}}, (\mathbf{\Sigma}^{-1}+\hat{\mathbf{\Lambda}})^{-1}  \right).
 \end{equation}
-Tak więc zostało nam już tylko zoptymalizowanie $\mathbb{P}(\mathbf{y} | \textbf{X})$ tak, by wyznaczyć najlepszy wektor parametrów $\mathbf{\Theta} = [\kappa, \sigma, b_1, \Delta_2, \ldots, \Delta_{r-1}]^T$, który przyda nam się przy predykcji. Znów, odwołując się do przybliżenia Laplace'a i do faktu, że:
+Tak więc zostało nam już tylko zoptymalizowanie $\mathbb{P}(\mathbf{y} | \textbf{X})$ tak, by wyznaczyć najlepszy wektor parametrów $\mathbf{\Theta} = [\kappa, \sigma, b_1, \Delta_2, \ldots, \Delta_{r-1}]^T$, który przyda nam się przy predykcji. Znów, odwołując się do przybliżenia Laplace'a i do faktu, że
 $$
 \mathbb{P}(\mathbf{y} | \textbf{X}) = 
 \int \mathbb{P}(\mathbf{y}|\mathbf{f}, \textbf{X})\mathbb{P}(\mathbf{f}|\textbf{X}) d\mathbf{f},
 $$ 
-otrzymujemy:
+otrzymujemy
 $$
 \mathbb{P}(\mathbf{y} | \textbf{X}) \simeq e^{-S(\mathbf{\hat{f}})} \left\vert \mathbf{I} + \mathbf{\Sigma}\mathbf{\hat{\Lambda}} \right\vert^{-\frac{1}{2}},
 $$
-gdzie $\mathbf{I}$ jest macierzą jednostkową $n\times n$. Bez problemu możemy teraz znaleźć maksimum prawdopodobieństwa $\mathbb{P}(\mathbf{y} | \textbf{X})$ optymalizacyjnie lub nawet analitycznie (por.\cite{reg}).  
+gdzie $\mathbf{I}$ jest macierzą jednostkową $n\times n$. Bez problemu możemy teraz znaleźć maksimum prawdopodobieństwa $\mathbb{P}(\mathbf{y} | \textbf{X})$ iteracyjnie lub nawet analitycznie (por.\cite{reg}).  
 
-Wróćmy teraz do szukanych przez nas całek \eqref{calka1} i \eqref{calka2}. Korzystając z równań \eqref{calka21} i \eqref{calka22} dostaniemy, że w przybliżeniu:
+Wróćmy teraz do szukanych całek \eqref{calka1} i \eqref{calka2}. Korzystając z równań \eqref{calka21} i \eqref{calka22} dostaniemy, że w przybliżeniu:
 $$
 f(\mathbf{x}_{\ast}) | \textbf{X}, \textbf{y} \sim \mathcal{N}(\mu_{\ast}, \sigma_{\ast}^2),
 $$
-gdzie $\mu_{\ast} = \mathbf{\Sigma}^T \mathbf{\Sigma^{-1}} \mathbf{\hat{f}}$ oraz $\sigma_{\ast}^2 = \Sigma_{\ast\ast}-\mathbf{\Sigma}^T(\mathbf{\Sigma + \mathbf{\hat{\Lambda}}^{-1}})^{-1}\mathbf{\Sigma}$. Natomiast, korzystając jeszcze z równania \eqref{dystryb}, otrzymujemy rozkład predykcyjny następującej postaci:
+gdzie $\mu_{\ast} = \mathbf{\Sigma}^T \mathbf{\Sigma^{-1}} \mathbf{\hat{f}}$ oraz $\sigma_{\ast}^2 = \Sigma_{\ast\ast}-\mathbf{\Sigma}^T(\mathbf{\Sigma + \mathbf{\hat{\Lambda}}^{-1}})^{-1}\mathbf{\Sigma}$. Natomiast, korzystając jeszcze z równania \eqref{dystryb} oraz posiłkując się dowodem \ref{app2}, otrzymujemy rozkład predykcyjny następującej postaci:
 $$
 \mathbb{P}(y_{\ast} | \textbf{X}, \textbf{y}, \mathbf{x}_{\ast}) = 
 \Phi\left(\frac{b_{y_{\ast}}-\mu_{\ast}}{\sqrt{\sigma^2+\sigma^2_{\ast}}} \right) 
@@ -487,30 +503,30 @@ Dla nowej obserwacji wystarczy teraz jedynie wyznaczyć $\underset{i}\argmax \ma
 
 \chapter{Diagnostyka modelu}
 
-W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od konkretnych danych. W przypadku dwuklasowym najczęściej stosowaną metodą oceny jest krzywa ROC (ang. \textit{Receiver Operating Characteristic}) i pole pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można uogólnić ją na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
+W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od konkretnych danych. W przypadku dwuklasowym najczęściej stosowaną metodą oceny jest porównywanie krzywych ROC (ang. \textit{Receiver Operating Characteristic}) i pól pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można tę metodę uogólnić na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
 
 \section{Krzywa ROC w przypadku dwuklasowym}
 
 
-Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy sobie najpierw, jak to się działo w najprostszej, dwuklasowej sytuacji. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (patrz Rys.\ref{tabeladopasowania}).
+Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy najpierw, jak otrzymać ją w najprostszym, dwuklasowym przypadku. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (patrz Rys.\ref{tabeladopasowania}).
 
 \begin{figure}[h]
-		\begin{Large}
+		%\begin{large}
 		\begin{center}
 		\begin{tabular}{c c c c | | c c c} 
-			& & & & & \multicolumn{2}{c}{\Large Prawdziwa klasa}\\ 
+			& & & & & \multicolumn{2}{c}{ Prawdziwa klasa}\\ 
 			& & & & & $+$ & $-$ \\
 			\hline
 			\hline
 			& & & & & & \\
-			\multirow{3}{*}{\parbox{4cm}{\centering \Large Wyestymowana przez nas klasa}}
+			\multirow{3}{*}{\parbox{4cm}{\centering  Wyestymowana przez nas klasa}}
 			& & $+$ & & & TP & FP\\
 			& & & & &\\
 			& & $-$ & & & FN & TN\\
 			& & & & & &
 		\end{tabular}
 		\end{center}
-		\end{Large}
+		%\end{large}
 	\caption{Tabela jakości dopasowania. TP (ang. \textit{True Positives}) to liczba rekordów z klasy pozytywnej, które zostały zakwalifikowane przez nas jako klasa pozytywna. Analogicznie, TN (ang. \textit{True Negatives}) to liczba rekordów z klasy negatywnej, które zostaly zakwalifikowane przez nas jako klasa negatywna. FP (ang. \textit{False Positives}) oznacza rekordy z klasy negatywnej, zakwalifikowane jako klasa pozytywna i wreszcie, FN (ang. \textit{False Negatives}) to rekordy z klasy pozytywnej, które błędnie zakwalifikowane zostały jako klasa negatywna.}
 \label{tabeladopasowania}	
 \end{figure}
@@ -542,13 +558,13 @@ W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji po
 \vfill
 \clearpage
 
-Do stworzenia krzywej ROC, potrzebne nam będą dwa wskaźniki -- czułość (TPR, ang. \textit{True Positive Rate}) i specyficzność (TNR, ang. \textit{True Negative Rate}). Czułość definiować będziemy jako prawdopodobieństwo, że pozytywny rekord zostanie poprawnie zakwalifikowany jako pozytywny, a specyficzność jako prawdopodobieństwo, że negatywny rekord zostanie poprawnie zakwalifikowany jako negatywny. Inaczej mówiąc, czułość i specyficzność to procent poprawnie sklasyfikowanych rekordów, odpowiednio w grupie pozytywnej i negatywnej. Korzystając z tabeli jakości dopasowania (patrz Rys. \ref{tabeladopasowania}), otrzymujemy:
+Do stworzenia krzywej ROC, potrzebne nam będą dwa wskaźniki -- \textbf{czułość} (TPR, ang. \textit{True Positive Rate}) i \textbf{specyficzność} (TNR, ang. \textit{True Negative Rate}). Czułość definiować będziemy jako prawdopodobieństwo, że pozytywny rekord zostanie poprawnie zakwalifikowany jako pozytywny, a specyficzność jako prawdopodobieństwo, że negatywny rekord zostanie poprawnie zakwalifikowany jako negatywny. Inaczej mówiąc, czułość i specyficzność to procent poprawnie sklasyfikowanych rekordów, odpowiednio w grupie pozytywnej i negatywnej. Korzystając z tabeli jakości dopasowania (patrz Rys. \ref{tabeladopasowania}), otrzymujemy:
 \begin{eqnarray*}
 	TPR&=&\dfrac{TP}{TP+FN},\\
 	TNR&=&\dfrac{TN}{FP+TN}.		
 \end{eqnarray*}  
 
-Ale jak stworzyć krzywą, mając tylko dwa wskaźniki? Otóż krzywa ROC to wykres punktów ($1-$TNR, TPR), wyliczonych dla różnych progów odcięcia. Czym jest zatem próg odcięcia? W większości przypadków, model generuje nam nie tylko klasę, do której powinniśmy zaklasyfikować daną obserwację, ale przede wszystkim prawdopodobieństwo, z jakim możemy coś zakwalifikować do klasy pozytywnej. Standardowo przyjmuje się, że to prawdopodobieństwo wynosi $0,5$, ale niekoniecznie musi tak być. Czasem wystarczy nam $40\%$ pewności, żeby coś zaklasyfikować jako pozytywne. Dużo tu zależy od historii, która stoi za naszymi danymi. I właśnie ten procent pewności to liczba, którą będziemy nazywać progiem odcięcia. 
+Ale jak stworzyć krzywą, mając tylko dwa wskaźniki? Otóż krzywa ROC to wykres punktów ($1-$TNR, TPR), wyliczonych dla różnych progów odcięcia. Czym jest zatem próg odcięcia? W większości przypadków, model generuje nam nie tylko klasę, do której powinniśmy zaklasyfikować daną obserwację, ale przede wszystkim prawdopodobieństwo, z jakim możemy coś zakwalifikować do klasy pozytywnej. Standardowo przyjmuje się, że to prawdopodobieństwo wynosi $0,5$, ale niekoniecznie musi tak być. Czasem wystarczy nam $40\%$ pewności, żeby coś zaklasyfikować jako pozytywne. Dużo tu zależy od historii, która stoi za naszymi danymi. Na przykład, gdy zajmujemy się klasyfikowaniem pacjentów na chorych i zdrowych, wolimy częściej zakwalifikować kogoś jako chorego, gdy rzeczywiście jest zdrowy, niż odwrotnie, dlatego to prawdopodobieństwo często zmniejszamy. W przypadku analizowania na przykład kampanii reklamowych, może się zdarzyć, że podniesienie progu (czyli zakwalifikowanie mniejszej liczby klientów, jako tych , do których wysłać reklamę) może znacznie zmniejszyć koszty naszej kampanii reklamowej i w rezultacie zwiększyć zysk. I właśnie ten sposób możemy zmieniać próg odcięcia. 
 
 \begin{figure}[h]
   \begin{subfigure}[b]{0.4\textwidth}
@@ -566,7 +582,7 @@ Ale jak stworzyć krzywą, mając tylko dwa wskaźniki? Otóż krzywa ROC to wyk
   \label{krzyweroc}
 \end{figure}
 
-Przyjrzyjmy się rysunkowi \ref{wszystkietrzy}. Mamy tu wykresy gęstości obserwacji pozytywnych i negatywnych, w zależności od przyjętego progu odcięcia. Większość obserwacji pozytywnych osiąga około $60-$procentowe prawdopodobieństwo przynależności do klasy pozytywnej, a negatywnych $40-$procentowe prawdopodobieństwo przynależności do klasy negatywnej. Z wykresów wyraźnie widać, że poruszanie tym progiem odcięcia w prawo zwiększy nam czułość, ale zmniejszy specyficzność, natomiast poruszanie w lewo odwrotnie. Patrząc na krzywą ROC, możemy zobaczyć ich zależność od siebie na jednym wykresie i wybrać taki próg, jaki nam najbardziej odpowiada (najczęściej taki, który jest dobrym kompromisem między czułością a specyficznością). Standardowo, krzywą ROC rysuje się nie w zależności od specyficzności, tylko od $1-$specyficzności, nazywanej FPR (ang. \textit{False Positive Rate}). My jednak, by łatwiej było nam uogólnić ją na więcej wymiarów, zastosujemy tę mniej popularną reprezentację, czyli na osi OX będziemy przedstawiać specyficzność (patrz Rys.\ref{krzyweroc}). 
+Przyjrzyjmy się rysunkowi \ref{wszystkietrzy}. Mamy tu wykresy gęstości obserwacji pozytywnych i negatywnych, w zależności od przyjętego progu odcięcia. Większość obserwacji pozytywnych osiąga około $60-$procentowe prawdopodobieństwo przynależności do klasy pozytywnej, a negatywnych $40-$procentowe prawdopodobieństwo przynależności do klasy negatywnej. Z wykresów wyraźnie widać, że poruszanie tym progiem odcięcia w prawo zwiększy nam czułość, ale zmniejszy specyficzność, natomiast poruszanie w lewo odwrotnie. Patrząc na krzywą ROC, możemy zobaczyć ich zależność od siebie na jednym wykresie i wybrać taki próg, jaki nam najbardziej odpowiada (najczęściej taki, który jest dobrym kompromisem między czułością a specyficznością). Standardowo, krzywą ROC rysuje się nie w zależności od specyficzności, tylko od jej dopełnienia (tzn. $1-$specyficzności), nazywanego FPR (ang. \textit{False Positive Rate}). My jednak, by łatwiej było nam uogólnić krzywą ROC na więcej wymiarów, zastosujemy tę mniej popularną reprezentację, czyli na osi OX będziemy przedstawiać specyficzność (patrz Rys.\ref{krzyweroc}). 
 
 Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat jednostkowy. Zła krzywa, czyli taka, która powstaje, gdy model daje losowe wyniki, to taka, która jest przekątną tego kwadratu. Ponieważ, patrząc na dwie często wielokrotnie przecinające się krzywe ROC, odpowiadające różnym modelom, ciężko jest stwierdzić, która krzywa jest lepsza, wprowadzono współczynnik AUC, czyli pole pod tą krzywą, który pozwala łatwiej to ocenić. Idealny model ma współczynnik AUC równy $1$, a model losowy charakteryzuje się AUC równym $0,5$. Na rysunku \ref{krzyweroc} łatwo widać, że w naszym przypadku (czyli z inaczej zdefiniowaną osią OX) współczynnik AUC definiuje się identycznie.       
 
@@ -585,7 +601,7 @@ Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat je
   \label{trzyklasowy}
 \end{figure}
 
-W przypadku regresji porządkowej nie będzie już tak łatwo. Przede wszystkim nie mamy tu podziału na klasę pozytywną i negatywną, jak więc stworzyć współczynnik FPR? Można próbować robić to parami tzn. traktować jedną z klas jako pozytywną, a pozostałe połączyć w jedną i traktować jako negatywną. Robiąc w ten sposób z każdą klasą, otrzymamy $r$ (bo tyle jest możliwych poziomów zmiennej odpowiedzi) krzywych ROC, a tym samym $r$ współczynników AUC. Jako ostateczne AUC przyjmuje się wtedy średnią z nich. Nie jest to jednak dobry wskaźnik. Może się bowiem zdarzyć tak, że współczynnik między środkowymi klasami wyjdzie duży, natomiast ten między klasami skrajnymi słaby, tworząc tym samym nienajgorszą średnią. Nie jest to dobre, gdyż często zależy nam na dobrym odróżnieniu właśnie klas skrajnych. Wyobraźmy sobie, że chcemy sprawdzić, czy komuś spodobałaby się sprzedawana przez nas książka. Możliwe odpowiedzi to: bardzo mi się podoba, podoba mi się, nie mam zdania, nie podoba mi się, bardzo mi się nie podoba. Jasne jest, że wolelibyśmy oddzielić klientów, którym bardzo spodobałaby się książka od tych, którym bardzo by się nie spodobała, a nie na przykład tych, którym by się nie spodobała od tych, którym by się bardzo nie spodobała. Żeby udało nam się poradzić sobie z takim problemem, trzeba spojrzeć na niego globalnie.   
+W przypadku regresji porządkowej dochodzi problem wielowymiarowości. Przede wszystkim nie mamy tu podziału na klasę pozytywną i negatywną, jak więc stworzyć współczynnik FPR? Można próbować robić to parami tzn. traktować jedną z klas jako pozytywną, a pozostałe połączyć w jedną i traktować jako negatywną. Robiąc w ten sposób z każdą klasą, otrzymamy $r$ (bo tyle jest możliwych poziomów zmiennej odpowiedzi) krzywych ROC, a tym samym $r$ współczynników AUC. Jako ostateczne AUC przyjmuje się wtedy średnią z nich. Nie jest to jednak dobry wskaźnik. Może się bowiem zdarzyć tak, że współczynnik między środkowymi klasami wyjdzie duży, natomiast ten między klasami skrajnymi słaby, tworząc tym samym nienajgorszą średnią. Nie jest to dobre, gdyż często zależy nam na dobrym odróżnieniu właśnie klas skrajnych. Wyobraźmy sobie, że chcemy sprawdzić, czy komuś spodobałaby się sprzedawana przez nas książka. Możliwe odpowiedzi to: bardzo mi się podoba, podoba mi się, nie mam zdania, nie podoba mi się, bardzo mi się nie podoba. Jasne jest, że wolelibyśmy oddzielić klientów, którym bardzo spodobałaby się książka od tych, którym bardzo by się nie spodobała, a nie na przykład tych, którym by się nie spodobała od tych, którym by się bardzo nie spodobała. Żeby udało nam się poradzić sobie z takim problemem, trzeba spojrzeć na niego globalnie.   
 
 Opisując krzywą ROC w przypadku dwuklasowym powiedzieliśmy sobie, że będziemy rozważać nie zależność TPR od FPR, ale TPR od TNR. Dlaczego? Właśnie po to, żebyśmy teraz mogli ją łatwiej uogólnić. Zarówno TPR, jak i TNR jest to procent poprawnie sklasyfikowanych odpowiednio pozytywnych bądź negatywnych obserwacji. Nic nie staje zatem na przeszkodzie, by stworzyć $r$ takich współczynników ($\text{TPR}1, \ldots, \text{TPR}r$), każdy odpowiadający procentowi poprawnie sklasyfikowanych obserwacji z $i-$tej klasy. Przyjmując różne progi odcięcia (patrz Rys. \ref{trzyklasowy}), których tym razem będzie $r-1$, możemy narysować krzywą ROC, a raczej pewną hiperpowierzchnię. Oczywiście jest to możliwe tylko w przypadku trzyklasowym (patrz Rys. \ref{3d}), ale rysunek taki i tak jest raczej mało czytelny. 
 
@@ -601,12 +617,12 @@ Opisując krzywą ROC w przypadku dwuklasowym powiedzieliśmy sobie, że będzie
 
 Po co zatem tworzyć wielowymiarową krzywą ROC, skoro i tak trudno cokolwiek z niej odczytać? Otóż głównie po to, by otrzymać współczynnik AUC, który, będąc konkretną liczbą, jest znacznie prostszy w interpretacji. W przypadku więcej niż dwuwymiarowym będziemy go nazywać VUS (ang. \textit{Volume Under the Surface}). 
 
-Jako, że liczenie objętości pod hiperpłaszczyzną jest numerycznie raczej trudnym zadaniem, w celu wyliczenia współczynnika VUS, skorzystamy z jego nieco innej interpretacji niż tylko pole pod krzywą ROC. Wróćmy znów do przypadku dwuklasowego i przyjrzyjmy się wykresowi \ref{fig:f2}. Na osi OY mamy współczynnik TNR, czyli prawdopodobieństwo, że wyestymujemy klasę negatywną pod warunkiem, że klasa rzeczywiście jest negatywna. Równoważnie, można to zapisać jako prawdopodobieństwo, że prawdopodobieństwo odpowiadające negatywnej obserwacji jest mniejsze niż pewien próg odcięcia. Analogicznie TPR to prawdopodobieństwo, że prawdopodobieństwo odpowiadające pozytywnej obserwacji jest większe niż próg odcięcia. Łącząc oba wyniki otrzymamy, że współczynnik AUC to nic innego tylko prawdopodobieństwo, że losowo wybrana pozytywna obserwacja będzie mieć wyższe prawdopodobieństwo niż losowo wybrana negatywna obserwacja. Innymi słowy, będą one dobrze uporządkowane. Łatwo to już uogólnić na więcej, w naturalny sposób uporządkowanych, wymiarów. Interesować nas będzie pewna estymacja tego prawdopodobieństwa. Łatwo można zauważyć, że będzie nią tzw. statystyka $U$  Manna–Whitney'a–Wilcoxona (por. \cite{roc1}, \cite{roc2}), czyli wyrażenie:
+Jako, że liczenie objętości pod hiperpłaszczyzną jest numerycznie raczej trudnym zadaniem, w celu wyliczenia współczynnika VUS, skorzystamy z jego nieco innej interpretacji niż tylko pole pod krzywą ROC. Wróćmy znów do przypadku dwuklasowego i przyjrzyjmy się wykresowi \ref{fig:f2}. Na osi OY mamy współczynnik TNR, czyli prawdopodobieństwo, że wyestymujemy klasę negatywną pod warunkiem, że klasa rzeczywiście jest negatywna. Równoważnie, można to zapisać jako prawdopodobieństwo, że prawdopodobieństwo odpowiadające negatywnej obserwacji jest mniejsze niż pewien próg odcięcia. Analogicznie TPR to prawdopodobieństwo, że prawdopodobieństwo odpowiadające pozytywnej obserwacji jest większe niż próg odcięcia. Łącząc oba wyniki otrzymamy, że współczynnik AUC to nic innego tylko prawdopodobieństwo, że losowo wybrana pozytywna obserwacja będzie mieć wyższe prawdopodobieństwo niż losowo wybrana negatywna obserwacja. Innymi słowy, będą one dobrze uporządkowane. Łatwo to już uogólnić na więcej wymiarów. Interesować nas będzie pewna estymacja tego prawdopodobieństwa. Łatwo można zauważyć, że będzie nią tzw. statystyka $U$  Manna–Whitney'a–Wilcoxona (por. \cite{roc1}, \cite{roc2}), czyli wyrażenie:
 
 $$
 VUS = \dfrac{1}{n_1n_2\cdot\ldots\cdot n_r}\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\ldots\sum_{i_r=1}^{n_r}\mathbb{I}_{\lbrace f(\mathbf{x}_{i_1}^1)<\ldots<f(\mathbf{x}_{i_r}^r)\rbrace},
 $$
-gdzie $\textbf{x}_i^j$ oznacza $i-$ty wektor cech $\mathbf{x}$ o prawdziwej klasie $j$, $n_i$ to liczba obserwacji zaklasyfikowanych przez nas jako klasa $i$, a $f$ to pewna funkcja, która zwraca liczbę rzeczywistą, mającą estymować uporządkowanie obserwacji. 
+gdzie $\textbf{x}_i^j$ oznacza $i-$ty wektor cech $\mathbf{x}$ o prawdziwej klasie $j$, $n_i$ to liczba obserwacji zaklasyfikowanych przez nas jako klasa $i$, a $f$ to pewna funkcja, która zwraca liczbę rzeczywistą, mającą estymować uporządkowanie obserwacji (w większości przypadków, będzie to prawdopodobieństwo zwracane na koniec).
 
 Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpretowalnym i pomocnym narzędziem do oceny jakości modelu i podejmowania decyzji, który model jest najlepszy. Największą jego wadą wydaje się konieczność znania prawdopodobieństw przynależności do klas (lub po prostu funkcji, która pozwoli nasze obserwacje uporządkować), a nie każda metoda takie prawdopodobieństwa zwraca (np. nie robią tego sieci neuronowe). Trzeba wtedy odwołać się do prostszych metod (takich jak procent poprawności dopasowania lub czułość). Większość modeli oferuje jednak taką możliwość, więc niewątpliwie warto z tego narzędzia diagnostycznego korzystać.
 
@@ -615,18 +631,106 @@ Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpr
 
 \appendix
 
-\chapter{fdaaggfdadfsd}
+\chapter{Wyprowadzenia pomocniczych twierdzeń}
+
+\section{Wzór Bayesa dla więcej niż jednego warunku}\label{app1}
+
+Korzystając ze wzoru Bayesa dla prawdopodobieństwa warunkowego i rozpisując jedynie warunek $B$, a warunek $A$ pozostawiając bez zmian, otrzymujemy:
+
+$$
+\mathbb{P}(A | B, C) 
+=
+\frac{
+\mathbb{P}(B | A, C)
+\mathbb{P}(A | C)
+}{
+\mathbb{P}(B | C)
+}. 
+$$
+
+Następnie, zakładając, że $A$ jest zależne od $C$, możemy w prawdopodobieństwie $\mathbb{P}(B | A, C)$ pominąć warunek $C$, gdyż jest on już niejako zawarty w warunku $A$. W rezultacie otrzymujemy:
+
+$$
+\mathbb{P}(A | B, C) 
+=
+\frac{
+\mathbb{P}(B | A)
+\mathbb{P}(A | C)
+}{
+\mathbb{P}(B | C)
+}. 
+$$
+
+\section{Całka z iloczynu dystrybuanty i gęstości rozkładu normalnego}\label{app2}
+
+Niech $X \sim \mathcal{N}(\mu, \sigma^2)$ o gęstości $f(\cdot)$, zaś $\Phi$ to dystrybuanta standardowego rozkładu normalnego (czyli $\Phi(x)=\int_{-\infty}^x \mathcal{N}(y) dy$). Interesuje nas policzenie całki
+$$
+I := \int_\mathbb{R} \Phi(\frac{x-m}{\nu})f(x) dx.
+$$
+Zacznijmy od zwykłego rozpisania podstawowych symboli.
+
+$$
+I = \int_\mathbb{R}\int_{-\infty}^{\frac{x-m}{\nu}} \frac{1}{\sqrt{2\Pi}}e^{-\frac{y^2}{2}} dy \cdot \frac{1}{\sqrt{2\Pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}} dx
+= 
+\frac{1}{2\Pi\sigma}\int_\mathbb{R}\int_{-\infty}^{\frac{x-m}{\nu}} e^{-\frac{y^2}{2} - \frac{(x-\mu)^2}{2\sigma^2}} dy dx
+$$
+
+Następnie zróbmy po kolei trzy podstawienia $u = \nu y+m$, $z=(u-m)-(x-\mu)$ oraz $w=x-\mu$ i zamieńmy kolejność całkowania. 
+
+\begin{eqnarray*}
+I &=&
+\frac{1}{2\Pi\sigma\nu}\int_\mathbb{R}\int_{-\infty}^{x} e^{-\frac{(u-m)^2}{2\nu^2} - \frac{(x-\mu)^2}{2\sigma^2}} du dx
+=
+\frac{1}{2\Pi\sigma\nu}\int_\mathbb{R}\int_{-\infty}^{\mu-m} e^{-\frac{(z+(x-\mu))^2}{2\nu^2} - \frac{(x-\mu)^2}{2\sigma^2}} dz dx=\\
+&=&
+\frac{1}{2\Pi\sigma\nu}\int_{-\infty}^{\mu-m}\int_\mathbb{R} e^{-\frac{(z+w)^2}{2\nu^2} - \frac{w^2}{2\sigma^2}} dw dz
+\end{eqnarray*}
+
+Zajmijmy się na razie tylko środkową całką. Po sprowadzeniu do wspólnego mianownika i prostych przekształceniach, otrzymamy:
+
+\begin{eqnarray*}
+A &=& \int_\mathbb{R} e^{-\frac{(z+w)^2}{2\nu^2} - \frac{w^2}{2\sigma^2}} dw
+=
+\int_\mathbb{R} e^{-\frac{\left(w\sqrt{\sigma^2+\nu^2} + z\frac{\sigma^2}{\sqrt{\sigma^2+\nu^2}}\right)^2}{2\nu^2\mu^2} - \frac{z^2}{2(\sigma^2+\nu^2)}} dw=\\
+&=&
+e^{- \frac{z^2}{2(\sigma^2+\nu^2)}}\int_\mathbb{R} e^{-\frac{\left(w\sqrt{\sigma^2+\nu^2} + z\frac{\sigma^2}{\sqrt{\sigma^2+\nu^2}}\right)^2}{2\nu^2\mu^2}} dw.
+\end{eqnarray*}
+
+Robiąc podstawienie $u = \frac{w\sqrt{\sigma^2+\nu^2} + z\frac{\sigma^2}{\sqrt{\sigma^2+\nu^2}}}{\nu\sigma}$ oraz korzystając z faktu, że gęstość rozkładu prawdopodobieństwa całkuje się do jedynki, otrzymamy:
+
+\begin{eqnarray*}
+A = e^{-\frac{z^2}{2}}\cdot \sqrt{2\Pi}\cdot \underbrace{\frac{1}{\sqrt{2\Pi}} \int_{\mathbb{R}} e^{-\frac{u^2}{2}} du}_{=1} \cdot\frac{\nu\sigma\sqrt{\sigma^2+\nu^2}}{\sigma^2+\nu^2}
+=
+\sqrt{2\Pi}\frac{\nu\sigma}{\sqrt{\sigma^2+\nu^2}}e^{-\frac{z^2}{2(\sigma^2+\nu^2)}}.
+\end{eqnarray*}
+
+Wróćmy teraz do szukanej całki.
+
+\begin{eqnarray*}
+I = 
+\frac{1}{2\Pi\sigma\nu} \int_{-\infty}^{\mu-m} A\hspace{3mm} dz
+=
+\frac{1}{2\Pi\sigma\nu} \sqrt{2\Pi}\frac{\nu\sigma}{\sqrt{\sigma^2+\nu^2}}  \int_{-\infty}^{\mu-m} e^{-\frac{z^2}{2(\sigma^2+\nu^2)}} dz
+\end{eqnarray*}
+
+Robiąc podstawienie $x = \frac{z}{\sqrt{\sigma^2+\nu^2}}$, otrzymamy:
+
+\begin{eqnarray*}
+I = 
+\frac{1}{\sqrt{2\Pi}}\int_{-\infty}^{\frac{\mu-m}{\sqrt{\sigma^2+\nu^2}}} e^{-\frac{x^2}{2}} dx = \Phi \left(   \frac{\mu-m}{\sqrt{\sigma^2+\nu^2}}  \right).
+\end{eqnarray*}
 
 %-----------------------------------------------------------------------------%
 
 \begin{thebibliography}{9}
+	% model proporcjonalnych szans
+	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001.
 	% simple approach
 	\bibitem{fh} Frank E., Hall M., A simple approach to ordinal classification, \emph{Proceedings of the European Conference on Machine Learning}, Freibourg, Niemcy, 2001, str. 146--156.
 	% neutral network
 	\bibitem{nna} Cheng J., Wang Z., Pollastri G., A neural network approach to ordinal regression, \emph{Neutral Networks}, Hong Kong, 2008.
 	% svm
-	\bibitem{koronacki} Koronacki J., Ćwik J., Statystyczne systemy uczące się, Warszawa, 2005.
-	\bibitem{pom} Dobson A. J., An Introduction to Generalized Linear Models, 2nd Edition, 2001. 
+	\bibitem{koronacki} Koronacki J., Ćwik J., Statystyczne systemy uczące się, Warszawa, 2005. 
 	\bibitem{svm} Chu W., Sathiya Keerthi S., \emph{Support Vector Ordinal Regression}
 	% gaussian process	
 	\bibitem{reg} Chu W., Ghahramani Z., \emph{Gaussian Processes for Ordinal Regression}.
