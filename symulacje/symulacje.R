@@ -10,6 +10,8 @@ setwd("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\d
 ###############################################################
 
 dane <- dir()
+dane <- dane[stri_detect_regex(dane, ".*?[.]txt")]
+
 l <- length(dane)
 lista_danych <- vector("list", l)
 
@@ -60,20 +62,34 @@ grid.arrange(wykresy[[1]], wykresy[[2]], wykresy[[3]],
 ######### podzial na zbior testowy i treningowy ###############
 ###############################################################
 
-set.seed(456872415)
+set.seed(156912)
 
 # 30% - testowy, 70% - treningowy
+
+if(!file.exists("zmienione")) dir.create("zmienione")
+if(!file.exists("zmienione0")) dir.create("zmienione0")
 
 for(i in 1:l){
      ile <- ceiling(0.3*ile_wierszy[i])
      s <- sample(1:ile_wierszy[i], ile)
      
-     testowy <- lista_danych[[i]][s, ]
+     testowy <- lista_danych[[i]][s, -ile_kolumn[i]]
      treningowy <- lista_danych[[i]][-s, ]
+     targets <- as.data.frame(lista_danych[[i]][s, ile_kolumn[i]])
      
-     write.table(testowy, paste(nazwa_zbioru[i], "_testowy.txt", sep=""),
-                 col.names=TRUE, row.names=FALSE, sep=" ", quote=FALSE)
-     write.table(treningowy, paste(nazwa_zbioru[i], "_treningowy.txt", sep=""),
-                 col.names=TRUE, row.names=FALSE, sep=" ", quote=FALSE)     
+     write.table(testowy, paste(".\\zmienione\\", nazwa_zbioru[i], "_test.txt", sep=""),
+                 col.names=FALSE, row.names=FALSE, sep=" ", quote=FALSE)
+     write.table(treningowy, paste(".\\zmienione\\", nazwa_zbioru[i], "_train.txt", sep=""),
+                 col.names=FALSE, row.names=FALSE, sep=" ", quote=FALSE)
+     write.table(targets, paste(".\\zmienione\\", nazwa_zbioru[i], "_targets.txt", sep=""),
+                 col.names=FALSE, row.names=FALSE, sep=" ", quote=FALSE)
+     
+     write.table(testowy, paste(".\\zmienione0\\", nazwa_zbioru[i], "_test.0", sep=""),
+                 col.names=FALSE, row.names=FALSE, sep=" ", quote=FALSE)
+     write.table(treningowy, paste(".\\zmienione0\\", nazwa_zbioru[i], "_train.0", sep=""),
+                 col.names=FALSE, row.names=FALSE, sep=" ", quote=FALSE)
+     write.table(targets, paste(".\\zmienione0\\", nazwa_zbioru[i], "_targets.0", sep=""),
+                 col.names=FALSE, row.names=FALSE, sep=" ", quote=FALSE)
 }
+
 
