@@ -10,7 +10,7 @@ setwd("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\d
 ###############################################################
 
 dane <- dir()
-dane <- dane[stri_detect_regex(dane, ".*?[.]txt")]
+dane <- dane[stri_detect_regex(dane, ".*?[.]txt")][c(3,6)]
 
 l <- length(dane)
 lista_danych <- vector("list", l)
@@ -63,6 +63,8 @@ grid.arrange(wykresy[[1]], wykresy[[2]], wykresy[[3]],
 ###############################################################
 
 set.seed(156912)
+# dla diabetes set.seed(3)
+# dla pyrim set.seed(14)
 
 # 30% - testowy, 70% - treningowy
 
@@ -75,6 +77,7 @@ for(i in 1:l){
      
      testowy <- lista_danych[[i]][s, -ile_kolumn[i]]
      treningowy <- lista_danych[[i]][-s, ]
+     # table(treningowy[,ncol(treningowy)])
      targets <- as.data.frame(lista_danych[[i]][s, ile_kolumn[i]])
      
      write.table(testowy, paste(".\\zmienione\\", nazwa_zbioru[i], "_test.txt", sep=""),

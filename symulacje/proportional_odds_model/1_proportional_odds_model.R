@@ -1,5 +1,6 @@
 library("MASS")
 library("stringi")
+library("rms")
 
 setwd("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\dane\\zmienione")
 
@@ -76,4 +77,34 @@ m9_pred_class <- predict(m9, lista_test[[9]], type="class")
 m9_praw_class <- lista_targets[[9]]
 
 # 1, 5, 6, 8 -> nie chca sie zrobic
+
+m1 <- lrm(as.factor(V11)~., data=lista_tren[[1]][,-3])
+m1_pred_prob <- predict(m1, lista_test[[1]], type="fitted.ind")
+m1_pred_class <- max.col(m1_pred_prob)
+m1_pred_f <- predict(m1, lista_test[[1]], type="lp")
+m1_praw_class <- lista_targets[[1]]
+
+m5 <- lrm(as.factor(V7)~., data=lista_tren[[5]])
+m5_pred_prob <- predict(m5, lista_test[[5]], type="fitted.ind")
+m5_pred_class <- max.col(m5_pred_prob)
+m5_pred_f <- predict(m5, lista_test[[5]], type="lp")
+m5_praw_class <- lista_targets[[5]]
+
+# tu wciaz nie dziala...:
+
+m6 <- lrm(as.factor(V28)~., data=lista_tren[[6]][,c(-25, -27)])
+m6_pred_prob <- predict(m6, lista_test[[6]], type="fitted.ind")
+m6_pred_class <- max.col(m6_pred_prob)
+m6_pred_f <- predict(m6, lista_test[[6]], type="lp")
+m6_praw_class <- lista_targets[[6]]
+
+m8 <- lrm(as.factor(V61)~., data=lista_tren[[8]][,-c(58:60, 53:54, 43:44, 24:30, 20, 14, 19)])
+m8_pred_prob <- predict(m5, lista_test[[5]], type="fitted.ind")
+m8_pred_class <- max.col(m5_pred_prob)
+m8_pred_f <- predict(m5, lista_test[[5]], type="lp")
+m8_praw_class <- lista_targets[[8]]
+
+
+
+
 
