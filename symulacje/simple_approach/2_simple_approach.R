@@ -3,6 +3,7 @@ library("dplyr")
 library("rpart")
 
 setwd("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\dane\\zmienione")
+source("..\\..\\vus.R")
 
 # wczytanie danych
 
@@ -83,17 +84,32 @@ for(j in 1:l){
      for(i in 2:(ile_zbiorow[j]+1)){
           tabela <- cbind(tabela, lista_pstw[[j]][[i]])
      }
-     klasa[[j]] <- max.col(tabela)     
+     klasa[[j]] <- cbind(max.col(tabela), apply(tabela, 1, max))     
 }
 
 prawdziwy_y <- lapply(lista_targets, function(x) x$V1)
-klasa
+# klasa
+ff <- lapply(klasa, function(x) x[,1] + x[,2])
 
 # ile to taki zwykly procent dopasowania na razie
 
-ile <- numeric(l)
+proc_poprawn <- numeric(l)
 for(i in 1:l){
-     ile[i] <- sum(prawdziwy_y[[i]] == klasa[[i]])*100/length(klasa[[i]])     
+     proc_poprawn[i] <- sum(prawdziwy_y[[i]] == klasa[[i]])*100/length(klasa[[i]])     
 }
 
-ile
+#
+
+stri_match_all_regex(dane_tren, "(.*?)_train[.]txt") %>%
+     lapply(., function(x) x[,2]) %>%
+     unlist() -> nazwy
+
+# gdzie <- "C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\simple_approach\\model_pom"
+# save(nazwy, prawdziwy_y, klasa, ff, file=gdzie)
+
+
+
+
+
+
+

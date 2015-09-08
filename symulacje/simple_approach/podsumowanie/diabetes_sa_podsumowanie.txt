@@ -1,0 +1,12 @@
+10
+13
+0.15
+0.5090909
+7.692308
+y ile_zgodnych ile_y_w_grupie procent_zgodnych_w_grupach
+2 0 1 0
+3 1 1 100
+4 1 1 100
+5 0 4 0
+6 0 5 0
+7 0 1 0

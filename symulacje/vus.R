@@ -1,10 +1,10 @@
 
-vus <- function(szacowane_klasy, estymacja_porzadku){
+vus <- function(prawdziwe_klasy, estymacja_porzadku){
      
-     stopifnot(length(szacowane_klasy) == length(estymacja_porzadku))
+     stopifnot(length(prawdziwe_klasy) == length(estymacja_porzadku))
      
      o <- order(estymacja_porzadku)
-     posort_dane <- szacowane_klasy[o]
+     posort_dane <- prawdziwe_klasy[o]
      
      jakie <- as.numeric(names(table(posort_dane)))
      mianownik <- prod(table(posort_dane))
@@ -33,15 +33,14 @@ vus <- function(szacowane_klasy, estymacja_porzadku){
      
 }
 
-
 # posort_dane <- c(1,2,1,3,2,3,4,1,2,3,4,5,4,5,3,4,5)
 
 # przyklad:
-
-y <- c(1, 2, 1, 3, 2, 3, 1, 2, 3, 3)
-f <- c(1, 2, 4, 5, 8, 11, 12, 16, 17, 20)
-
-vus(y, f)
+# 
+# y <- c(1, 2, 1, 3, 2, 3, 1, 2, 3, 3)
+# f <- c(1, 2, 4, 5, 8, 11, 12, 16, 17, 20)
+# 
+# vus(y, f)
 
 
 

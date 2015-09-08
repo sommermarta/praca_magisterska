@@ -1,0 +1,50 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{savesym}
+\savesymbol{arc}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{pict2e}
+\usepackage{epstopdf}
+\usepackage{geometry}
+
+\newgeometry{tmargin=1cm, bmargin=1cm, lmargin=1cm, rmargin=1cm}
+\pagestyle{empty}
+\linespread{1.2}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+    
+<<results=tex, echo=FALSE>>=
+library("xtable")
+
+nazwy <- dir("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\ostatecznie")
+tabele <- vector("list", length(nazwy))
+
+for(i in 1:length(nazwy)){
+     a <- read.table(paste("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\ostatecznie\\", nazwy[i], sep=""), header=TRUE)
+     names(a)[1:3] <- c("VUS", "PPK", "MOJ")
+     tabele[[i]] <- xtable(a, caption=nazwy[i], digits=2)
+}
+for(i in 1:length(nazwy)){
+     print(tabele[[i]])
+}
+#a$PPK <- paste("\\textcolor{red}{", a$PPK, "}", sep="")
+rws <- c(1,4)
+col <- c("\\rowcolor[gray]{0.95}", "\\rowcolor[gray]{0.7}")
+print(xtable(a, caption=nazwy[i], digits=2), add.to.row = list(pos = as.list(rws), command = col))
+@
+
+
+\end{document}
+    
+    
+    
