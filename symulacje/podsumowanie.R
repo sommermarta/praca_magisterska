@@ -40,8 +40,9 @@ for(i in 1:length(nazwy)){
      ile <- length(y)
      
      if(ile_poz==10) kara <- kara10 else kara <- kara5
-     tabela <- table(abs(y-y_est))
-     moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     tabela <- abs(y-y_est)
+     #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     moj_wsk <- sum(tabela)/length(y)
      
      gdzie <- paste("..\\podsumowanie\\", nazwa, "_gpor_podsumowanie.txt", sep="") 
      
@@ -98,8 +99,9 @@ for(i in 1:length(nazwy)){
      ile <- length(y)
      
      if(ile_poz==10) kara <- kara10 else kara <- kara5
-     tabela <- table(abs(y-y_est))
-     moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     tabela <- abs(y-y_est)
+     #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     moj_wsk <- sum(tabela)/length(y)
      
      gdzie <- paste("..\\..\\podsumowanie\\", nazwa, "_svm_podsumowanie.txt", sep="") 
      
@@ -155,8 +157,9 @@ for(i in 1:length(nazwy)){
      ile <- length(y)
      
      if(ile_poz==10) kara <- kara10 else kara <- kara5
-     tabela <- table(abs(y-y_est))
-     moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     tabela <- abs(y-y_est)
+     #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     moj_wsk <- sum(tabela)/length(y)
      
      gdzie <- paste("..\\podsumowanie\\", nazwa, "_nn_podsumowanie.txt", sep="") 
      
@@ -200,8 +203,9 @@ for(i in 1:length(nazwy)){
      ile <- length(y)
      
      if(ile_poz==10) kara <- kara10 else kara <- kara5
-     tabela <- table(abs(y-y_est))
-     moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     tabela <- abs(y-y_est)
+     #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     moj_wsk <- sum(tabela)/length(y)
      
      gdzie <- paste(".\\", nazwa, "_pom_podsumowanie.txt", sep="") 
      
@@ -230,6 +234,7 @@ for(i in 1:length(nazwy)){
      y_est <- klasa[[i]][,1]
      f <- ff[[i]]
      est_vus <- vus(prawdziwe_klasy=y, estymacja_porzadku=f)
+     proc_poprawnosci <- sum(y_est == y)*100/length(y)
      
      data.frame(y=y, y_est=y_est) %>%
           mutate(czy_zgodne = ifelse(y==y_est, 1, 0)) %>%
@@ -241,8 +246,9 @@ for(i in 1:length(nazwy)){
      ile <- length(y)
      
      if(ile_poz==10) kara <- kara10 else kara <- kara5
-     tabela <- table(abs(y-y_est))
-     moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     tabela <- abs(y-y_est)
+     #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
+     moj_wsk <- sum(tabela)/length(y)
      
      gdzie <- paste("..\\..\\simple_approach\\podsumowanie\\", nazwa, "_sa_podsumowanie.txt", sep="") 
      
@@ -250,7 +256,7 @@ for(i in 1:length(nazwy)){
      write(ile, gdzie, append=TRUE)
      write(est_vus, gdzie, append=TRUE)
      write(moj_wsk, gdzie, append=TRUE)
-     write(proc_poprawn[i], gdzie, append=TRUE)
+     write(proc_poprawnosci, gdzie, append=TRUE)
      write.table(dane, gdzie, col.names=TRUE, row.names=FALSE, quote=FALSE, append=TRUE)
      
 }

@@ -1,7 +1,7 @@
 5
 285
 0.7312299
-0.174359
+0.2807018
 72.63158
 y ile_zgodnych ile_y_w_grupie procent_zgodnych_w_grupach
 1 38 44 86.3636363636364

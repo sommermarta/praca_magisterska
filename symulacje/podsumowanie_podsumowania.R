@@ -43,7 +43,7 @@ for(i in 1:length(nazwy)){
           m <- rbind(m, c(vus, procent, moj, tabela))     
      }
      
-     colnames(m) <- c("vus", "ppk", "moj", paste("pp_", 1:length(tabela), sep=""))
+     colnames(m) <- c("vus", "ppk", "abs", paste("pp_", 1:length(tabela), sep=""))
      rownames(m) <- names(wszystko)
      
      write.table(m, paste(".\\ostatecznie\\", nazwa, ".txt", sep=""), 

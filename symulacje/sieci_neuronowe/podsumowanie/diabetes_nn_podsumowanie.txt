@@ -1,7 +1,7 @@
 10
 13
 NA
-1.08
+1.230769
 23.07692
 y ile_zgodnych ile_y_w_grupie procent_zgodnych_w_grupach
 2 0 1 0
