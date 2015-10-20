@@ -504,10 +504,36 @@ Dla nowej obserwacji wystarczy teraz jedynie wyznaczyć $\underset{i}\argmax \ma
 
 \chapter{Diagnostyka modelu}
 
-W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od konkretnych danych. W przypadku dwuklasowym najczęściej stosowaną metodą oceny jest porównywanie krzywych ROC (ang. \textit{Receiver Operating Characteristic}) i pól pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można tę metodę uogólnić na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
+W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od konkretnych danych. Mamy jednak do dyspozycji kilka wskaźników, które pomogą nam w ocenie jakości modelu. Nie różnią się one zbytnio od tych, które znamy ze zwykłej klasyfikacji -- są jedynie ich pewnym uogólnieniem. Możemy zatem używać:
+\begin{itemize}
+	\item procentu poprawnej klasyfikacji,
+	\item średniego błędu bezwzględnego (lub kwadratowego),
+	\item krzywej ROC i współczynnika AUC.	
+\end{itemize} 
+
+\section{Procent poprawnej klasyfikacji}
+
+Procent poprawnej klasyfikacji jest bardzo prosty i intuicyjny. Żeby nie było jednak żadnych wątpliwości zdefiniujmy go formalnie. Niech $y$ będzie $n$-wymiarowym wektorem prawdziwych klas dla zbioru testowego, a $y^\ast$ wektorem klas otrzymanych z modelu dla tego zbioru. Wówczas procentem poprawnej klasyfikacji nazywamy:
+$$
+PPK = \frac{1}{n}\sum_{i=1}^n \mathbb{I}{\lbrace y_i=y^\ast_i \rbrace}.
+$$ 
+Niestety, współczynnik ten ma wiele wad. 
+
+Po pierwsze, działa źle w przypadku, gdy klasy są niezbilansowane. Zobaczmy to na przykładzie, załóżmy, że rozpatrujemy przypadek trzy-klasowy. Klasa pierwsza występuje w $95\%$ przypadków, a klasa druga i trzecia w $5\%$ przypadków. Załóżmy również, że nasz klasyfikator jest bardzo prymitywny i klasyfikuje wszystko jako jedynki, nie zważając na wektor cech. Co wtedy otrzymujemy? Aż $95\%$ procent poprawnej klasyfikacji!
+
+Po drugie, traktuje każdy błąd zero-jedynkowy. Na przykład, gdy rozważamy regresję porządkową z dziesięcioma klasami, PPK tak samo traktować będzie przypisanie obserwacji jedynki i dziewiątki, gdy rzeczywiście była dziesiątka. A przecież to jest ogromna różnica.
+
+\section{Średni błąd bezwzględny}
+
+Drugą wymienioną wyżej wadę procentu poprawnej klasyfikacji omija tzw. średni błąd bezwzględny. Korzystając z tych samych oznaczeń, możemy go zdefiniować jako:
+$$
+ABSerr = \frac{1}{n}\sum_{i=1}^n | y_i - y^\ast_i |. 
+$$
+Wciąż jednak nie jest on odporny na niezbilansowane klasy. 
 
 \section{Krzywa ROC w przypadku dwuklasowym}
 
+W przypadku dwuklasowym najczęściej stosowaną metodą oceny modelu jest porównywanie krzywych ROC (ang. \textit{Receiver Operating Characteristic}) i pól pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można tę metodę uogólnić na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
 
 Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy najpierw, jak otrzymać ją w najprostszym, dwuklasowym przypadku. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (patrz Rys.\ref{tabeladopasowania}).
 
@@ -629,176 +655,76 @@ Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpr
 
 \chapter{Symulacje}
 
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
+W poprzednich rozdziałach poznaliśmy różne techniki radzenia sobie z problemem regresji porządkowej. Znamy już również techniki oceny klasyfikatorów. Spróbujmy teraz zobaczyć, jak na rzeczywistych danych zachowuje się każda z poznanych metod. 
+
+\section{Opis danych}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.6]{graphics/rozklad_odpowiedzi.png}
+\end{center}
+\caption{Rozkłady odpowiedzi poszczególnych zbiorów danych.}
+\label{rozkladdanych}
+\end{figure}
+
+Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing, machine, pyrim, stock, triazines} oraz \textit{wpbc}) o różnej liczbie klas ($5$ lub $10$), różnej liczbie obserwacji oraz różnym rozkładzie klas (patrz Rys. \ref{rozkladdanych}). Zbiory znaleźć można tu: \cite{zbiorki}. 
+
+Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze treningowym. Dla każdego zbioru otrzymaliśmy współczynniki VUS, PPK i ABSerr dla każdej metody. Wszystkie wyniki zobaczyć można w tabeli \ref{wyniki}.
+
+
 \begin{table}[ht]
 \centering
-\begin{tabular}{rrrrrrrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 & pp\_6 & pp\_7 & pp\_8 & pp\_9 & pp\_10 \\
-\hline
-gpor & 0 & 56.38 & 0.38 & 0 & 36.64 & 71.58 & 69.98 & 10.29 & 0.00 & 16 & 0 & 0 & 0 \\
-pom & 0 & 55.18 & 0.36 & 0 & 40.46 & 69.71 & 66.90 & 11.03 & 0.00 & 20 & 0 & 0 & 0 \\
-nn & & 56.86 & 0.28 & 50 & 52.67 & 62.86 & 70.45 & 25.74 & 16.67 & 0 & 0 & 0 & 0 \\
-sa & 0 & 27.59 & 0.33 & 50 & 49.62 & 62.45 & 68.09 & 22.06 & 14.29 & 4 & 0 & 0 & 0 \\
-svm & 0 & 56.30 & 0.31 & 50 & 51.15 & 58.51 & 76.36 & 17.65 & 14.29 & 12 & 0 & 0 & 0 \\
-\hline
+\begin{tabular}{rrrrrrr}
+  &   & \rotatebox{70}{Procesy gaussowskie} & \rotatebox{70}{\parbox{35mm}{Model proporcjonalnych szans}} & \rotatebox{70}{Sieci neuronowe} &\rotatebox{70}{Metoda Franka i Halla} & \rotatebox{70}{\parbox{40mm}{Wektory maszyn\\ podpierających (SVM)}} \\ 
+  \hline
+\multirow{3}{15mm}{abalone} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 \\ 
+   & PPK [\%] & 56,38 & 55,18 & \color{red}{56,86} & 55,18 & 56,30 \\ 
+   & ABSerr & 0,55 & 0,55 & \color{red}{0,51} & 0,55 & 0,52 \\ 
+   \hline
+\multirow{3}{15mm}{auto} & VUS [\%] & \color{red}{3,54} & 1,13 & -- & 0,25 & 0,81 \\ 
+   & PPK [\%] & 37,29 & \color{red}{49,15} & 48,31 & 43,22 & 38,98 \\ 
+   & ABSerr & 1,08 & \color{red}{0,63} & 0,66 & 0,73 & 0,90 \\ 
+   \hline
+\multirow{3}{15mm}{diabetes} & VUS [\%] & 5,00 & 5,00 & -- & \color{red}{15,00} & 5,00 \\ 
+   & PPK [\%] & \color{red}{23,08} & \color{red}{23,08} & \color{red}{23,08} & 15,38 & \color{red}{23,08} \\ 
+   & ABSerr & 1,46 & 1,31 & \color{red}{1,23} & \color{red}{1,23} & 1,38 \\ 
+   \hline
+\multirow{3}{15mm}{housing} & VUS [\%] & 54,46 & \color{red}{55,31} & -- & 42,06 & 51,33 \\ 
+   & PPK [\%] & 67,11 & 67,11 & \color{red}{75,00} & 72,37 & 72,37 \\ 
+   & ABSerr & 0,36 & 0,35 & \color{red}{0,26} & 0,28 & 0,29 \\ 
+   \hline
+\multirow{3}{15mm}{machine} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 \\ 
+   & PPK [\%] & 57,14 & \color{red}{68,25} & 66,67 & 66,67 & 60,32 \\ 
+   & ABSerr & 1,17 & 0,52 & \color{red}{0,51} & 0,67 & 0,73 \\ 
+   \hline
+\multirow{3}{15mm}{pyrim} & VUS [\%] & \color{red}{1,11} & 0,00 & -- & 0,56 & 0,93 \\ 
+   & PPK [\%] & 21,74 & 8,70 & \color{red}{52,17} & 30,43 & 47,83 \\ 
+   & ABSerr & 1,30 & 1,65 & \color{red}{0,91} & \color{red}{0,91} & 0,96 \\ 
+   \hline
+\multirow{3}{15mm}{stock} & VUS [\%] & 53,97 & 73,12 & -- & 56,53 & \color{red}{96,01} \\ 
+   & PPK [\%] & 58,95 & 72,63 & 83,16 & 81,40 & \color{red}{91,58} \\ 
+   & ABSerr & 0,42 & 0,28 & 0,18 & 0,19 & \color{red}{0,08} \\ 
+   \hline
+\multirow{3}{15mm}{triazines} & VUS [\%] & 1,84 & 1,83 & -- & \color{red}{5,45} & 1,96 \\ 
+   & PPK [\%] & 51,79 & 39,29 & 39,29 & \color{red}{53,57} & 51,79 \\ 
+   & ABSerr & 0,64 & 0,91 & 0,71 & \color{red}{0,61} & 0,64 \\ 
+   \hline
+\multirow{3}{15mm}{wpbc} & VUS [\%] & \color{red}{4,44} & 3,99 & -- & 0,63 & 1,88 \\ 
+   & PPK [\%] & 33,90 & 30,51 & \color{red}{35,59} & 28,81 & 28,81 \\ 
+   & ABSerr & 1,12 & 1,25 & \color{red}{0,86} & 1,02 & 0,92 \\ 
+   \hline
 \end{tabular}
-\caption{abalone.txt}
+\caption{Tabela wyników. Na czerwono zaznaczony jest najlepszy wynik dla każdego wskaźnika każdego zbioru. Dla sieci neuronowych nie da się niestety obliczyć współczynnika VUS.}
+\label{wyniki} 
 \end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 & pp\_6 & pp\_7 & pp\_8 & pp\_9 & pp\_10 \\
-\hline
-gpor & 0.04 & 37.29 & 1.09 & 100.00 & 53.57 & 57.89 & 25.00 & 15.38 & 17.65 & 38.46 & 22.22 & 0 & 0 \\
-pom & 0.01 & 49.15 & 0.32 & 66.67 & 60.71 & 52.63 & 75.00 & 46.15 & 17.65 & 61.54 & 33.33 & 0 & 0 \\
-nn & & 48.31 & 0.43 & 0.00 & 75.00 & 52.63 & 58.33 & 53.85 & 17.65 & 69.23 & 0.00 & 0 & 0 \\
-sa & 0.00 & 21.61 & 0.45 & 33.33 & 53.57 & 63.16 & 50.00 & 46.15 & 35.29 & 23.08 & 22.22 & 0 & 0 \\
-svm & 0.01 & 38.98 & 0.65 & 0.00 & 67.86 & 68.42 & 0.00 & 53.85 & 0.00 & 53.85 & 0.00 & 0 & 0 \\
-\hline
-\end{tabular}
-\caption{auto.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 & pp\_6 \\
-\hline
-gpor & 0.05 & 23.08 & 1.76 & 0 & 0 & 0 & 50 & 20 & 0 \\
-pom & 0.05 & 23.08 & 1.17 & 0 & 0 & 0 & 50 & 20 & 0 \\
-nn & & 23.08 & 1.08 & 0 & 0 & 0 & 25 & 40 & 0 \\
-sa & 0.15 & 7.69 & 0.51 & 0 & 100 & 100 & 0 & 0 & 0 \\
-svm & 0.05 & 23.08 & 1.05 & 0 & 0 & 0 & 50 & 20 & 0 \\
-\hline
-\end{tabular}
-\caption{diabetes.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 \\
-\hline
-gpor & 0.54 & 67.11 & 0.33 & 47.83 & 84.93 & 66.67 & 0.00 & 70 \\
-pom & 0.55 & 67.11 & 0.27 & 47.83 & 83.56 & 66.67 & 7.69 & 70 \\
-nn & & 75.00 & 0.25 & 65.22 & 89.04 & 60.61 & 53.85 & 70 \\
-sa & 0.42 & 36.18 & 0.10 & 52.17 & 84.93 & 60.61 & 46.15 & 100 \\
-svm & 0.51 & 72.37 & 0.24 & 52.17 & 87.67 & 69.70 & 30.77 & 70 \\
-\hline
-\end{tabular}
-\caption{housing.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 & pp\_6 & pp\_7 & pp\_8 & pp\_9 & pp\_10 \\
-\hline
-gpor & 0 & 57.14 & 2.97 & 100.00 & 0.00 & 0.00 & 0 & 0.00 & 0 & 0 & 0 & 0 & 100 \\
-pom & 0 & 68.25 & 1.31 & 94.12 & 27.27 & 50.00 & 0 & 33.33 & 0 & 0 & 0 & 100 & 100 \\
-nn & & 66.67 & 0.98 & 94.12 & 36.36 & 37.50 & 0 & 33.33 & 0 & 100 & 0 & 0 & 50 \\
-sa & 0 & 33.33 & 1.72 & 85.29 & 72.73 & 62.50 & 0 & 0.00 & 0 & 0 & 0 & 0 & 0 \\
-svm & 0 & 60.32 & & 97.06 & 36.36 & 0.00 & 0 & 0.00 & 0 & 0 & 0 & 100 & 0 \\
-\hline
-\end{tabular}
-\caption{machine.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 & pp\_6 & pp\_7 & pp\_8 \\
-\hline
-gpor & 0.01 & 21.74 & 1.06 & 0 & 0.00 & 20 & 0 & 66.67 & 0 & 0 & 66.67 \\
-pom & 0.00 & 8.70 & 1.05 & 0 & 0.00 & 20 & 50 & 0.00 & 0 & 0 & 0.00 \\
-nn & & 52.17 & 1.33 & 0 & 66.67 & 40 & 0 & 100.00 & 0 & 100 & 66.67 \\
-sa & 0.01 & 15.22 & 0.39 & 0 & 16.67 & 80 & 0 & 33.33 & 0 & 100 & 0.00 \\
-svm & 0.01 & 47.83 & 1.22 & 0 & 83.33 & 20 & 50 & 33.33 & 0 & 100 & 66.67 \\
-\hline
-\end{tabular}
-\caption{pyrim.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 \\
-\hline
-gpor & 0.54 & 58.95 & 0.15 & 70.45 & 35.38 & 67.86 & 63.08 & 59.26 \\
-pom & 0.73 & 72.63 & 0.17 & 86.36 & 52.31 & 73.81 & 81.54 & 74.07 \\
-nn & & 83.16 & 0.22 & 97.73 & 61.54 & 85.71 & 90.77 & 85.19 \\
-sa & 0.57 & 40.70 & 0.10 & 95.45 & 78.46 & 76.19 & 89.23 & 62.96 \\
-svm & 0.96 & 91.58 & 0.10 & 100.00 & 83.08 & 89.29 & 95.38 & 96.30 \\
-\hline
-\end{tabular}
-\caption{stock.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 \\
-\hline
-gpor & 0.02 & 51.79 & 1.52 & 0 & 0 & 0.00 & 82.76 & 27.78 \\
-pom & 0.02 & 39.29 & 2.02 & 0 & 0 & 0.00 & 41.38 & 55.56 \\
-nn & & 39.29 & 0.73 & 0 & 0 & 100.00 & 51.72 & 22.22 \\
-sa & 0.05 & 26.79 & 1.31 & 0 & 0 & 33.33 & 75.86 & 38.89 \\
-svm & 0.02 & 51.79 & 1.52 & 0 & 0 & 0.00 & 100.00 & 0.00 \\
-\hline
-\end{tabular}
-\caption{triazines.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 \\
-\hline
-gpor & 0.04 & 33.90 & 2.59 & 89.47 & 0.00 & 23.08 & 0.00 & 0.00 \\
-pom & 0.04 & 30.51 & 3.02 & 68.42 & 0.00 & 30.77 & 0.00 & 33.33 \\
-nn & & 35.59 & 1.20 & 47.37 & 41.18 & 38.46 & 0.00 & 0.00 \\
-sa & 0.01 & 14.41 & 1.57 & 36.84 & 29.41 & 30.77 & 14.29 & 0.00 \\
-svm & 0.02 & 28.81 & 1.03 & 0.00 & 100.00 & 0.00 & 0.00 & 0.00 \\
-\hline
-\end{tabular}
-\caption{wpbc.txt}
-\end{table}
-% latex table generated in R 3.1.3 by xtable 1.7-4 package
-% Tue Sep 08 19:50:50 2015
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrr}
-\hline
-& VUS & PPK & MOJ & pp\_1 & pp\_2 & pp\_3 & pp\_4 & pp\_5 \\
-\hline
-gpor & 0.04 & 33.90 & 2.59 & 89.47 & 0.00 & 23.08 & 0.00 & 0.00 \\
-\rowcolor[gray]{0.95}pom & 0.04 & 30.51 & 3.02 & 68.42 & 0.00 & 30.77 & 0.00 & 33.33 \\
-nn & & 35.59 & 1.20 & 47.37 & 41.18 & 38.46 & 0.00 & 0.00 \\
-sa & 0.01 & 14.41 & 1.57 & 36.84 & 29.41 & 30.77 & 14.29 & 0.00 \\
-\rowcolor[gray]{0.7}svm & 0.02 & 28.81 & 1.03 & 0.00 & 100.00 & 0.00 & 0.00 & 0.00 \\
-\hline
-\end{tabular}
-\caption{wpbc.txt}
-\end{table}
+
+\section{Analiza wyników}
+
+Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (patrz Tabela \ref{wyniki}) jest niska jakość współczynnika VUS. W większości przypadków jest on zerowy lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ byłby nienajlepszy, a co dopiero $0\%$. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}.
+
+Kolejną rzeczą jest niespodziewanie dobre zachowanie sieci neuronowych. Osiągają one najlepszy procent poprawnej klasyfikacji w $56\%$ zbiorów, a w $22\%$ niewiele odbiegają  od najlepszego wyniku. Niestety nie możemy tutaj porównać współczynnika VUS. 
+
+No i w końcu, widać wyraźnie, że nie ma jednej najlepszej metody. Każda analizowana metoda ,,wygrywa" na którymś ze zbiorów.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -915,6 +841,8 @@ I =
 	% krzywa roc	
 	\bibitem{roc1} Waegman W., De Baets B., A survey on ROC-based ordinal regression, w: Fürnkranz J., Hüllermeier E. (Eds.), \emph{Preference Learning}, Springer, 2010, str. 127-154.
 	\bibitem{roc2} Nakas C.T., Yiannoutsos C.T., Ordered Multiple Class Receiver Operating Characteristic (ROC) Analysis, \emph{Encyclopedia of Biopharmaceutical Statistics}, Taylor and Francis, 2006.
+	% zbiory danych
+	\bibitem{zbiorki} Chu W., Benchmark of ordinal regression, \url{http://www.gatsby.ucl.ac.uk/~chuwei/ordinalregression.html}
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
