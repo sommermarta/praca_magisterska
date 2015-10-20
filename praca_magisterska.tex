@@ -659,7 +659,7 @@ W poprzednich rozdziałach poznaliśmy różne techniki radzenia sobie z problem
 
 \section{Opis danych}
 
-\begin{figure}[ht]
+\begin{figure}[h!t]
 \begin{center}
 \includegraphics[scale=0.6]{graphics/rozklad_odpowiedzi.png}
 \end{center}
@@ -672,7 +672,7 @@ Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing
 Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze treningowym. Dla każdego zbioru otrzymaliśmy współczynniki VUS, PPK i ABSerr dla każdej metody. Wszystkie wyniki zobaczyć można w tabeli \ref{wyniki}.
 
 
-\begin{table}[ht]
+\begin{table}[h!t]
 \centering
 \begin{tabular}{rrrrrrr}
   &   & \rotatebox{70}{Procesy gaussowskie} & \rotatebox{70}{\parbox{35mm}{Model proporcjonalnych szans}} & \rotatebox{70}{Sieci neuronowe} &\rotatebox{70}{Metoda Franka i Halla} & \rotatebox{70}{\parbox{40mm}{Wektory maszyn\\ podpierających (SVM)}} \\ 
@@ -725,6 +725,12 @@ Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (patrz
 Kolejną rzeczą jest niespodziewanie dobre zachowanie sieci neuronowych. Osiągają one najlepszy procent poprawnej klasyfikacji w $56\%$ zbiorów, a w $22\%$ niewiele odbiegają  od najlepszego wyniku. Niestety nie możemy tutaj porównać współczynnika VUS. 
 
 No i w końcu, widać wyraźnie, że nie ma jednej najlepszej metody. Każda analizowana metoda ,,wygrywa" na którymś ze zbiorów.
+
+Analizując powyższe wyniki, nasuwają się na myśl ciekawe pytania. Przede wszystkim dlaczego współczynnik VUS wychodzi taki słaby? Czy może zależy to od liczby klas zmiennej odpowiedzi? Czy każda z metod też od tego zależy? W następnym podrozdziale spróbujemy sobie na to pytanie odpowiedzieć. 
+
+\section{Dane o różnej liczbie klas}
+
+Weźmy pod uwagę zbiór danych \textit{machine}. Zmienna odpowiedzi jest tu zmienną ciągłą, która w powyższej analizie została -- w sposób lekko szutuczny -- zdyskretyzowana. Zróbmy teraz to samo, ale dyskretyzując zbiór na, odpowiednio, $3$, $5$, $7$, i $10$ klas. By sprawdzić dodatkowo, czy różnice zależą od liczby klas, czy może jednak od ich liczności, rozważać będziemy dwa rodzaje dyskretyzacji: równomierną (tzn. taką, która do każdej klasy przydziela tyle samo obserwacji) i klastrową (tzn. taką, która szuka w danych naturalnych klastrów). 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
