@@ -1,0 +1,23 @@
+#######################################
+# nnrank:
+#######################################
+
+najpierw na treningowym:
+
+./nnrank treningowy.txt
+
+potem na testowym (modelmodel musi byc zmieniony tak, zeby mial liczbe klas tam wpisana):
+
+.nnrank_ens modelmodel testowy.txt > zapisz_tu.txt
+
+#######################################
+# gpor: 
+#######################################
+
+./gpor treningowy_train.0
+
+#######################################
+# svorim: 
+#######################################
+
+./svorim treningowy_train.0
