@@ -1,0 +1,11 @@
+final settings
+kappa_o = 1.000000
+kappa = 0.408248
+kappa_m = 0.000000
+noise variance = 0.592509
+threshold1 = -0.066973
+threshold2 = 0.561520
+threshold3 = 1.093929
+threshold4 = 1.765646
+threshold5 = 2.563562
+threshold6 = 4.692332

@@ -1,0 +1,8 @@
+2-fold: TEST ERROR 0.690476, RATE 1.142857 and SVs 163 at C=39.810717 and Kappa=0.003981 with 0.172 seconds.
+2-fold: TEST ERROR 0.690476, RATE 0.857143 and SVs 151 at C=5.011872 and Kappa=0.003981 with 0.044 seconds.
+2-fold: TEST ERROR 0.238095, RATE 0.285714 and SVs 136 at C=19.952623 and Kappa=0.003981 with 0.076 seconds.
+2-fold: TEST ERROR 0.119048, RATE 0.119048 and SVs 121 at C=1.258925 and Kappa=0.003981 with 0.008 seconds.
+5-fold: TEST ERROR 0.380952, RATE 0.380952 and SVs 147 at C=3.981072 and Kappa=0.003981 with 0.016 seconds.
+5-fold: TEST ERROR 0.619048, RATE 0.761905 and SVs 156 at C=7.943282 and Kappa=0.003981 with 0.032 seconds.
+5-fold: TEST ERROR 0.833333, RATE 1.309524 and SVs 125 at C=2.511886 and Kappa=0.003981 with 0.032 seconds.
+5-fold: TEST ERROR 0.809524, RATE 1.619048 and SVs 155 at C=0.630957 and Kappa=0.005012 with 0.016 seconds.
