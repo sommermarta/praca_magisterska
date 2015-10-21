@@ -19,4 +19,4 @@
 \contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{31}{appendix.A}
 \contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{31}{section.A.1}
 \contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{31}{section.A.2}
-\contentsline {chapter}{Literatura}{33}{section*.13}
+\contentsline {chapter}{Literatura}{33}{section*.15}
