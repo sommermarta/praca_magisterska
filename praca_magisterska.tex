@@ -750,6 +750,7 @@ Liczba klastrów & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr 
 \hline
 \end{tabular}
 \caption{Wyniki analizy zbioru \textit{machine} dla różnej liczby klas zmiennej odpowiedzi, stosując \textbf{dyskretyzację klastrową}.}
+\label{tttt}
 \end{table}
 
 \begin{table}[h!t]
@@ -766,15 +767,11 @@ Liczba klastrów & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr 
    \hline
 \end{tabular}
 \caption{Wyniki analizy zbioru \textit{machine} dla różnej liczby klas zmiennej odpowiedzi, stosując \textbf{dyskretyzację równomierną}.}
+\label{ttt}
 \end{table}
-
 \end{landscape}
 
-
-
-
-
-%& \rotatebox{70}{Procesy gaussowskie} & \rotatebox{70}{\parbox{35mm}{Model proporcjonalnych szans}} & \rotatebox{70}{Sieci neuronowe} &\rotatebox{70}%%{Metoda Franka i Halla} & \rotatebox{70}{\parbox{40mm}{Wektory maszyn\\ podpierających (SVM)}} \\ 
+Przyjrzyjmy się tabelom \ref{tttt} i \ref{ttt}. Widać wyraźnie, że -- niezależnie od sposobu dyskretyzacji danych -- wraz ze wzrostem liczby klas, dopasowanie modelu maleje. O ile jednak współczynnik PPK zachowuje się w miarę sensownie nawet aż przy dziesięciu klasach, o tyle VUS przy tej samej liczbie klas, staje się całkowicie bezużyteczny.   
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
