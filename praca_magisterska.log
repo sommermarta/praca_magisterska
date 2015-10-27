@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.18)  22 OCT 2015 15:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.18)  27 OCT 2015 16:14
 entering extended mode
 **praca_magisterska.tex
 (praca_magisterska.tex
@@ -1247,19 +1247,19 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 ]
 Rozdzia\PlPrIeC {\l } 2.
-[19] [20] <graphics/roc1.png, id=302, 987.69pt x 466.74374pt>
+[19] [20] <graphics/roc1.png, id=304, 987.69pt x 466.74374pt>
 File: graphics/roc1.png Graphic file (type png)
 
 <use graphics/roc1.png>
 Package pdftex.def Info: graphics/roc1.png used on input line 569.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
- <graphics/roc2.png, id=303, 987.69pt x 466.74374pt>
+ <graphics/roc2.png, id=305, 987.69pt x 466.74374pt>
 File: graphics/roc2.png Graphic file (type png)
 
 <use graphics/roc2.png>
 Package pdftex.def Info: graphics/roc2.png used on input line 574.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
- <graphics/roc3.png, id=304, 987.69pt x 466.74374pt>
+ <graphics/roc3.png, id=306, 987.69pt x 466.74374pt>
 File: graphics/roc3.png Graphic file (type png)
 
 <use graphics/roc3.png>
@@ -1270,13 +1270,13 @@ Package pdftex.def Info: graphics/roc3.png used on input line 579.
 LaTeX Warning: Float too large for page by 26.3432pt on input line 586.
 
 [21 <./graphics/roc1.png> <./graphics/roc2.png> <./graphics/roc3.png>]
-<graphics/roc1.pdf, id=314, 361.35pt x 361.35pt>
+<graphics/roc1.pdf, id=316, 361.35pt x 361.35pt>
 File: graphics/roc1.pdf Graphic file (type pdf)
  <use graphics/roc1.pdf>
 Package pdftex.def Info: graphics/roc1.pdf used on input line 601.
 (pdftex.def)             Requested size: 176.4044pt x 176.4069pt.
 
-<graphics/roc2.pdf, id=315, 361.35pt x 361.35pt>
+<graphics/roc2.pdf, id=317, 361.35pt x 361.35pt>
 File: graphics/roc2.pdf Graphic file (type pdf)
  <use graphics/roc2.pdf>
 Package pdftex.def Info: graphics/roc2.pdf used on input line 607.
@@ -1285,14 +1285,14 @@ Package pdftex.def Info: graphics/roc2.pdf used on input line 607.
 [22
 
  <./graphics/roc1.pdf> <./graphics/roc2.pdf>]
-<graphics/roc_trzy1.png, id=340, 987.69pt x 466.74374pt>
+<graphics/roc_trzy1.png, id=342, 987.69pt x 466.74374pt>
 File: graphics/roc_trzy1.png Graphic file (type png)
 
 <use graphics/roc_trzy1.png>
 Package pdftex.def Info: graphics/roc_trzy1.png used on input line 624.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
-<graphics/roc_trzy2.png, id=341, 987.69pt x 466.74374pt>
+<graphics/roc_trzy2.png, id=343, 987.69pt x 466.74374pt>
 File: graphics/roc_trzy2.png Graphic file (type png)
 
 <use graphics/roc_trzy2.png>
@@ -1302,7 +1302,7 @@ Package pdftex.def Info: graphics/roc_trzy2.png used on input line 627.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<graphics/roc3d.png, id=344, 578.16pt x 578.16pt>
+<graphics/roc3d.png, id=346, 578.16pt x 578.16pt>
 File: graphics/roc3d.png Graphic file (type png)
  <use graphics/roc3d.png>
 Package pdftex.def Info: graphics/roc3d.png used on input line 640.
@@ -1323,7 +1323,7 @@ Underfull \vbox (badness 1859) has occurred while \output is active []
 
 ]
 Rozdzia\PlPrIeC {\l } 3.
-<graphics/rozklad_odpowiedzi.png, id=372, 803.0pt x 803.0pt>
+<graphics/rozklad_odpowiedzi.png, id=375, 803.0pt x 803.0pt>
 File: graphics/rozklad_odpowiedzi.png Graphic file (type png)
 
 <use graphics/rozklad_odpowiedzi.png>
@@ -1354,7 +1354,7 @@ Overfull \hbox (15.07133pt too wide) in paragraph at lines 758--769
 ]
 Dodatek A.
 [33] [34]
-LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 893
+LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 897
 .
  (C:\Users\marsom\Documents\MikTeX\tex\latex\polski\ot4cmtt.fd
 File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
@@ -1364,24 +1364,24 @@ File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 ] [36
 
 ] [37]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 899.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 899.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 912.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 912.
  (praca_magisterska.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 899.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 899.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 912.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 912.
 Package rerunfilecheck Info: File `praca_magisterska.out' has not changed.
 (rerunfilecheck)             Checksum: D1692EEEDECAA2EB2D1B159162E04C4A;4599.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 899.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 912.
  ) 
 Here is how much of TeX's memory you used:
- 24599 strings out of 493673
- 457766 string characters out of 3141958
- 541785 words of memory out of 3000000
- 27397 multiletter control sequences out of 15000+200000
+ 24613 strings out of 493673
+ 457904 string characters out of 3141958
+ 542011 words of memory out of 3000000
+ 27404 multiletter control sequences out of 15000+200000
  20216 words of font info for 57 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
  55i,17n,68p,1625b,1069s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1411,9 +1411,9 @@ s/MikTeX/fonts/type1/public/pl/plsl10.pfb><C:/Users/marsom/Documents/MikTeX/fon
 ts/type1/public/pl/plti10.pfb><C:/Users/marsom/Documents/MikTeX/fonts/type1/pub
 lic/pl/plti8.pfb><C:/Users/marsom/Documents/MikTeX/fonts/type1/public/pl/pltt10
 .pfb>
-Output written on praca_magisterska.pdf (37 pages, 1456822 bytes).
+Output written on praca_magisterska.pdf (37 pages, 1463729 bytes).
 PDF statistics:
- 542 PDF objects out of 1000 (max. 8388607)
- 108 named destinations out of 1000 (max. 500000)
+ 563 PDF objects out of 1000 (max. 8388607)
+ 115 named destinations out of 1000 (max. 500000)
  283 words of extra memory for PDF output out of 10000 (max. 10000000)
 

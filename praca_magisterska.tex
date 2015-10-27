@@ -517,9 +517,9 @@ W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji po
 \section{Procent poprawnej klasyfikacji}
 
 Procent poprawnej klasyfikacji jest bardzo prosty i intuicyjny. Żeby nie było jednak żadnych wątpliwości zdefiniujmy go formalnie. Niech $y$ będzie $n$-wymiarowym wektorem prawdziwych klas dla zbioru testowego, a $y^\ast$ wektorem klas otrzymanych z modelu dla tego zbioru. Wówczas procentem poprawnej klasyfikacji nazywamy:
-$$
+\begin{equation}\label{dop1}
 PPK = \frac{1}{n}\sum_{i=1}^n \mathbb{I}{\lbrace y_i=y^\ast_i \rbrace}.
-$$ 
+\end{equation}
 Niestety, współczynnik ten ma wiele wad. 
 
 Po pierwsze, działa źle w przypadku, gdy klasy są niezbilansowane. Zobaczmy to na przykładzie, załóżmy, że rozpatrujemy przypadek trzy-klasowy. Klasa pierwsza występuje w $95\%$ przypadków, a klasa druga i trzecia w $5\%$ przypadków. Załóżmy również, że nasz klasyfikator jest bardzo prymitywny i klasyfikuje wszystko jako jedynki, nie zważając na wektor cech. Co wtedy otrzymujemy? Aż $95\%$ procent poprawnej klasyfikacji!
@@ -529,9 +529,9 @@ Po drugie, traktuje każdy błąd zero-jedynkowy. Na przykład, gdy rozważamy r
 \section{Średni błąd bezwzględny}
 
 Drugą wymienioną wyżej wadę procentu poprawnej klasyfikacji omija tzw. średni błąd bezwzględny. Korzystając z tych samych oznaczeń, możemy go zdefiniować jako:
-$$
+\begin{equation}\label{dop2}
 ABSerr = \frac{1}{n}\sum_{i=1}^n | y_i - y^\ast_i |. 
-$$
+\end{equation}
 Wciąż jednak nie jest on odporny na niezbilansowane klasy. 
 
 \section{Krzywa ROC w przypadku dwuklasowym}
@@ -649,9 +649,9 @@ Po co zatem tworzyć wielowymiarową krzywą ROC, skoro i tak trudno cokolwiek z
 
 Jako, że liczenie objętości pod hiperpłaszczyzną jest numerycznie raczej trudnym zadaniem, w celu wyliczenia współczynnika VUS, skorzystamy z jego nieco innej interpretacji niż tylko pole pod krzywą ROC. Wróćmy znów do przypadku dwuklasowego i przyjrzyjmy się wykresowi \ref{fig:f2}. Na osi OY mamy współczynnik TNR, czyli prawdopodobieństwo, że wyestymujemy klasę negatywną pod warunkiem, że klasa rzeczywiście jest negatywna. Równoważnie, można to zapisać jako prawdopodobieństwo, że prawdopodobieństwo odpowiadające negatywnej obserwacji jest mniejsze niż pewien próg odcięcia. Analogicznie TPR to prawdopodobieństwo, że prawdopodobieństwo odpowiadające pozytywnej obserwacji jest większe niż próg odcięcia. Łącząc oba wyniki otrzymamy, że współczynnik AUC to nic innego tylko prawdopodobieństwo, że losowo wybrana pozytywna obserwacja będzie mieć wyższe prawdopodobieństwo niż losowo wybrana negatywna obserwacja. Innymi słowy, będą one dobrze uporządkowane. Łatwo to już uogólnić na więcej wymiarów. Interesować nas będzie pewna estymacja tego prawdopodobieństwa. Łatwo można zauważyć, że będzie nią tzw. statystyka $U$  Manna–Whitney'a–Wilcoxona (por. \cite{roc1}, \cite{roc2}), czyli wyrażenie:
 
-$$
+\begin{equation}\label{dop3}
 VUS = \dfrac{1}{n_1n_2\cdot\ldots\cdot n_r}\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\ldots\sum_{i_r=1}^{n_r}\mathbb{I}_{\lbrace f(\mathbf{x}_{i_1}^1)<\ldots<f(\mathbf{x}_{i_r}^r)\rbrace},
-$$
+\end{equation}
 gdzie $\textbf{x}_i^j$ oznacza $i-$ty wektor cech $\mathbf{x}$ o prawdziwej klasie $j$, $n_i$ to liczba obserwacji zaklasyfikowanych przez nas jako klasa $i$, a $f$ to pewna funkcja, która zwraca liczbę rzeczywistą, mającą estymować uporządkowanie obserwacji (w większości przypadków, będzie to prawdopodobieństwo zwracane na koniec).
 
 Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpretowalnym i pomocnym narzędziem do oceny jakości modelu i podejmowania decyzji, który model jest najlepszy. Największą jego wadą wydaje się konieczność znania prawdopodobieństw przynależności do klas (lub po prostu funkcji, która pozwoli nasze obserwacje uporządkować), a nie każda metoda takie prawdopodobieństwa zwraca (np. nie robią tego sieci neuronowe). Trzeba wtedy odwołać się do prostszych metod (takich jak procent poprawności dopasowania lub czułość). Większość modeli oferuje jednak taką możliwość, więc niewątpliwie warto z tego narzędzia diagnostycznego korzystać.
@@ -672,7 +672,7 @@ W poprzednich rozdziałach poznaliśmy różne techniki radzenia sobie z problem
 
 Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing, machine, pyrim, stock, triazines} oraz \textit{wpbc}) o różnej liczbie klas ($5$ lub $10$), różnej liczbie obserwacji oraz różnym rozkładzie klas (patrz Rys. \ref{rozkladdanych}). Zbiory znaleźć można tu: \cite{zbiorki}. 
 
-Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze treningowym. Dla każdego zbioru otrzymaliśmy współczynniki VUS, PPK i ABSerr dla każdej metody. Wszystkie wyniki zobaczyć można w tabeli \ref{wyniki}.
+Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze treningowym. Dla każdego zbioru i każdej metody otrzymaliśmy współczynniki VUS, PPK i ABSerr (por. równania \ref{dop1}, \ref{dop2}, \ref{dop3}). Wszystkie wyniki zobaczyć można w tabeli \ref{wyniki}.
 
 
 \begin{table}[h!t]
@@ -723,13 +723,13 @@ Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy mod
 
 \section{Analiza wyników}
 
-Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (patrz Tabela \ref{wyniki}) jest niska jakość współczynnika VUS. W większości przypadków jest on zerowy lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ byłby nienajlepszy, a co dopiero $0\%$. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}.
+Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (Tabela \ref{wyniki}), jest niska jakość współczynnika VUS. W większości przypadków jest on zerowy lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ byłby nienajlepszy, a co dopiero $0\%$. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}.
 
 Kolejną rzeczą jest niespodziewanie dobre zachowanie sieci neuronowych. Osiągają one najlepszy procent poprawnej klasyfikacji w $56\%$ zbiorów, a w $22\%$ niewiele odbiegają  od najlepszego wyniku. Niestety nie możemy tutaj porównać współczynnika VUS. 
 
 No i w końcu, widać wyraźnie, że nie ma jednej najlepszej metody. Każda analizowana metoda ,,wygrywa" na którymś ze zbiorów.
 
-Analizując powyższe wyniki, nasuwają się na myśl ciekawe pytania. Przede wszystkim dlaczego współczynnik VUS wychodzi taki słaby? Czy może zależy to od liczby klas zmiennej odpowiedzi? Czy każda z metod też od tego zależy? W następnym podrozdziale spróbujemy sobie na to pytanie odpowiedzieć. 
+Analizując powyższe wyniki, nasuwają się na myśl ciekawe pytania. Przede wszystkim dlaczego współczynnik VUS wychodzi taki słaby? Czy może zależy to od liczby klas zmiennej odpowiedzi? Czy każda z metod też od tego zależy? W następnym podrozdziale spróbujemy sobie na te pytania odpowiedzieć. 
 
 \section{Dane o różnej liczbie klas}
 
@@ -771,7 +771,11 @@ Liczba klastrów & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr 
 \end{table}
 \end{landscape}
 
-Przyjrzyjmy się tabelom \ref{tttt} i \ref{ttt}. Widać wyraźnie, że -- niezależnie od sposobu dyskretyzacji danych -- wraz ze wzrostem liczby klas, dopasowanie modelu maleje. O ile jednak współczynnik PPK zachowuje się w miarę sensownie nawet aż przy dziesięciu klasach, o tyle VUS przy tej samej liczbie klas, staje się całkowicie bezużyteczny.   
+Przyjrzyjmy się tabelom \ref{tttt} i \ref{ttt}. Widać wyraźnie, że -- niezależnie od sposobu dyskretyzacji danych -- wraz ze wzrostem liczby klas, dopasowanie modelu maleje. O ile jednak współczynnik PPK zachowuje się w miarę sensownie nawet aż przy dziesięciu klasach, o tyle VUS przy tej samej liczbie klas, staje się całkowicie bezużyteczny.    Niemniej jednak, w przypadku, gdy współczynnik VUS jest w miarę sensowny, należy wziąć go pod uwagę. Czasami warto zgodzić się na niższy PPK, żeby zyskać wyższy VUS.
+
+
+Zastanówmy się teraz, jaki wpływ na poszczególne metody ma równoliczność klas. Widać wyraźnie, że metodami, które odniosły duże korzyści ze zbalansowania zbioru danych są sieci neuronowe i SVM-y. W metodzie Franka i Halla znacząco polepszył się współczynnik VUS, jednak spadł procent poprawnej klasyfikacji. Przypatrując się wynikom procesów gaussowskich i modelowi proporcjonalnych szans, wygląda na to, że metody mające duże założenia co do rozkłądów (normalność w procesie gaussowskim i założenie proporcjonalnych szans) nie działają najlepiej dla sztucznie wprowadzonych (mimo, że równolicznych) klas. Wskazuje to na wagę tych założeń.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -891,6 +895,15 @@ I =
 	\bibitem{roc2} Nakas C.T., Yiannoutsos C.T., Ordered Multiple Class Receiver Operating Characteristic (ROC) Analysis, \emph{Encyclopedia of Biopharmaceutical Statistics}, Taylor and Francis, 2006.
 	% zbiory danych
 	\bibitem{zbiorki} Chu W., Benchmark of ordinal regression, \url{http://www.gatsby.ucl.ac.uk/~chuwei/ordinalregression.html}
+	\bibitem{zbiorki2} Torgo L., Regression Data Sets, \url{http://www.dcc.fc.up.pt/~ltorgo/Regression/DataSets.html}
+	% programy:
+	\bibitem{fkaj} Cheng J., Department of Computer Science, University of Missouri, \url{http://sysbio.rnet.missouri.edu/multicom_toolbox/nnrank\%201.1.html}
+	\bibitem{zbioasdgrki} Chu W., Source Code for Support Vector Ordinal Regression, \url{http://www.gatsby.ucl.ac.uk/~chuwei/svor.htm}
+	\bibitem{af} Chu W., Source Code for Gaussian Processes for Ordinal Regression, \url{http://www.gatsby.ucl.ac.uk/~chuwei/README.gpor}
+
+	
+
+	
 \end{thebibliography}
 
 %-----------------------------------------------------------------------------%
