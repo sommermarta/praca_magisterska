@@ -15,8 +15,8 @@
 \contentsline {chapter}{\numberline {3}Symulacje}{27}{chapter.3}
 \contentsline {section}{\numberline {3.1}Opis danych}{27}{section.3.1}
 \contentsline {section}{\numberline {3.2}Analiza wynik\IeC {\'o}w}{27}{section.3.2}
-\contentsline {section}{\numberline {3.3}Dane o r\IeC {\'o}\IeC {\.z}nej liczbie klas}{28}{section.3.3}
-\contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{33}{appendix.A}
-\contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{33}{section.A.1}
-\contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{33}{section.A.2}
-\contentsline {chapter}{Literatura}{35}{section*.15}
+\contentsline {section}{\numberline {3.3}Dane o r\IeC {\'o}\IeC {\.z}nej liczbie klas}{31}{section.3.3}
+\contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{35}{appendix.A}
+\contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{35}{section.A.1}
+\contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{35}{section.A.2}
+\contentsline {chapter}{Literatura}{37}{section*.19}

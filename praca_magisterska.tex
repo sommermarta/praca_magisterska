@@ -723,9 +723,78 @@ Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy mod
 
 \section{Analiza wyników}
 
-Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (Tabela \ref{wyniki}), jest niska jakość współczynnika VUS. W większości przypadków jest on zerowy lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ byłby nienajlepszy, a co dopiero $0\%$. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}.
+\subsection*{Słaby współczynnik VUS}
+
+Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (Tabela \ref{wyniki}), jest niska jakość współczynnika VUS. W większości przypadków jest on zerowy lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ byłby nienajlepszy, a co dopiero $0\%$. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}. Warto więc zadać sobie pytanie, dlaczego tak się dzieje? Żeby zrozumieć to "dziwne" zachowanie współczynnika VUS, przeanalizujmy dwa poniższe przykłady.
+
+Załóżmy, że chcemy przyporządkować klasy pewnym obserwacjom ze zbioru testowego. Nich zbiorem klas będzie $\lbrace 1, \ldots, 5\rbrace$. Dopasowaliśmy pewien model, który działa w ten sposób, że dla danej nowej obserwacji wylicza najpierw wartość pewnej funkcji rzeczywistej $f$, a następnie korzysta z pewnych progów, które dzielą zbiór liczb rzeczywistych na pięć klas. W zależności od tego, między jakimi dwoma progami znajdzie się wartość funkcji $f$ dla danej obserwacji, to taką estymowaną klasę $\hat{y}$ jej przydzielamy. Funkcja $f$ oraz wartość progów zostały nauczone podczas budowy modelu. 
+
+Rozważmy najpierw przypadek z rysunku \ref{vus01}. Wszystkie klasy -- oprócz jednej -- zostały prawidłowo przyporządkowane. Podkreślmy, że pomyliliśmy się tylko w jednym przypadku. Co prawda pomyłka jest poważna (bo przyporządkowaliśmy skrajnie różną wartość), ale wciąż jest to tylko jeden przypadek. Korzystając ze wzoru \ref{dop3} i pamiętając, że VUS to procent dobrze sklasyfikowanych , w naszym przypadku, piątek $(1, 2, 3, 4, 5)$, bardzo łatwo zauważyć, że współczynnik VUS w naszym przypadku wyniesie $0$, gdyż przez to, że jedyna piątka posortowała się na sam początek, nie znajdziemy ani jednej dobrze uporządkowanej piątki.
+
+Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym błędem, więc dobrze, że VUS wyszedł taki słaby. Przyjrzyjmy się zatem przykładowi z rysunku \ref{vus02}. Tutaj sytuacja jest podobna, tylko że zostały zamienione dwie wartości w ten sposób, że oprócz dwóch przestawionych sąsiadujących wartości, cała reszta posortowana jest poprawnie. Błąd jest zatem niewielki i -- chciałoby się powiedzieć -- dopuszczalny i nieszkodliwy. Jednak w tym przypadku również nie znajdzimy ani jednej dobrze posortowanej piątki, współczynnik VUS wyniesie więc $0$.      
+
+\begin{figure}[h]
+\begin{subfigure}{0.5\textwidth}\label{vus01}
+\begin{center}
+\begin{tikzpicture}
+\node(gora){
+\begin{tabular}{l|rrrrrrr}
+ $y$ & 1 & 2 & 5 & 4 & 1 & 3 & 1\\
+\hline
+ $\hat{y}$ & 1 & 2 & 1 & 4 & 1 & 3 & 1\\
+\hline
+ $f$ & 1,3 & 2,2 & 1,1 & 4,4 & 1,2 & 3,5 & 1,4\\
+\end{tabular}
+};
+\node[below=3cm of gora](dol){
+\begin{tabular}{l|rrrrrrr}
+ $y$ & 5 & 1 & 1 & 1 & 2 & 3 & 4\\
+\hline
+ $\hat{y}$ & 1 & 1 & 1 & 1 & 2 & 3 & 4\\
+\hline
+ $f$ & 1,1 & 1,2 & 1,3 & 1,4 & 2,2 & 3,5 & 4,4\\
+\end{tabular}
+};
+\path[draw, -latex',thick](gora) -- node[midway, right] {Sortujemy po $f$} (dol);		
+\end{tikzpicture}
+\end{center}
+\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $1$.}
+\end{subfigure}
+\hspace{1cm}
+\begin{subfigure}{0.5\textwidth}\label{vus02}
+\begin{center}
+\begin{tikzpicture}
+\node(gora){
+\begin{tabular}{l|rrrrrrr}
+ $y$ & 1 & 2 & 5 & 4 & 1 & 3 & 1\\
+\hline
+ $\hat{y}$ & 1 & 2 & 4 & 5 & 1 & 3 & 1\\
+\hline
+ $f$ & 1,1 & 2,1 & 4,9 & 5,1 & 1,2 & 3,5 & 1,3\\
+\end{tabular}
+};
+\node[below=3cm of gora](dol){
+\begin{tabular}{l|rrrrrrr}
+ $y$ & 1 & 1 & 1 & 2 & 3 & 5 & 4\\
+\hline
+ $\hat{y}$ & 1 & 1 & 1 & 2 & 3 & 4 & 5\\
+\hline
+ $f$ & 1,1 & 1,2 & 1,3 & 2,1 & 3,5 & 4,9 & 5,1\\
+\end{tabular}
+};
+\path[draw, -latex',thick](gora) -- node[midway, right] {Sortujemy po $f$} (dol);	
+\end{tikzpicture}
+\end{center}
+\caption{Przypadek, w którym źle sklasyfikowane są dwie obserwacje. Obserwacja o klasie nr $4$ została sklasyfikowana jako nr $5$, a ta o klasie nr $5$ jako klasa nr $4$.}
+\end{subfigure}
+\caption{Tabele pokazują przykładowe zbiory testowe. W kolumnach przedstawione są kolejne obserwacje. $y$ reprezentuje prawdziwą klasę, a $\hat{y}$ oszacowaną przez nas klasę na podstawie wartości funkcji rzeczywistej $f$. Następnie kolumny tabeli są sortowane według wartości tej funkcji.}
+\end{figure}
+
+\subsection*{"Sukces" sieci neuronowych}
 
 Kolejną rzeczą jest niespodziewanie dobre zachowanie sieci neuronowych. Osiągają one najlepszy procent poprawnej klasyfikacji w $56\%$ zbiorów, a w $22\%$ niewiele odbiegają  od najlepszego wyniku. Niestety nie możemy tutaj porównać współczynnika VUS. 
+
+\subsection*{Dalsze pytania}
 
 No i w końcu, widać wyraźnie, że nie ma jednej najlepszej metody. Każda analizowana metoda ,,wygrywa" na którymś ze zbiorów.
 
