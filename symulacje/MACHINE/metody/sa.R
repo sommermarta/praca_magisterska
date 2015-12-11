@@ -39,9 +39,32 @@ vus <- function(prawdziwe_klasy, estymacja_porzadku){
     
 }
 
+posortuj <- function(wektor){
+     
+     ile_zamian <- 0
+     for(j in length(wektor):2){
+          for(i in 1:(j-1)){
+               if(wektor[i]>wektor[i+1]){
+                    pamietaj <- wektor[i]
+                    wektor[i] <- wektor[i+1]
+                    wektor[i+1] <- pamietaj
+                    ile_zamian <- ile_zamian + 1
+               }     
+          }     
+     }
+     
+     ile_zamian
+}
+
+wsp_bab <- function(wektor){
+     (posortuj(sort(wektor, decreasing=TRUE))-posortuj(wektor))/posortuj(sort(wektor, decreasing=TRUE))     
+}
+
 ###################
 
-load("C:\\Users\\marsom\\Desktop\\lista_danych_machine.RData")
+setwd("C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/symulacje/MACHINE/metody")
+
+load("..\\lista_danych_machine.RData")
 
 ######################
 
@@ -87,8 +110,9 @@ sa <- function(dane_treningowe, dane_testowe){
     ppk <- 100*sum(estym_klasa==praw_klasa)/length(estym_klasa)
     est_vus <- vus(prawdziwe_klasy=praw_klasa, estymacja_porzadku=f)
     abss <- sum(abs(estym_klasa-as.numeric(as.character(praw_klasa))))/length(estym_klasa)
+    babelki <- wsp_bab(as.numeric(praw_klasa[order(f)]))
     
-    c(est_vus, ppk, abss)    
+    c(est_vus, ppk, abss, babelki)    
     
 }
 
@@ -97,24 +121,24 @@ sa <- function(dane_treningowe, dane_testowe){
 # dane_treningowe <- lista_przedzialy[[1]][s, ]
 # dane_testowe <- lista_przedzialy[[1]][-s, ] 
 
-tabela_rownoliczne <- matrix(ncol=3, nrow=4)
+tabela_rownoliczne <- matrix(ncol=4, nrow=4)
 for(i in 1:length(lista_rownoliczne)){
     tabela_rownoliczne[i, ] <- sa(lista_rownoliczne[[i]][s, ], lista_rownoliczne[[i]][-s, ])  
 }
 
 tabela_rownoliczne <- as.data.frame(tabela_rownoliczne)
-colnames(tabela_rownoliczne) <- c("vus", "ppk", "abs")
+colnames(tabela_rownoliczne) <- c("vus", "ppk", "abs", "sa")
 rownames(tabela_rownoliczne) <- c("3", "5", "7", "10")
 
 # przedzialy
 
-tabela_przedzialy <- matrix(ncol=3, nrow=4)
+tabela_przedzialy <- matrix(ncol=4, nrow=4)
 for(i in 1:length(lista_rownoliczne)){
     tabela_przedzialy[i, ] <- sa(lista_przedzialy[[i]][s, ], lista_przedzialy[[i]][-s, ])  
 }
 
 tabela_przedzialy <- as.data.frame(tabela_przedzialy)
-colnames(tabela_przedzialy) <- c("vus", "ppk", "abs")
+colnames(tabela_przedzialy) <- c("vus", "ppk", "abs", "sa")
 rownames(tabela_przedzialy) <- c("3", "5", "7", "10")
 
 cbind(rodzaj_klastra="metoda_k_srednich", 
@@ -127,7 +151,7 @@ cbind(rodzaj_klastra="rownoliczne_klastry",
 
 rbind(jeden, dwa) -> pom
 
-write.table(pom, "C:\\Users\\marsom\\Desktop\\wnioski\\sa.txt", col.names=TRUE, 
+write.table(pom, "..\\wnioski\\sa.txt", col.names=TRUE, 
             row.names=FALSE, quote=FALSE, sep="\t")
 
 

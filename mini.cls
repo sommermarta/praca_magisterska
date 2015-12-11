@@ -172,7 +172,7 @@
 \begin{titlepage}
 \begin{center}
   \begin{minipage}{25mm}
-    \includegraphics[scale=0.75]{pw}
+    \includegraphics[width=0.9\textwidth]{pw}
   \end{minipage}
   \hfill
   \begin{minipage}{100mm}
@@ -183,7 +183,7 @@
   \hfill
   \begin{minipage}{25mm}
     \begin{flushright}
-      \includegraphics[scale=0.75]{mini}
+      \includegraphics[width=0.9\textwidth]{mini}
     \end{flushright}
   \end{minipage}\par
   \vspace{30mm}
@@ -194,6 +194,8 @@
   \vfill
   \begin{spacing}{1.3}
     \textbf{\Large\MakeUppercase{\@title}}
+    \par\vspace{10mm}
+      {\Large\MakeUppercase{\@titleaux}}
     \ifthenelse{\boolean{english}}{
       \par\vspace{10mm}
       {\Large\MakeUppercase{\@titleaux}}

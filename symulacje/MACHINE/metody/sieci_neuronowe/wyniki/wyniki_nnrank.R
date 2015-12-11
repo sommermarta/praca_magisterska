@@ -47,7 +47,30 @@ abserr <- function(prawdziwe_klasy, estymowane_klasy){
     sum(abs(estymowane_klasy-as.numeric(as.character(prawdziwe_klasy))))/length(estymowane_klasy)
 }
 
+posortuj <- function(wektor){
+     
+     ile_zamian <- 0
+     for(j in length(wektor):2){
+          for(i in 1:(j-1)){
+               if(wektor[i]>wektor[i+1]){
+                    pamietaj <- wektor[i]
+                    wektor[i] <- wektor[i+1]
+                    wektor[i+1] <- pamietaj
+                    ile_zamian <- ile_zamian + 1
+               }     
+          }     
+     }
+     
+     ile_zamian
+}
+
+wsp_bab <- function(wektor){
+     (posortuj(sort(wektor, decreasing=TRUE))-posortuj(wektor))/posortuj(sort(wektor, decreasing=TRUE))     
+}
+
 # ladowanie danych:
+
+setwd("C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/symulacje/MACHINE/metody/sieci_neuronowe/wyniki")
 
 nazwy <- stri_match_all_regex(dir("..\\..\\gaussian_process\\"), "(.*?)_train[.]0") %>% 
     lapply(.,function(x) x[,2]) %>%
@@ -80,9 +103,10 @@ for(i in 1:length(nazwy)){
     est_vus <- NA
     proc_poprawnosci <- ppk(y, y_est)
     abss <- abserr(y, y_est)
+    babelki <- NA
     
     c(ifelse(rodzaj=="przedzialy", "rownoliczne_klastry", "metoda_k_srednich"),
-      numer, est_vus, proc_poprawnosci, abss) -> linijka_do_tabeli
+      numer, est_vus, proc_poprawnosci, abss, babelki) -> linijka_do_tabeli
     
     if(i==1){
         tabela <- as.data.frame(linijka_do_tabeli) %>% t() 
@@ -92,7 +116,7 @@ for(i in 1:length(nazwy)){
     if(i==length(nazwy)){
         tabela <- as.data.frame(tabela)
         names(tabela) <- c("rodzaj_klastra", "ile_poziomow_zmiennej_odpowiedzi", 
-                           "vus", "ppk", "abs")
+                           "vus", "ppk", "abs", "sb")
         tabela$ile_poziomow_zmiennej_odpowiedzi <- as.numeric(as.character(tabela$ile_poziomow_zmiennej_odpowiedzi))
         tabela %>% 
             arrange(rodzaj_klastra, ile_poziomow_zmiennej_odpowiedzi) -> tabela

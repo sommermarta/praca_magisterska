@@ -4,6 +4,27 @@ library("stringi")
 kara10 <- c(0, 0.1, 1, 2, 5, 10, 10, 10, 10)
 kara5 <- c(0, 0.1, 3, 10, 10)
 
+posortuj <- function(wektor){
+     
+     ile_zamian <- 0
+     for(j in length(wektor):2){
+          for(i in 1:(j-1)){
+               if(wektor[i]>wektor[i+1]){
+                    pamietaj <- wektor[i]
+                    wektor[i] <- wektor[i+1]
+                    wektor[i+1] <- pamietaj
+                    ile_zamian <- ile_zamian + 1
+               }     
+          }     
+     }
+     
+     ile_zamian
+}
+
+wsp_bab <- function(wektor){
+     (posortuj(sort(wektor, decreasing=TRUE))-posortuj(wektor))/posortuj(sort(wektor, decreasing=TRUE))     
+}
+
 ################################################################
 ############### GAUSSIAN PROCESSES #############################
 ################################################################
@@ -43,6 +64,7 @@ for(i in 1:length(nazwy)){
      tabela <- abs(y-y_est)
      #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
      moj_wsk <- sum(tabela)/length(y)
+     babelki <- wsp_bab(y[order(f)])
      
      gdzie <- paste("..\\podsumowanie\\", nazwa, "_gpor_podsumowanie.txt", sep="") 
      
@@ -51,6 +73,7 @@ for(i in 1:length(nazwy)){
      write(est_vus, gdzie, append=TRUE)
      write(moj_wsk, gdzie, append=TRUE)
      write(proc_poprawnosci, gdzie, append=TRUE)
+     write(babelki, gdzie, append=TRUE)
      write.table(dane, gdzie, col.names=TRUE, row.names=FALSE, quote=FALSE, append=TRUE)
      
 }
@@ -102,6 +125,7 @@ for(i in 1:length(nazwy)){
      tabela <- abs(y-y_est)
      #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
      moj_wsk <- sum(tabela)/length(y)
+     babelki <- wsp_bab(y[order(f)])
      
      gdzie <- paste("..\\..\\podsumowanie\\", nazwa, "_svm_podsumowanie.txt", sep="") 
      
@@ -110,6 +134,7 @@ for(i in 1:length(nazwy)){
      write(est_vus, gdzie, append=TRUE)
      write(moj_wsk, gdzie, append=TRUE)
      write(proc_poprawnosci, gdzie, append=TRUE)
+     write(babelki, gdzie, append=TRUE)
      write.table(dane, gdzie, col.names=TRUE, row.names=FALSE, quote=FALSE, append=TRUE)
      
 }
@@ -160,6 +185,7 @@ for(i in 1:length(nazwy)){
      tabela <- abs(y-y_est)
      #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
      moj_wsk <- sum(tabela)/length(y)
+     babelki <- wsp_bab(y[order(f)])
      
      gdzie <- paste("..\\podsumowanie\\", nazwa, "_nn_podsumowanie.txt", sep="") 
      
@@ -168,6 +194,7 @@ for(i in 1:length(nazwy)){
      write(NA, gdzie, append=TRUE)
      write(moj_wsk, gdzie, append=TRUE)
      write(proc_poprawnosci, gdzie, append=TRUE)
+     write(babelki, gdzie, append=TRUE)
      write.table(dane, gdzie, col.names=TRUE, row.names=FALSE, quote=FALSE, append=TRUE)
      
 }
@@ -206,6 +233,7 @@ for(i in 1:length(nazwy)){
      tabela <- abs(y-y_est)
      #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
      moj_wsk <- sum(tabela)/length(y)
+     babelki <- wsp_bab(y[order(f)])
      
      gdzie <- paste(".\\", nazwa, "_pom_podsumowanie.txt", sep="") 
      
@@ -214,6 +242,7 @@ for(i in 1:length(nazwy)){
      write(est_vus, gdzie, append=TRUE)
      write(moj_wsk, gdzie, append=TRUE)
      write(proc_poprawnosci, gdzie, append=TRUE)
+     write(babelki, gdzie, append=TRUE)
      write.table(dane, gdzie, col.names=TRUE, row.names=FALSE, quote=FALSE, append=TRUE)
      
 }
@@ -249,6 +278,7 @@ for(i in 1:length(nazwy)){
      tabela <- abs(y-y_est)
      #moj_wsk <- sum(tabela*kara[as.numeric(names(tabela))+1])/(sum(!(y-y_est==0)))
      moj_wsk <- sum(tabela)/length(y)
+     babelki <- wsp_bab(y[order(f)])
      
      gdzie <- paste("..\\..\\simple_approach\\podsumowanie\\", nazwa, "_sa_podsumowanie.txt", sep="") 
      
@@ -257,6 +287,7 @@ for(i in 1:length(nazwy)){
      write(est_vus, gdzie, append=TRUE)
      write(moj_wsk, gdzie, append=TRUE)
      write(proc_poprawnosci, gdzie, append=TRUE)
+     write(babelki, gdzie, append=TRUE)
      write.table(dane, gdzie, col.names=TRUE, row.names=FALSE, quote=FALSE, append=TRUE)
      
 }

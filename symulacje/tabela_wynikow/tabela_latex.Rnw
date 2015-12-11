@@ -32,12 +32,15 @@ nazwy <- dir("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symul
 tabele <- vector("list", length(nazwy))
 
 for(i in 1:length(nazwy)){
-     a <- read.table(paste("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\ostatecznie\\", nazwy[i], sep=""), header=TRUE)[1:3]
-     names(a) <- c("VUS", "PPK", "ABS")
+     a <- read.table(paste("C:\\Users\\Marta\\Desktop\\Marta\\GitHub\\praca_magisterska\\symulacje\\ostatecznie\\", nazwy[i], sep=""), header=TRUE)[1:4]
+     a[3, 4] <- NA
+     names(a) <- c("VUS", "PPK", "ABS", "SB")
      a$VUS <- a$VUS*100
+     a$SB <- a$SB*100
      if(max(a[,1], na.rm=TRUE)==0) maxvus <- numeric(0) else maxvus <- which(a[,1]==max(a[,1], na.rm=TRUE))
      if(max(a[,2], na.rm=TRUE)==0) maxppk <- numeric(0) else maxppk <- which(a[,2]==max(a[,2], na.rm=TRUE))
      maxabs <- which(a[,3]==min(a[,3], na.rm=TRUE))
+     maxbab <- which(a[,4]==max(a[,4], na.rm=TRUE))
      dane <- t(a)
      czyna <- is.na(dane)
      dane <- formatC(dane, digits=2, format="f", decimal.mark=",")
@@ -51,6 +54,9 @@ for(i in 1:length(nazwy)){
      for(j in seq_along(maxabs)){
           dane[3, maxabs[j]] <- paste("\\color{red}{", dane[3, maxabs[j]], "}", sep="")   
      }
+     for(j in seq_along(maxbab)){
+          dane[4, maxbab[j]] <- paste("\\color{red}{", dane[4, maxbab[j]], "}", sep="")   
+     }
 #      dane[1, maxvus] <- paste("\\color{red}{", dane[1, maxvus], "}", sep="")
 #      dane[2, maxppk] <- paste("\\color{red}{", dane[2, maxppk], "}", sep="")
 #      dane[3, maxabs] <- paste("\\color{red}{", dane[3, maxabs], "}", sep="")
@@ -62,19 +68,19 @@ colnames(wszystko) <- c("\\parbox{25mm}{\\centering Procesy gaussowskie}",
                         "\\parbox{25mm}{\\centering Sieci neuronowe}",
                         "\\parbox{25mm}{\\centering Metoda Franka i Halla}",
                         "\\parbox{25mm}{\\centering Wektory maszyn podpierających (SVM)}")
-w <- cbind(c("VUS [\\%]", "PPK [\\%]", "ABS"), wszystko)
+w <- cbind(c("VUS [\\%]", "PPK [\\%]", "ABS", "SB [\\%]"), wszystko)
 colnames(w)[1] <- " "
 rownames(w) <- NULL
 
 mult <- character(nrow(w))
 ile <- 1
 for(i in 1:nrow(w)){
-    if(i %% 3 == 1){
-          mult[i] <- paste0("\\multirow{3}{15mm}{", unlist(stri_match_all_regex(nazwy[ile], "(.*?)[.]txt"))[2], "}", sep="")    
+    if(i %% 4 == 1){
+          mult[i] <- paste0("\\multirow{4}{15mm}{", unlist(stri_match_all_regex(nazwy[ile], "(.*?)[.]txt"))[2], "}", sep="")    
           ile <- ile + 1
     }  
-    if(i %% 3 == 2)  mult[i] <- ""
-    if(i %% 3 == 0)  mult[i] <- ""
+    if(i %% 4 == 2)  mult[i] <- ""
+    if(i %% 4 == 0)  mult[i] <- ""
 }
 w <- cbind(mult, w)
 colnames(w)[1] <- ""
@@ -84,7 +90,7 @@ colnames(w)[1] <- ""
 
 print(xtable(w, caption="Tabelka", align=c("l", rep("r", 7))), 
       include.rownames=FALSE, 
-      hline.after = c(0, seq(from=3, to=9*3, by=3)),
+      hline.after = c(0, seq(from=4, to=9*4, by=4)),
       NA.string = "--",
       #format.args=list(big.mark = "'", decimal.mark = ","),
       sanitize.text.function = function(x){return(x)})

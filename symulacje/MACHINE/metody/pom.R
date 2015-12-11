@@ -62,7 +62,9 @@ library("arules")
 # save(lista_rownoliczne, lista_przedzialy, s, 
 #      file="C:\\Users\\marsom\\Desktop\\lista_danych_machine.RData")
 
-load("C:\\Users\\marsom\\Desktop\\lista_danych_machine.RData")
+setwd("C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/symulacje/MACHINE/metody")
+
+load("..\\lista_danych_machine.RData")
 
 # zbior testowy i treningowy
 
@@ -71,7 +73,28 @@ load("C:\\Users\\marsom\\Desktop\\lista_danych_machine.RData")
 
 # rownoliczne
 
-tabela_rownoliczne <- matrix(ncol=3, nrow=4)
+posortuj <- function(wektor){
+     
+     ile_zamian <- 0
+     for(j in length(wektor):2){
+          for(i in 1:(j-1)){
+               if(wektor[i]>wektor[i+1]){
+                    pamietaj <- wektor[i]
+                    wektor[i] <- wektor[i+1]
+                    wektor[i+1] <- pamietaj
+                    ile_zamian <- ile_zamian + 1
+               }     
+          }     
+     }
+     
+     ile_zamian
+}
+
+wsp_bab <- function(wektor){
+     (posortuj(sort(wektor, decreasing=TRUE))-posortuj(wektor))/posortuj(sort(wektor, decreasing=TRUE))     
+}
+
+tabela_rownoliczne <- matrix(ncol=4, nrow=4)
 for(i in 1:length(lista_rownoliczne)){
     m <- lrm(y~., data=lista_rownoliczne[[i]][s, ])
     m_pred_prob <- predict(m, lista_rownoliczne[[i]][-s, ], type="fitted.ind")
@@ -82,17 +105,18 @@ for(i in 1:length(lista_rownoliczne)){
     est_vus <- vus(prawdziwe_klasy=m_praw_class, estymacja_porzadku=m_pred_f)
     proc_poprawnosci <- sum(m_pred_class == m_praw_class)*100/length(m_praw_class)
     abss <- sum(abs(as.numeric(as.character(m_praw_class))-m_pred_class))/length(m_pred_class)
+    babelki <- wsp_bab(as.numeric(m_praw_class[order(m_pred_f)]))
 
-    tabela_rownoliczne[i, ] <- c(est_vus, proc_poprawnosci, abss)  
+    tabela_rownoliczne[i, ] <- c(est_vus, proc_poprawnosci, abss, babelki)  
 }
 
 tabela_rownoliczne <- as.data.frame(tabela_rownoliczne)
-colnames(tabela_rownoliczne) <- c("vus", "ppk", "abs")
+colnames(tabela_rownoliczne) <- c("vus", "ppk", "abs", "sb")
 rownames(tabela_rownoliczne) <- c("3", "5", "7", "10")
 
 # przedzialy
 
-tabela_przedzialy <- matrix(ncol=3, nrow=4)
+tabela_przedzialy <- matrix(ncol=4, nrow=4)
 for(i in 1:length(lista_przedzialy)){
     m <- lrm(as.factor(y)~., data=lista_przedzialy[[i]][s,])
     m_pred_prob <- predict(m, lista_przedzialy[[i]][-s, ], type="fitted.ind")
@@ -103,12 +127,13 @@ for(i in 1:length(lista_przedzialy)){
     est_vus <- vus(prawdziwe_klasy=m_praw_class, estymacja_porzadku=m_pred_f)
     proc_poprawnosci <- sum(m_pred_class == m_praw_class)*100/length(m_praw_class)
     abss <- sum(abs(as.numeric(as.character(m_praw_class))-m_pred_class))/length(m_pred_class)
+    babelki <- wsp_bab(as.numeric(m_praw_class[order(m_pred_f)]))
     
-    tabela_przedzialy[i, ] <- c(est_vus, proc_poprawnosci, abss)  
+    tabela_przedzialy[i, ] <- c(est_vus, proc_poprawnosci, abss, babelki)  
 }
 
 tabela_przedzialy <- as.data.frame(tabela_przedzialy)
-colnames(tabela_przedzialy) <- c("vus", "ppk", "abs")
+colnames(tabela_przedzialy) <- c("vus", "ppk", "abs", "sb")
 rownames(tabela_przedzialy) <- c("3", "5", "7", "10")
 
 cbind(rodzaj_klastra="metoda_k_srednich", 
@@ -121,7 +146,7 @@ cbind(rodzaj_klastra="rownoliczne_klastry",
 
 rbind(jeden, dwa) -> pom
 
-write.table(pom, "C:\\Users\\marsom\\Desktop\\wnioski\\pom.txt", col.names=TRUE, 
+write.table(pom, "..\\wnioski\\pom.txt", col.names=TRUE, 
             row.names=FALSE, quote=FALSE, sep="\t")
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.2.23)  3 DEC 2015 21:51
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.2.23)  11 DEC 2015 23:57
 entering extended mode
 **praca_magisterska.tex
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.tex
@@ -925,6 +925,36 @@ Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
 ("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\lscape.sty"
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\verbatim.sty"
+Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks47
+\verbatim@line=\toks48
+\verbatim@in@stream=\read2
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count144
+\float@exts=\toks49
+\float@box=\box40
+\@float@everytoks=\toks50
+\@floatcapt=\box41
+)
+\@float@every@algorithm=\toks51
+\c@algorithm=\count145
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithmic.sty"
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+\c@ALC@unique=\count146
+\c@ALC@line=\count147
+\c@ALC@rem=\count148
+\c@ALC@depth=\count149
+\ALC@tlm=\skip62
+\algorithmicindent=\skip63
+)
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikz
 librarycalc.code.tex"
 File: tikzlibrarycalc.code.tex 2013/07/15 v3.0.0 (rcs-revision 1.9)
@@ -978,32 +1008,32 @@ File: tikzlibraryshapes.multipart.code.tex 2008/01/09 v3.0.0 (rcs-revision 1.1)
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\libraries\shapes\pgflibraryshapes
 .multipart.code.tex"
 File: pgflibraryshapes.multipart.code.tex 2010/01/07 v3.0.0 (rcs-revision 1.2)
-\pgfnodepartlowerbox=\box40
-\pgfnodeparttwobox=\box41
-\pgfnodepartthreebox=\box42
-\pgfnodepartfourbox=\box43
-\pgfnodeparttwentybox=\box44
-\pgfnodepartnineteenbox=\box45
-\pgfnodeparteighteenbox=\box46
-\pgfnodepartseventeenbox=\box47
-\pgfnodepartsixteenbox=\box48
-\pgfnodepartfifteenbox=\box49
-\pgfnodepartfourteenbox=\box50
-\pgfnodepartthirteenbox=\box51
-\pgfnodeparttwelvebox=\box52
-\pgfnodepartelevenbox=\box53
-\pgfnodeparttenbox=\box54
-\pgfnodepartninebox=\box55
-\pgfnodeparteightbox=\box56
-\pgfnodepartsevenbox=\box57
-\pgfnodepartsixbox=\box58
-\pgfnodepartfivebox=\box59
+\pgfnodepartlowerbox=\box42
+\pgfnodeparttwobox=\box43
+\pgfnodepartthreebox=\box44
+\pgfnodepartfourbox=\box45
+\pgfnodeparttwentybox=\box46
+\pgfnodepartnineteenbox=\box47
+\pgfnodeparteighteenbox=\box48
+\pgfnodepartseventeenbox=\box49
+\pgfnodepartsixteenbox=\box50
+\pgfnodepartfifteenbox=\box51
+\pgfnodepartfourteenbox=\box52
+\pgfnodepartthirteenbox=\box53
+\pgfnodeparttwelvebox=\box54
+\pgfnodepartelevenbox=\box55
+\pgfnodeparttenbox=\box56
+\pgfnodepartninebox=\box57
+\pgfnodeparteightbox=\box58
+\pgfnodepartsevenbox=\box59
+\pgfnodepartsixbox=\box60
+\pgfnodepartfivebox=\box61
 )))
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikz
 librarybackgrounds.code.tex"
 File: tikzlibrarybackgrounds.code.tex 2013/07/18 v3.0.0 (rcs-revision 1.3)
-\pgf@layerbox@background=\box60
-\pgf@layerboxsaved@background=\box61
+\pgf@layerbox@background=\box62
+\pgf@layerboxsaved@background=\box63
 )
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikz
 libraryarrows.code.tex"
@@ -1018,6 +1048,8 @@ File: pgflibraryarrows.code.tex 2013/09/23 v3.0.0 (rcs-revision 1.16)
 librarypositioning.code.tex"
 File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.0 (rcs-revision 1.7)
 )
+\myindent=\skip64
+
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.aux
 
 LaTeX Warning: Label `fig:f22' multiply defined.
@@ -1026,37 +1058,37 @@ LaTeX Warning: Label `fig:f22' multiply defined.
 LaTeX Warning: Label `sub@fig:f22' multiply defined.
 
 )
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
  ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count144
+\scratchcounter=\count150
 \scratchdimen=\dimen209
-\scratchbox=\box62
-\nofMPsegments=\count145
-\nofMParguments=\count146
-\everyMPshowfont=\toks47
-\MPscratchCnt=\count147
+\scratchbox=\box64
+\nofMPsegments=\count151
+\nofMParguments=\count152
+\everyMPshowfont=\toks52
+\MPscratchCnt=\count153
 \MPscratchDim=\dimen210
-\MPnumerator=\count148
-\makeMPintoPDFobject=\count149
-\everyMPtoPDFconversion=\toks48
+\MPnumerator=\count154
+\makeMPintoPDFobject=\count155
+\everyMPtoPDFconversion=\toks53
 )
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1093,19 +1125,19 @@ LaTeX Font Info:    ... okay on input line 35.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box63
-Package hyperref Info: Link coloring OFF on input line 35.
+\AtBeginShipoutBox=\box65
+Package hyperref Info: Link coloring OFF on input line 55.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 ("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count150
+\c@section@level=\count156
 )
-LaTeX Info: Redefining \ref on input line 35.
-LaTeX Info: Redefining \pageref on input line 35.
-LaTeX Info: Redefining \nameref on input line 35.
+LaTeX Info: Redefining \ref on input line 55.
+LaTeX Info: Redefining \pageref on input line 55.
+LaTeX Info: Redefining \nameref on input line 55.
 
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.out)
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.out)
@@ -1113,19 +1145,20 @@ LaTeX Info: Redefining \nameref on input line 35.
 
 ABD: EveryShipout initializing macros
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
 
-<graphics/pw.pdf, id=106, 80.3pt x 80.3pt>
-File: graphics/pw.pdf Graphic file (type pdf)
- <use graphics/pw.pdf>
-Package pdftex.def Info: graphics/pw.pdf used on input line 36.
-(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-LaTeX Font Info:    Try loading font information for U+msa on input line 36.
+<graphics/pw.jpg, id=106, 115.3911pt x 115.3911pt>
+File: graphics/pw.jpg Graphic file (type jpg)
+ <use graphics/pw.jpg>
+Package pdftex.def Info: graphics/pw.jpg used on input line 57.
+(pdftex.def)             Requested size: 64.01825pt x 64.01816pt.
+LaTeX Font Info:    Try loading font information for U+msa on input line 57.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 36.
+LaTeX Font Info:    Try loading font information for U+msb on input line 57.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1133,23 +1166,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <graphics/mini.pdf, id=107, 80.3pt x 80.3pt>
 File: graphics/mini.pdf Graphic file (type pdf)
  <use graphics/mini.pdf>
-Package pdftex.def Info: graphics/mini.pdf used on input line 36.
-(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+Package pdftex.def Info: graphics/mini.pdf used on input line 57.
+(pdftex.def)             Requested size: 64.01825pt x 64.01952pt.
 
-Overfull \hbox (32.43332pt too wide) in paragraph at lines 36--36
+Overfull \hbox (32.43332pt too wide) in paragraph at lines 57--57
   [] 
  []
 
 [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/Users/Marta/Desktop/Ma
-rta/GitHub/praca_magisterska/graphics/pw.pdf> <C:/Users/Marta/Desktop/Marta/Git
-Hub/praca_magisterska/graphics/mini.pdf
-
-pdfTeX warning: pdflatex (file C:/Users/Marta/Desktop/Marta/GitHub/praca_magist
-erska/graphics/mini.pdf): PDF inclusion: multiple pdfs with page group included
- in a single page
->] [2
+rta/GitHub/praca_magisterska/graphics/pw.jpg> <C:/Users/Marta/Desktop/Marta/Git
+Hub/praca_magisterska/graphics/mini.pdf>] [2
 
 ]
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.toc)
@@ -1160,65 +1188,68 @@ erska/graphics/mini.pdf): PDF inclusion: multiple pdfs with page group included
 ] [4
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 47.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 47.
- [5] [6
+Underfull \vbox (badness 5622) has occurred while \output is active []
 
-]
-Rozdzia\PlPrIeC {\l } 1.
-
-Overfull \hbox (0.84583pt too wide) in paragraph at lines 84--85
-[]\OT4/cmr/m/n/10.95 Wspóªczynniki mo-de-lu -- jak w przy-pad-ku re-gre-sji lo-
-gi-stycz-nej -- wy-li-cza-my me-to-d¡ Raphsona-
- []
-
-
-Overfull \hbox (3.70601pt too wide) in paragraph at lines 84--85
-\OT4/cmr/m/n/10.95 Newtona, a sku-mu-lo-wa-ne praw-do-po-do-bie«-stwa -- po pro
--stym prze-li-cze-niu -- do-sta-nie-my ze wzo-
- []
-
-[7]
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 114.
-
-<graphics/svm1.png, id=181, 715.7139pt x 357.7365pt>
-File: graphics/svm1.png Graphic file (type png)
- <use graphics/svm1.png>
-Package pdftex.def Info: graphics/svm1.png used on input line 116.
-(pdftex.def)             Requested size: 441.01775pt x 220.44058pt.
-
-<graphics/svm1eps.png, id=183, 637.6623pt x 318.7107pt>
-File: graphics/svm1eps.png Graphic file (type png)
-
-<use graphics/svm1eps.png>
-Package pdftex.def Info: graphics/svm1eps.png used on input line 121.
-(pdftex.def)             Requested size: 441.01775pt x 220.42609pt.
- <graphics/svm3.png, id=184, 1064.778pt x 532.389pt>
-File: graphics/svm3.png Graphic file (type png)
-
-<use graphics/svm3.png>
-Package pdftex.def Info: graphics/svm3.png used on input line 132.
-(pdftex.def)             Requested size: 441.01775pt x 220.50676pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
+ [5]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
+[6]
+Rozdzia\PlPrIeC {\l } 1.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 89.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 89.
+
+Overfull \hbox (0.84583pt too wide) in paragraph at lines 112--113
+[]\OT4/cmr/m/n/10.95 Wspóªczynniki mo-de-lu -- jak w przy-pad-ku re-gre-sji lo-
+gi-stycz-nej -- wy-li-cza-my me-to-d¡ Raphsona-
+ []
+
+
+Overfull \hbox (3.70601pt too wide) in paragraph at lines 112--113
+\OT4/cmr/m/n/10.95 Newtona, a sku-mu-lo-wa-ne praw-do-po-do-bie«-stwa -- po pro
+-stym prze-li-cze-niu -- do-sta-nie-my ze wzo-
+ []
+
+[7
+
+]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 142.
+
+<graphics/svm1.png, id=181, 715.7139pt x 357.7365pt>
+File: graphics/svm1.png Graphic file (type png)
+ <use graphics/svm1.png>
+Package pdftex.def Info: graphics/svm1.png used on input line 144.
+(pdftex.def)             Requested size: 441.01775pt x 220.44058pt.
+
+<graphics/svm1eps.png, id=183, 637.6623pt x 318.7107pt>
+File: graphics/svm1eps.png Graphic file (type png)
+
+<use graphics/svm1eps.png>
+Package pdftex.def Info: graphics/svm1eps.png used on input line 149.
+(pdftex.def)             Requested size: 441.01775pt x 220.42609pt.
+ <graphics/svm3.png, id=184, 1064.778pt x 532.389pt>
+File: graphics/svm3.png Graphic file (type png)
+
+<use graphics/svm3.png>
+Package pdftex.def Info: graphics/svm3.png used on input line 160.
+(pdftex.def)             Requested size: 441.01775pt x 220.50676pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [8] [9 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm1.png
 > <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm1eps.png>]
 [10 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm3.png>]
-Overfull \hbox (20.61258pt too wide) in paragraph at lines 168--169
+Overfull \hbox (20.61258pt too wide) in paragraph at lines 196--197
 []\OT4/cmr/m/n/10.95 Standardowo, na wej-±ciu otrzy-mu-je-my zbiór ucz¡-cy w po
 -sta-ci $\OML/cmm/m/it/10.95 n$ \OT4/cmr/m/n/10.95 par $\OT1/cmr/m/n/10.95 ([]\
 OML/cmm/m/it/10.95 ; y\OT1/cmr/m/n/10.95 )$\OT4/cmr/m/n/10.95 , gdzie $[] \OT1/
@@ -1232,7 +1263,7 @@ Missing character: There is no ; in font nullfont!
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (9.78015pt too wide) in paragraph at lines 240--242
+Overfull \hbox (9.78015pt too wide) in paragraph at lines 268--270
 \OT4/cmr/m/n/10.95 gdzie $\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/10.95 (\OMS/cmsy/m/
 n/10.95 \OT1/cmr/m/n/10.95 )$ \OT4/cmr/m/n/10.95 to wy-bra-na przez nas funk-c
 ja sig-mo-idal-na -- w na-szym przy-pad-ku $\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/1
@@ -1247,68 +1278,68 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 ]
 Rozdzia\PlPrIeC {\l } 2.
-[19] [20] <graphics/roc1.png, id=304, 987.69pt x 466.74374pt>
+[19] [20] <graphics/roc1.png, id=303, 987.69pt x 466.74374pt>
 File: graphics/roc1.png Graphic file (type png)
 
 <use graphics/roc1.png>
-Package pdftex.def Info: graphics/roc1.png used on input line 569.
+Package pdftex.def Info: graphics/roc1.png used on input line 597.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
- <graphics/roc2.png, id=305, 987.69pt x 466.74374pt>
+ <graphics/roc2.png, id=304, 987.69pt x 466.74374pt>
 File: graphics/roc2.png Graphic file (type png)
 
 <use graphics/roc2.png>
-Package pdftex.def Info: graphics/roc2.png used on input line 574.
+Package pdftex.def Info: graphics/roc2.png used on input line 602.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
- <graphics/roc3.png, id=306, 987.69pt x 466.74374pt>
+ <graphics/roc3.png, id=305, 987.69pt x 466.74374pt>
 File: graphics/roc3.png Graphic file (type png)
 
 <use graphics/roc3.png>
-Package pdftex.def Info: graphics/roc3.png used on input line 579.
+Package pdftex.def Info: graphics/roc3.png used on input line 607.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
 
-LaTeX Warning: Float too large for page by 26.3432pt on input line 586.
+LaTeX Warning: Float too large for page by 26.3432pt on input line 614.
 
 [21 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc1.png> <
 C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc2.png> <C:/Us
 ers/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc3.png>]
-<graphics/roc1.pdf, id=316, 361.35pt x 361.35pt>
+<graphics/roc1.pdf, id=315, 361.35pt x 361.35pt>
 File: graphics/roc1.pdf Graphic file (type pdf)
  <use graphics/roc1.pdf>
-Package pdftex.def Info: graphics/roc1.pdf used on input line 601.
+Package pdftex.def Info: graphics/roc1.pdf used on input line 629.
 (pdftex.def)             Requested size: 176.4044pt x 176.4069pt.
 
-<graphics/roc2.pdf, id=317, 361.35pt x 361.35pt>
+<graphics/roc2.pdf, id=316, 361.35pt x 361.35pt>
 File: graphics/roc2.pdf Graphic file (type pdf)
  <use graphics/roc2.pdf>
-Package pdftex.def Info: graphics/roc2.pdf used on input line 607.
+Package pdftex.def Info: graphics/roc2.pdf used on input line 635.
 (pdftex.def)             Requested size: 176.4044pt x 176.4069pt.
 
 [22
 
  <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc1.pdf> <C:/
 Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc2.pdf>]
-<graphics/roc_trzy1.png, id=342, 987.69pt x 466.74374pt>
+<graphics/roc_trzy1.png, id=341, 987.69pt x 466.74374pt>
 File: graphics/roc_trzy1.png Graphic file (type png)
 
 <use graphics/roc_trzy1.png>
-Package pdftex.def Info: graphics/roc_trzy1.png used on input line 624.
+Package pdftex.def Info: graphics/roc_trzy1.png used on input line 652.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
-<graphics/roc_trzy2.png, id=343, 987.69pt x 466.74374pt>
+<graphics/roc_trzy2.png, id=342, 987.69pt x 466.74374pt>
 File: graphics/roc_trzy2.png Graphic file (type png)
 
 <use graphics/roc_trzy2.png>
-Package pdftex.def Info: graphics/roc_trzy2.png used on input line 627.
+Package pdftex.def Info: graphics/roc_trzy2.png used on input line 655.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<graphics/roc3d.png, id=346, 578.16pt x 578.16pt>
+<graphics/roc3d.png, id=345, 578.16pt x 578.16pt>
 File: graphics/roc3d.png Graphic file (type png)
  <use graphics/roc3d.png>
-Package pdftex.def Info: graphics/roc3d.png used on input line 640.
+Package pdftex.def Info: graphics/roc3d.png used on input line 668.
 (pdftex.def)             Requested size: 289.07928pt x 289.07928pt.
 
 
@@ -1328,139 +1359,142 @@ png>]
 
 ]
 Rozdzia\PlPrIeC {\l } 3.
-<graphics/rozklad_odpowiedzi.png, id=375, 803.0pt x 803.0pt>
+<graphics/rozklad_odpowiedzi.png, id=374, 803.0pt x 803.0pt>
 File: graphics/rozklad_odpowiedzi.png Graphic file (type png)
 
 <use graphics/rozklad_odpowiedzi.png>
-Package pdftex.def Info: graphics/rozklad_odpowiedzi.png used on input line 667
+Package pdftex.def Info: graphics/rozklad_odpowiedzi.png used on input line 695
 .
 (pdftex.def)             Requested size: 481.80373pt x 481.80373pt.
 
-Overfull \hbox (40.78598pt too wide) in paragraph at lines 667--668
+Overfull \hbox (40.78598pt too wide) in paragraph at lines 695--696
  [] 
  []
 
 [27]
-
-Package caption Warning: \label without proper \caption on input line 737.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `vus01' on page 28 undefined on input line 732.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2600) has occurred while \output is active []
 
  [28 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/rozklad_od
 powiedzi.png>]
-
-Package caption Warning: \label without proper \caption on input line 764.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `vus02' on page 29 undefined on input line 734.
+Overfull \hbox (33.3194pt too wide) in paragraph at lines 768--823
+[]$[]$   $[]$ 
+ []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [29]
-Overfull \hbox (33.3194pt too wide) in paragraph at lines 737--790
-[]$[]$   $[]$ 
+LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 837
+.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\polski\ot4cmtt.fd"
+File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
+)
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 857.
+
+Underfull \hbox (badness 10000) in paragraph at lines 870--870
+
  []
 
-[30] [31]
-Overfull \hbox (15.07133pt too wide) in paragraph at lines 810--821
- [][] 
+
+Underfull \hbox (badness 10000) in paragraph at lines 870--870
+
  []
 
 
-Overfull \hbox (15.07133pt too wide) in paragraph at lines 827--838
- [][] 
+Overfull \hbox (11.35822pt too wide) in paragraph at lines 870--870
+\OT4/cmr/m/n/10.95 proporcjonalnych 
  []
 
-[32
 
-] [33
+Underfull \hbox (badness 10000) in paragraph at lines 870--870
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 870--870
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 870--870
+
+ []
+
+
+Overfull \hbox (1.59445pt too wide) in paragraph at lines 870--870
+\OT4/cmr/m/n/10.95 podpieraj¡cych 
+ []
+
+
+LaTeX Warning: Float too large for page by 49.1493pt on input line 920.
+
+
+Underfull \vbox (badness 3158) has occurred while \output is active []
+
+ [30]
+[31] [32] [33
 
 ] [34
 
 ]
 Dodatek A.
-[35] [36]
-LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 966
-.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\polski\ot4cmtt.fd"
-File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
-) [37
+[35] [36] [37
 
-]
-[38
+] [38
 
 ] [39]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 981.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 981.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1128.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1128.
 
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 981.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 981.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1128.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1128.
 
-
-Package rerunfilecheck Warning: File `praca_magisterska.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `praca_magisterska.out':
-(rerunfilecheck)             Before: A03CE0CA3B6B4283F6467D9743142618;4599
-(rerunfilecheck)             After:  D743E7F9A4DBD5013E510B5CE34D027E;4599.
-
-LaTeX Warning: There were undefined references.
+Package rerunfilecheck Info: File `praca_magisterska.out' has not changed.
+(rerunfilecheck)             Checksum: 48B017F781CC331CC3EE89D47AC4D9F3;4788.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 981.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1128.
  ) 
 Here is how much of TeX's memory you used:
- 24561 strings out of 493921
- 454993 string characters out of 3147282
- 536537 words of memory out of 3000000
- 27285 multiletter control sequences out of 15000+200000
- 23346 words of font info for 69 fonts, out of 3000000 for 9000
+ 24840 strings out of 493921
+ 458652 string characters out of 3147282
+ 548208 words of memory out of 3000000
+ 27535 multiletter control sequences out of 15000+200000
+ 23938 words of font info for 71 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 55i,17n,68p,1625b,1073s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{table.caption.16} has been referenced but does no
-t exist, replaced by a fixed one
-
-pdfTeX warning (dest): name{section*.18} has been referenced but does not exist
-, replaced by a fixed one
-
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/pltt.enc}{C:/Program Files/MiKT
-eX 2.9/fonts/enc/dvips/pl/plit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips
-/pl/plrm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plsc.enc}<C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cmextra/cmex7.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
-s/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr1
-0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/pl/plbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbx12.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbx8.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/pl/plcsc10.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/pl/plr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl
-/plr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plsl10.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/pl/plti10.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/pl/plti8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
-public/pl/pltt10.pfb>
-Output written on praca_magisterska.pdf (39 pages, 1470991 bytes).
+ 55i,17n,68p,1471b,1077s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/pltt.enc}{C:/Program Files/Mi
+KTeX 2.9/fonts/enc/dvips/pl/plit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvi
+ps/pl/plrm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/pl/plsc.enc}<C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cmextra/cmex7.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
+lic/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
+r10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C
+:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
+e1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/pl/plbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbx12.
+pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plbx8.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/pl/plcsc10.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/pl/plr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+pl/plr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plsl10.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/pl/plti10.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/pl/plti8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/pl/pltt10.pfb>
+Output written on praca_magisterska.pdf (39 pages, 1502202 bytes).
 PDF statistics:
- 581 PDF objects out of 1000 (max. 8388607)
- 123 named destinations out of 1000 (max. 500000)
+ 598 PDF objects out of 1000 (max. 8388607)
+ 137 named destinations out of 1000 (max. 500000)
  283 words of extra memory for PDF output out of 10000 (max. 10000000)
 

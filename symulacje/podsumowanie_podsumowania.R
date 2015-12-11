@@ -32,18 +32,19 @@ for(i in 1:length(nazwy)){
      
      for(j in 1:5){
           
-          przeczytaj <- readLines(wszystko[[j]][i], n=5)
+          przeczytaj <- readLines(wszystko[[j]][i], n=6)
           ile_klas <- przeczytaj[1] %>% as.numeric()
           ile_obs <- przeczytaj[2] %>% as.numeric()
           vus <- przeczytaj[3] %>% as.numeric()
           moj <- przeczytaj[4] %>% as.numeric()
           procent <- przeczytaj[5] %>% as.numeric()
-          tabela <- read.table(wszystko[[j]][i], skip=5, header=TRUE)[,4]
+          babelki <- przeczytaj[6] %>% as.numeric()
+          tabela <- read.table(wszystko[[j]][i], skip=6, header=TRUE)[,4]
           
-          m <- rbind(m, c(vus, procent, moj, tabela))     
+          m <- rbind(m, c(vus, procent, moj, babelki, tabela))     
      }
      
-     colnames(m) <- c("vus", "ppk", "abs", paste("pp_", 1:length(tabela), sep=""))
+     colnames(m) <- c("vus", "ppk", "abs", "babelki", paste("pp_", 1:length(tabela), sep=""))
      rownames(m) <- names(wszystko)
      
      write.table(m, paste(".\\ostatecznie\\", nazwa, ".txt", sep=""), 
