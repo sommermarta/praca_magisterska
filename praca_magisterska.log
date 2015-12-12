@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.2.23)  12 DEC 2015 21:35
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.2.23)  12 DEC 2015 23:26
 entering extended mode
 **praca_magisterska.tex
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.tex
@@ -1148,7 +1148,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
 
-<graphics/pw.jpg, id=114, 115.3911pt x 115.3911pt>
+<graphics/pw.jpg, id=118, 115.3911pt x 115.3911pt>
 File: graphics/pw.jpg Graphic file (type jpg)
  <use graphics/pw.jpg>
 Package pdftex.def Info: graphics/pw.jpg used on input line 57.
@@ -1163,7 +1163,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 57.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<graphics/mini.pdf, id=115, 80.3pt x 80.3pt>
+<graphics/mini.pdf, id=119, 80.3pt x 80.3pt>
 File: graphics/mini.pdf Graphic file (type pdf)
  <use graphics/mini.pdf>
 Package pdftex.def Info: graphics/mini.pdf used on input line 57.
@@ -1187,69 +1187,72 @@ Hub/praca_magisterska/graphics/mini.pdf>] [2
 
 ] [4
 
+] [5] [6
+
 ]
 Underfull \vbox (badness 5622) has occurred while \output is active []
 
- [5]
+ [7]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[6]
+[8]
 Rozdzia\PlPrIeC {\l } 1.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 89.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 97.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 89.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 97.
 
-Overfull \hbox (0.84583pt too wide) in paragraph at lines 112--113
+Overfull \hbox (0.84583pt too wide) in paragraph at lines 120--121
 []\OT4/cmr/m/n/10.95 Wspóªczynniki mo-de-lu -- jak w przy-pad-ku re-gre-sji lo-
 gi-stycz-nej -- wy-li-cza-my me-to-d¡ Raphsona-
  []
 
 
-Overfull \hbox (3.70601pt too wide) in paragraph at lines 112--113
+Overfull \hbox (3.70601pt too wide) in paragraph at lines 120--121
 \OT4/cmr/m/n/10.95 Newtona, a sku-mu-lo-wa-ne praw-do-po-do-bie«-stwa -- po pro
 -stym prze-li-cze-niu -- do-sta-nie-my ze wzo-
  []
 
-[7
+[9
 
 ]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 142.
+               Default added (so using `tbp') on input line 150.
 
-<graphics/svm1.png, id=191, 715.7139pt x 357.7365pt>
+<graphics/svm1.png, id=204, 715.7139pt x 357.7365pt>
 File: graphics/svm1.png Graphic file (type png)
  <use graphics/svm1.png>
-Package pdftex.def Info: graphics/svm1.png used on input line 144.
+Package pdftex.def Info: graphics/svm1.png used on input line 152.
 (pdftex.def)             Requested size: 441.01775pt x 220.44058pt.
 
-<graphics/svm1eps.png, id=193, 637.6623pt x 318.7107pt>
+<graphics/svm1eps.png, id=206, 637.6623pt x 318.7107pt>
 File: graphics/svm1eps.png Graphic file (type png)
 
 <use graphics/svm1eps.png>
-Package pdftex.def Info: graphics/svm1eps.png used on input line 149.
+Package pdftex.def Info: graphics/svm1eps.png used on input line 157.
 (pdftex.def)             Requested size: 441.01775pt x 220.42609pt.
- <graphics/svm3.png, id=194, 1064.778pt x 532.389pt>
+ <graphics/svm3.png, id=207, 1064.778pt x 532.389pt>
 File: graphics/svm3.png Graphic file (type png)
 
 <use graphics/svm3.png>
-Package pdftex.def Info: graphics/svm3.png used on input line 160.
+Package pdftex.def Info: graphics/svm3.png used on input line 168.
 (pdftex.def)             Requested size: 441.01775pt x 220.50676pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[8] [9 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm1.png
-> <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm1eps.png>]
-[10 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm3.png>]
-Overfull \hbox (20.61258pt too wide) in paragraph at lines 196--197
+[10] [11 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm1.p
+ng> <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm1eps.png
+>] [12 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/svm3.png
+>]
+Overfull \hbox (20.61258pt too wide) in paragraph at lines 204--205
 []\OT4/cmr/m/n/10.95 Standardowo, na wej-±ciu otrzy-mu-je-my zbiór ucz¡-cy w po
 -sta-ci $\OML/cmm/m/it/10.95 n$ \OT4/cmr/m/n/10.95 par $\OT1/cmr/m/n/10.95 ([]\
 OML/cmm/m/it/10.95 ; y\OT1/cmr/m/n/10.95 )$\OT4/cmr/m/n/10.95 , gdzie $[] \OT1/
@@ -1263,83 +1266,83 @@ Missing character: There is no ; in font nullfont!
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (9.78015pt too wide) in paragraph at lines 268--270
+Overfull \hbox (9.78015pt too wide) in paragraph at lines 276--278
 \OT4/cmr/m/n/10.95 gdzie $\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/10.95 (\OMS/cmsy/m/
 n/10.95 \OT1/cmr/m/n/10.95 )$ \OT4/cmr/m/n/10.95 to wy-bra-na przez nas funk-c
 ja sig-mo-idal-na -- w na-szym przy-pad-ku $\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/1
 0.95 (\OML/cmm/m/it/10.95 x\OT1/cmr/m/n/10.95 ) = []$\OT4/cmr/m/n/10.95 . 
  []
 
-[11] [12]
+[13] [14]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[13] [14] [15] [16] [17] [18
+[15] [16] [17] [18] [19] [20
 
 ]
 Rozdzia\PlPrIeC {\l } 2.
-[19] [20] <graphics/roc1.png, id=313, 987.69pt x 466.74374pt>
+[21] [22] <graphics/roc1.png, id=326, 987.69pt x 466.74374pt>
 File: graphics/roc1.png Graphic file (type png)
 
 <use graphics/roc1.png>
-Package pdftex.def Info: graphics/roc1.png used on input line 597.
+Package pdftex.def Info: graphics/roc1.png used on input line 605.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
- <graphics/roc2.png, id=314, 987.69pt x 466.74374pt>
+ <graphics/roc2.png, id=327, 987.69pt x 466.74374pt>
 File: graphics/roc2.png Graphic file (type png)
 
 <use graphics/roc2.png>
-Package pdftex.def Info: graphics/roc2.png used on input line 602.
+Package pdftex.def Info: graphics/roc2.png used on input line 610.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
- <graphics/roc3.png, id=315, 987.69pt x 466.74374pt>
+ <graphics/roc3.png, id=328, 987.69pt x 466.74374pt>
 File: graphics/roc3.png Graphic file (type png)
 
 <use graphics/roc3.png>
-Package pdftex.def Info: graphics/roc3.png used on input line 607.
+Package pdftex.def Info: graphics/roc3.png used on input line 615.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
 
-LaTeX Warning: Float too large for page by 26.3432pt on input line 614.
+LaTeX Warning: Float too large for page by 26.3432pt on input line 622.
 
-[21 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc1.png> <
+[23 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc1.png> <
 C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc2.png> <C:/Us
 ers/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc3.png>]
-<graphics/roc1.pdf, id=325, 361.35pt x 361.35pt>
+<graphics/roc1.pdf, id=338, 361.35pt x 361.35pt>
 File: graphics/roc1.pdf Graphic file (type pdf)
  <use graphics/roc1.pdf>
-Package pdftex.def Info: graphics/roc1.pdf used on input line 629.
+Package pdftex.def Info: graphics/roc1.pdf used on input line 637.
 (pdftex.def)             Requested size: 176.4044pt x 176.4069pt.
 
-<graphics/roc2.pdf, id=326, 361.35pt x 361.35pt>
+<graphics/roc2.pdf, id=339, 361.35pt x 361.35pt>
 File: graphics/roc2.pdf Graphic file (type pdf)
  <use graphics/roc2.pdf>
-Package pdftex.def Info: graphics/roc2.pdf used on input line 635.
+Package pdftex.def Info: graphics/roc2.pdf used on input line 643.
 (pdftex.def)             Requested size: 176.4044pt x 176.4069pt.
 
-[22
+[24
 
  <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc1.pdf> <C:/
 Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc2.pdf>]
-<graphics/roc_trzy1.png, id=351, 987.69pt x 466.74374pt>
+<graphics/roc_trzy1.png, id=364, 987.69pt x 466.74374pt>
 File: graphics/roc_trzy1.png Graphic file (type png)
 
 <use graphics/roc_trzy1.png>
-Package pdftex.def Info: graphics/roc_trzy1.png used on input line 652.
+Package pdftex.def Info: graphics/roc_trzy1.png used on input line 660.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
-<graphics/roc_trzy2.png, id=352, 987.69pt x 466.74374pt>
+<graphics/roc_trzy2.png, id=365, 987.69pt x 466.74374pt>
 File: graphics/roc_trzy2.png Graphic file (type png)
 
 <use graphics/roc_trzy2.png>
-Package pdftex.def Info: graphics/roc_trzy2.png used on input line 655.
+Package pdftex.def Info: graphics/roc_trzy2.png used on input line 663.
 (pdftex.def)             Requested size: 441.01775pt x 208.40181pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<graphics/roc3d.png, id=355, 578.16pt x 578.16pt>
+<graphics/roc3d.png, id=368, 578.16pt x 578.16pt>
 File: graphics/roc3d.png Graphic file (type png)
  <use graphics/roc3d.png>
-Package pdftex.def Info: graphics/roc3d.png used on input line 668.
+Package pdftex.def Info: graphics/roc3d.png used on input line 676.
 (pdftex.def)             Requested size: 289.07928pt x 289.07928pt.
 
 
@@ -1348,86 +1351,86 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 Underfull \vbox (badness 5175) has occurred while \output is active []
 
- [23]
+ [25]
 Underfull \vbox (badness 1859) has occurred while \output is active []
 
- [24 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc_trzy1.
+ [26 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc_trzy1.
 png> <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc_trzy2.
 png>]
-[25 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc3d.png>]
-[26
+[27 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/roc3d.png>]
+[28
 
 ]
 Rozdzia\PlPrIeC {\l } 3.
 
-LaTeX Warning: Float too large for page by 49.48074pt on input line 744.
+LaTeX Warning: Float too large for page by 49.48074pt on input line 752.
 
-<graphics/rozklad_odpowiedzi.png, id=384, 803.0pt x 803.0pt>
+<graphics/rozklad_odpowiedzi.png, id=397, 803.0pt x 803.0pt>
 File: graphics/rozklad_odpowiedzi.png Graphic file (type png)
 
 <use graphics/rozklad_odpowiedzi.png>
-Package pdftex.def Info: graphics/rozklad_odpowiedzi.png used on input line 748
+Package pdftex.def Info: graphics/rozklad_odpowiedzi.png used on input line 756
 .
 (pdftex.def)             Requested size: 441.01775pt x 441.02647pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[27] [28]
+[29] [30]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Overfull \hbox (3.56737pt too wide) in paragraph at lines 826--827
+Overfull \hbox (3.56737pt too wide) in paragraph at lines 834--835
 []\OT4/cmr/m/n/10.95 Przejd¹my do omó-wie-nia przy-kªa-dów. Roz-wa»-my naj-pier
 w przy-pa-dek z Ry-sun-ku []3.2a[]. Wszyst-
  []
 
-[29 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/rozklad_odp
+[31 <C:/Users/Marta/Desktop/Marta/GitHub/praca_magisterska/graphics/rozklad_odp
 owiedzi.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [30]
-LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 839
+ [32]
+LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 847
 .
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\polski\ot4cmtt.fd"
 File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 858.
- [31] [32] [33]
-[34
+put line 866.
+ [33] [34] [35]
+[36
 
-] [35] [36
+] [37] [38
 
 ]
 Dodatek A.
-[37] [38] [39
+[39] [40] [41
 
-] [40
+] [42
 
-] [41]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1051.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1051.
+] [43]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1063.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1063.
 
 (C:\Users\Marta\Desktop\Marta\GitHub\praca_magisterska\praca_magisterska.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1051.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1051.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1063.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1063.
 
 Package rerunfilecheck Info: File `praca_magisterska.out' has not changed.
-(rerunfilecheck)             Checksum: D81870AFCEB6683DB72C743337807774;5138.
+(rerunfilecheck)             Checksum: E8FBECCE8D1FB1F01754D003D2787FC9;5243.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1051.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1063.
  ) 
 Here is how much of TeX's memory you used:
- 24846 strings out of 493921
- 458708 string characters out of 3147282
- 547773 words of memory out of 3000000
- 27539 multiletter control sequences out of 15000+200000
+ 24850 strings out of 493921
+ 458745 string characters out of 3147282
+ 547775 words of memory out of 3000000
+ 27540 multiletter control sequences out of 15000+200000
  23434 words of font info for 70 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  55i,17n,68p,1471b,1077s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1455,9 +1458,9 @@ pl/plr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plsl10.pfb><C:/
 Program Files/MiKTeX 2.9/fonts/type1/public/pl/plti10.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/pl/plti8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
 1/public/pl/pltt10.pfb>
-Output written on praca_magisterska.pdf (41 pages, 1511719 bytes).
+Output written on praca_magisterska.pdf (43 pages, 1517090 bytes).
 PDF statistics:
- 620 PDF objects out of 1000 (max. 8388607)
- 139 named destinations out of 1000 (max. 500000)
- 299 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 634 PDF objects out of 1000 (max. 8388607)
+ 142 named destinations out of 1000 (max. 500000)
+ 307 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -57,6 +57,14 @@
 \maketitle
 \tableofcontents
 
+\chapter*{Streszczenie}
+
+Uczenie maszynowe często natrafia na problem klasyfikacji wieloklasowej (ang. \textit{multinomial regression}), w której zmienna odpowiedzi jest w pewien naturalny sposób uporządkowana. Mamy wtedy do czynienia z tzw. regresją porządkową (ang. \textit{ordinal regression}). 
+
+Głównym celem mojej pracy jest zebranie, omówienie i porównanie dostępnych w literaturze metod modelowania regresji porządkowej. Opisanych zostało w ten sposób pięć klasyfikatorów: model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i~Halla, sieci neuronowe oraz wektory maszyn podpierających (SVM). 
+
+Dodatkowo, praca zawiera opracowanie różnych wskaźników diagnostycznych, które pomagają w ocenie wyżej wymienionych metod klasyfikacji. Wreszcie, zarówno metody budowania modeli, jak i same współczynniki oceny ich jakości zostały przedstawione i porównane na~danych rzeczywistych. 
+
 \chapter*{Wstęp}
 
 Uczenie maszynowe jest bardzo szybko rozwijającym się zagadnieniem z pogranicza matematyki i informatyki. Główną przyczyną tego zjawiska jest jego szeroka gama zastosowań. Już nawet prosta regresja i klasyfikacja pomagają w odkrywaniu pewnych zależności oraz pozwalają prognozować różne wielkości. Z uczeniem maszynowym bardzo często -- choć nie zawsze świadomie -- spotykamy się w życiu codziennym np. korzystając z systemów rekomendacyjnych, czy używając wyszukiwarki internetowej. To właśnie z tych praktycznych zastosowań wynikła potrzeba stworzenia tzw. regresji porządkowej (ang. \textit{ordinal regression}). Zanim poznamy formalną definicję tego zagadnienia i zagłębimy się w temat, prześledźmy poniższy przykład, by wyrobić sobie pewną intuicję, czym właściwie jest regresja porządkowa.  
@@ -911,9 +919,13 @@ Wreszcie, widać wyraźnie, że nie ma jednej najlepszej metody. Każda ,,wygryw
 
 \chapter*{Podsumowanie}
 
-hgaierkhgaer;k
-ear;gkhfat;kej
-idkfhgntekjfdn;kfsd
+Regresja porządkowa jest ważnym działem uczenia maszynowego. Od problemu klasycznej regresji różni ją to, że zmienna odpowiedzi jest nominalna, natomiast od problemu klasyfikacji wieloklasowej to, że zmienna odpowiedzi ma pewien naturalny porządek. W mojej pracy przedstawione i omówione zostały metody modelowania regresji porządkowej opisane w dostępnej literaturze. Dodatkowo, pokazane zostały wskaźniki diagnostyczne, mające na celu ocenę jakości klasyfikatorów. Wreszcie, wszystko to zostało zebrane, porównane i podsumowane na rzeczywistych danych.
+
+Nową rzeczą, która została przedstawiona w pracy jest współczynnik diagnostyczny BSC (ang. \textit{Bubble Sorting Coefficient}), który radzi sobie lepiej niż współczynnik VUS, zachowując jednocześnie podobną interpretację. Omówiony został dokładny algorytm jego obliczania oraz~wady i zalety samego współczynnika. 
+
+Problem regresji porządkowej wydaje się mieć bardzo duże zastosowanie w praktyce (np.~systemy rekomendacyjne czy badania socjologiczne). Jest jednak dostępnych bardzo mało opracowań teoretycznych tego tematu, nie wspominając o oprogramowaniu. Poza tym, wciąż otwartych jest wiele zagadnień, które warto rozwijać. Przede wszystkim trzeba tu wymienić regresję porządkową, w której klasom przyporządkowane są pewne wagi. Żeby zrozumieć, o~co chodzi, odwołajmy się do przykładu ze wstępu mojej pracy, w którym chcieliśmy przewidywać opinię klienta o produkcie. Ważona regresja porządkowa zakładałaby tu, że bardziej zależy nam na poprawnym sklasyfikowaniu klientów, którym produkt potencjalnie może się spodobać niż na tych, którym może się nie spodobać (bo wtedy jest większa szansa osiągnięcia pewnych zysków) lub odwrotnie (bo wtedy nie stracimy pieniędzy na niepotrzebną reklamę). Ponadto, dalej powinno się rozwijać wskaźniki diagnostyczne, które -- jak wykazała moja praca -- nie są najlepsze. 
+
+Problem regresji porządkowej wciąż jest zatem problemem otwartym, który prawdopodobnie bardzo mocno się w najbliższych latach rozwinie. 
 
 \appendix
 

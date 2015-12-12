@@ -1,24 +1,25 @@
-\contentsline {chapter}{Wst\IeC {\k e}p}{5}{section*.1}
-\contentsline {chapter}{\numberline {1}Opis teoretyczny dost\IeC {\k e}pnych metod}{7}{chapter.1}
-\contentsline {section}{\numberline {1.1}Postawienie problemu i podstawowe oznaczenia}{7}{section.1.1}
-\contentsline {section}{\numberline {1.2}Model proporcjonalnych szans}{7}{section.1.2}
-\contentsline {section}{\numberline {1.3}Wektory maszyn podpieraj\IeC {\k a}cych (SVM)}{8}{section.1.3}
-\contentsline {section}{\numberline {1.4}Sieci neuronowe}{11}{section.1.4}
-\contentsline {section}{\numberline {1.5}Metoda Franka i Halla}{13}{section.1.5}
-\contentsline {section}{\numberline {1.6}Procesy gaussowskie}{14}{section.1.6}
-\contentsline {chapter}{\numberline {2}Diagnostyka modelu}{19}{chapter.2}
-\contentsline {section}{\numberline {2.1}Procent poprawnej klasyfikacji}{19}{section.2.1}
-\contentsline {section}{\numberline {2.2}\IeC {\'S}redni b\IeC {\l }\IeC {\k a}d bezwzgl\IeC {\k e}dny}{20}{section.2.2}
-\contentsline {section}{\numberline {2.3}Krzywa ROC w przypadku dwuklasowym}{20}{section.2.3}
-\contentsline {section}{\numberline {2.4}Krzywa ROC w przypadku regresji porz\IeC {\k a}dkowej}{23}{section.2.4}
-\contentsline {section}{\numberline {2.5}Wsp\IeC {\'o}\IeC {\l }czynnik VUS}{24}{section.2.5}
-\contentsline {chapter}{\numberline {3}Por\IeC {\'o}wnanie metod modelowania i wsp\IeC {\'o}\IeC {\l }czynnik\IeC {\'o}w diagnostycznych}{27}{chapter.3}
-\contentsline {section}{\numberline {3.1}Opis eksperymentu}{27}{section.3.1}
-\contentsline {section}{\numberline {3.2}Wst\IeC {\k e}pna analiza wynik\IeC {\'o}w}{27}{section.3.2}
-\contentsline {section}{\numberline {3.3}Wsp\IeC {\'o}\IeC {\l }czynnik BSC}{31}{section.3.3}
-\contentsline {section}{\numberline {3.4}Dalsze wnioski}{33}{section.3.4}
-\contentsline {chapter}{Podsumowanie}{35}{section*.15}
-\contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{37}{appendix.A}
-\contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{37}{section.A.1}
-\contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{37}{section.A.2}
-\contentsline {chapter}{Literatura}{39}{section*.16}
+\contentsline {chapter}{Streszczenie}{5}{section*.1}
+\contentsline {chapter}{Wst\IeC {\k e}p}{7}{section*.2}
+\contentsline {chapter}{\numberline {1}Opis teoretyczny dost\IeC {\k e}pnych metod}{9}{chapter.1}
+\contentsline {section}{\numberline {1.1}Postawienie problemu i podstawowe oznaczenia}{9}{section.1.1}
+\contentsline {section}{\numberline {1.2}Model proporcjonalnych szans}{9}{section.1.2}
+\contentsline {section}{\numberline {1.3}Wektory maszyn podpieraj\IeC {\k a}cych (SVM)}{10}{section.1.3}
+\contentsline {section}{\numberline {1.4}Sieci neuronowe}{13}{section.1.4}
+\contentsline {section}{\numberline {1.5}Metoda Franka i Halla}{15}{section.1.5}
+\contentsline {section}{\numberline {1.6}Procesy gaussowskie}{16}{section.1.6}
+\contentsline {chapter}{\numberline {2}Diagnostyka modelu}{21}{chapter.2}
+\contentsline {section}{\numberline {2.1}Procent poprawnej klasyfikacji}{21}{section.2.1}
+\contentsline {section}{\numberline {2.2}\IeC {\'S}redni b\IeC {\l }\IeC {\k a}d bezwzgl\IeC {\k e}dny}{22}{section.2.2}
+\contentsline {section}{\numberline {2.3}Krzywa ROC w przypadku dwuklasowym}{22}{section.2.3}
+\contentsline {section}{\numberline {2.4}Krzywa ROC w przypadku regresji porz\IeC {\k a}dkowej}{25}{section.2.4}
+\contentsline {section}{\numberline {2.5}Wsp\IeC {\'o}\IeC {\l }czynnik VUS}{26}{section.2.5}
+\contentsline {chapter}{\numberline {3}Por\IeC {\'o}wnanie metod modelowania i wsp\IeC {\'o}\IeC {\l }czynnik\IeC {\'o}w diagnostycznych}{29}{chapter.3}
+\contentsline {section}{\numberline {3.1}Opis eksperymentu}{29}{section.3.1}
+\contentsline {section}{\numberline {3.2}Wst\IeC {\k e}pna analiza wynik\IeC {\'o}w}{29}{section.3.2}
+\contentsline {section}{\numberline {3.3}Wsp\IeC {\'o}\IeC {\l }czynnik BSC}{33}{section.3.3}
+\contentsline {section}{\numberline {3.4}Dalsze wnioski}{35}{section.3.4}
+\contentsline {chapter}{Podsumowanie}{37}{section*.16}
+\contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{39}{appendix.A}
+\contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{39}{section.A.1}
+\contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{39}{section.A.2}
+\contentsline {chapter}{Literatura}{41}{section*.17}
