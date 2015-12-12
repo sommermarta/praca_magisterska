@@ -63,9 +63,9 @@ Uczenie maszynowe jest bardzo szybko rozwijającym się zagadnieniem z pogranicz
 
 Wyobraźmy sobie sytuację, że chcielibyśmy przewidzieć, w jakim stopniu potencjalnemu klientowi spodoba się sprzedawany przez nas produkt. Mając taką wiedzę, moglibyśmy bowiem przewidywać, co opłaca się mu polecić bądź zareklamować. Chcąc uprościć analizę, skupimy się na następujących możliwych odpowiedziach klienta: \textit{zdecydowanie mi się nie podoba}, \textit{nie podoba mi się}, \textit{nie mam zdania}, \textit{podoba mi się}, \textit{zdecydowanie mi się podoba}. Z jednej strony mamy do dyspozycji pewne cechy danego klienta. Przykładowo, mogą to być jego wiek, płeć czy wykształcenie. Nie zawsze jednak potrafimy uzyskać takie dane -- szczególnie, gdy~nie mamy bezpośredniego kontaktu z klientem, bo prowadzimy np. sklep internetowy. Wtedy jako wektor cech możemy przyjąć np. jego historię zakupów na naszej stronie. Z drugiej strony mamy też pewną grupę klientów, o których wiemy, co myślą o danym produkcie (bo np. zapytaliśmy ich o to wprost lub za pomocą ankiety). Metoda działania powinna być więc następująca. Najpierw -- na danych historycznych -- dopasowujemy pewien model, a następnie, gdy przychodzi do nas klient o konkretnych cechach, używając wcześniej skonstruowanego modelu, dostajemy odpowiedź, czy produkt mu się spodoba czy nie. 
 
-Analizę powyższego problemu można przeprowadzić na kilka różnych sposobów. Najbardziej naturalnym wydawałoby się zastosowanie klasyfikacji wieloetykietowej (tzn. takiej, gdzie odpowiedź jest nominalna i ma więcej niż dwa poziomy). Tracimy wtedy jednak istotną informację o tym, że odpowiedzi tworzą pewien naturalny porządek. Chcąc niejako wziąć to pod~uwagę, można potraktować nasz problem jak zwykłą regresję, zamieniając zmienną odpowiedzi w pewną zmienną ciągłą (np. \textit{zdecydowanie mi się nie podoba} odpowiadałoby cyfrze $1$, a \textit{zdecydowanie mi się podoba} cyfrze $5$) i to ją modelować, a następnie z powrotem dyskretyzować. Pojawia się tu jednak problem, jak optymalnie zrobić taką transformację, uwzględniając chociażby fakt, że nasze odpowiedzi niekoniecznie są od siebie jednakowo odległe (tzn. np. różnica między \textit{nie podoba mi się} a \textit{nie mam zdania} wcale mnie musi być taka sama, jak~między \textit{podoba mi się} a \textit{zdecydowanie mi się podoba}). Podstawowe zagadnienia uczenia maszynowego nie znajdują tu zatem zastosowania i stąd wynikło zapotrzebowanie rozwinięcia problemu regresji porządkowej. 
+Analizę powyższego problemu można przeprowadzić na kilka różnych sposobów. Najbardziej naturalnym wydawałoby się zastosowanie klasyfikacji wieloklasowej (tzn. takiej, gdzie odpowiedź jest nominalna i ma więcej niż dwa poziomy; ang. \textit{multinomial regression}). Tracimy wtedy jednak istotną informację o tym, że odpowiedzi tworzą pewien naturalny porządek. Chcąc niejako wziąć to pod~uwagę, można potraktować nasz problem jak zwykłą regresję, zamieniając zmienną odpowiedzi w pewną zmienną ciągłą (np. \textit{zdecydowanie mi się nie podoba} odpowiadałoby cyfrze $1$, a \textit{zdecydowanie mi się podoba} cyfrze $5$) i to ją modelować, a następnie z powrotem dyskretyzować. Pojawia się tu jednak problem, jak optymalnie zrobić taką transformację, uwzględniając chociażby fakt, że nasze odpowiedzi niekoniecznie są od siebie jednakowo odległe (tzn. np. różnica między \textit{nie podoba mi się} a \textit{nie mam zdania} wcale mnie musi być taka sama, jak~między \textit{podoba mi się} a \textit{zdecydowanie mi się podoba}). Podstawowe zagadnienia uczenia maszynowego nie znajdują tu zatem zastosowania i stąd wynikło zapotrzebowanie rozwinięcia problemu regresji porządkowej. 
 
-Powyższy przykład wyrobił nam pewną intuicję co do tego, czym jest regresja porządkowa. Krótko określić można by ją było jako problem klasyfikacji wieloetykietowej, w którym zmienna odpowiedzi tworzy pewien naturalny porządek. Formalne sformułowanie problemu przedstawię na początku rozdziału pierwszego.
+Powyższy przykład wyrobił nam pewną intuicję co do tego, czym jest regresja porządkowa. Krótko określić można by ją było jako problem klasyfikacji wieloklasowej, w którym zmienna odpowiedzi tworzy pewien naturalny porządek. Formalne sformułowanie problemu przedstawimy na początku rozdziału pierwszego.
 
 Celem mojej pracy jest teoretyczne i praktyczne omówienie regresji porządkowej. Praca ma zatem następującą strukturę. Rozdział pierwszy poświęcony został zebraniu, opisaniu i usystematyzowaniu dostępnych w literaturze metod modelowania tego zagadnienia. Pokazane są w nim również wady i zalety różnych podejść do tematu oraz różnice między nimi. W~rozdziale drugim opisane zostały metody diagnostyki modelu oraz ich mocne i słabe strony. W~ostatnim rozdziale, który -- w przeciwieństwie do bardzo teoretycznych pierwszych dwóch -- opiera się na danych rzeczywistych, porównamy metody modelowania regresji porządkowej oraz ocenimy jakość współczynników diagnostycznych.       
 
@@ -371,7 +371,7 @@ Ostatecznie, nowej obserwacji przypisujemy tę klasę, której prawdopodobieńst
 
 \section{Procesy gaussowskie}
 
-Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloetykietowej. Chu i Ghahramani w pracy \cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
+Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloklasowej. Chu i Ghahramani w pracy \cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
 
 Pomysł modelowania regresji porządkowej polega na wprowadzeniu tzw. zmiennej ukrytej, będącej niejako krokiem pośrednim w modelowaniu zmiennej odpowiedzi. Mianowicie, zamiast dawać od razu odpowiedź, do której klasy przypisujemy daną obserwację, próbujemy ją najpierw scharakteryzować jako liczbę rzeczywistą, by móc ją niejako umieścić na prostej. Dzięki temu uzyskamy pewne uporządkowanie między naszymi obserwacjami, by następnie wybrać progi, które będą już klasyfikować obserwacje. W celu wyrobienia sobie intuicji przeanalizujmy całe rozumowanie ,,od tyłu", zaczynając od predykcji. Podstawowym założeniem \textit{a priori} tej metody jest to, że zmienna ukryta $F$ jest procesem gaussowskim tzn., że jej rozkłady skończenie wymiarowe są normalne. Pełną charakteryzację takiego procesu tworzą dwie informacje -- średnia (standardowo przyjmuje się $0$) oraz macierz kowariancji $\mathbf{\Sigma}$. Dla celów tej pracy przyjmiemy, że elementy macierzy kowariancji definiowane są w następujący sposób:
 $$
@@ -533,7 +533,7 @@ Dla nowej obserwacji wystarczy teraz jedynie wyznaczyć $\underset{i}\argmax \ma
 
 % ---------------------------------------------------------------------------------------------------------------------------
 
-\chapter{Diagnostyka modelu}
+\chapter{Diagnostyka modelu}\label{rozdz2}
 
 W poprzednim rozdziale poznaliśmy kilka metod rozwiązania problemu regresji porządkowej. Teraz chcielibyśmy dowiedzieć się, która z nich jest najlepsza. Oczywiście nie da się stwierdzić tego w ogólności, gdyż skuteczność metod zależy od konkretnych danych. Mamy jednak do dyspozycji kilka wskaźników, które pomogą nam w ocenie jakości modelu. Nie różnią się one zbytnio od tych, które znamy ze zwykłej klasyfikacji -- są jedynie ich pewnym uogólnieniem. Możemy zatem używać:
 \begin{itemize}
@@ -686,86 +686,83 @@ Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpr
 
 \chapter{Porównanie metod modelowania i współczynników diagnostycznych}
 
-W poprzednich rozdziałach poznaliśmy różne techniki radzenia sobie z problemem regresji porządkowej. Znamy już również techniki oceny klasyfikatorów. Spróbujmy teraz zobaczyć, jak na rzeczywistych danych zachowuje się każda z poznanych metod. 
+\section{Opis eksperymentu}
 
-\section{Opis danych}
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{rrrrrrrr}
+& & \parbox{1,5cm}{\centering Procesy gaussowskie} & \parbox{1,5cm}{\centering Model proporcjonalnych szans} & \parbox{1,5cm}{\centering Sieci neuronowe} & \parbox{1,5cm}{\centering Metoda Franka i Halla} & \parbox{1,5cm}{\centering SVM} & \color{gray}{\parbox{1,5cm}{\begin{center}Klasyfi- kacja wieloklasowa\end{center}}}\\ 
+  \hline
+\multirow{4}{15mm}{abalone} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 &\color{gray}{0,00}\\ 
+   & ACC [\%] & 56,38 & 55,18 & \color{red}{56,86} & 55,18 & 56,30 &\color{gray}{57,58}\\ 
+   & ABS \color{white}{[\%]} & 0,55 & 0,55 & \color{red}{0,51} & 0,55 & 0,52 &\color{gray}{0,53}\\ 
+   & BSC [\%] & 83,45 & 83,66 & -- & 76,45 & \color{red}{85,34} &\color{gray}{28,99}\\ 
+   \hline
+\multirow{4}{15mm}{auto} & VUS [\%] & \color{red}{3,48} & 1,11 & -- & 0,24 & 0,81 &\color{gray}{0,00}\\ 
+   & ACC [\%] & 37,29 & \color{red}{49,15} & 48,31 & 43,22 & 38,98 &\color{gray}{50,00}\\ 
+   & ABS \color{white}{[\%]} & 1,08 & \color{red}{0,63} & 0,66 & 0,73 & 0,90 &\color{gray}{0,64}\\ 
+   & BSC [\%] & \color{red}{94,16} & 94,12 & -- & 88,77 & 87,96 &\color{gray}{33,80}\\ 
+   \hline
+\multirow{4}{15mm}{diabetes} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 &\color{gray}{0,00}\\ 
+   & ACC [\%] & \color{red}{23,08} & \color{red}{23,08} & \color{red}{23,08} & 15,38 & \color{red}{23,08} &\color{gray}{30,77}\\ 
+   & ABS \color{white}{[\%]} & 1,46 & 1,31 & \color{red}{1,23} & \color{red}{1,23} & 1,38 &\color{gray}{1,15}\\ 
+   & BSC [\%] & 51,61 & 51,61 & -- & \color{red}{72,58} & 40,32 &\color{gray}{48,39}\\ 
+   \hline
+\multirow{4}{15mm}{housing} & VUS [\%] & 54,46 & \color{red}{55,31} & -- & 42,06 & 51,33 &\color{gray}{0,02}\\ 
+   & ACC [\%] & 67,11 & 67,11 & \color{red}{75,00} & 72,37 & 72,37 &\color{gray}{65,13}\\ 
+   & ABS \color{white}{[\%]} & 0,36 & 0,35 & \color{red}{0,26} & 0,28 & 0,29 &\color{gray}{0,40}\\ 
+   & BSC [\%] & 91,86 & \color{red}{92,25} & -- & 86,92 & 91,98 &\color{gray}{51,15}\\ 
+   \hline
+\multirow{4}{15mm}{machine} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 &\color{gray}{0,00}\\ 
+   & ACC [\%] & 57,14 & \color{red}{68,25} & 66,67 & 66,67 & 60,32 &\color{gray}{69,84}\\ 
+   & ABS \color{white}{[\%]} & 1,17 & 0,52 & \color{red}{0,51} & 0,67 & 0,73 &\color{gray}{0,48}\\ 
+   & BSC [\%] & 90,50 & \color{red}{92,87} & -- & 91,34 & 87,36 &\color{gray}{29,20}\\ 
+   \hline
+\multirow{4}{15mm}{pyrim} & VUS [\%] & \color{red}{0,74} & 0,00 & -- & 0,00 & \color{red}{0,74} &\color{gray}{0,00}\\ 
+   & ACC [\%] & 21,74 & 8,70 & \color{red}{52,17} & 30,43 & 47,83 &\color{gray}{47,83}\\ 
+   & ABS \color{white}{[\%]} & 1,30 & 1,65 & \color{red}{0,91} & \color{red}{0,91} & 0,96 &\color{gray}{0,87}\\ 
+   & BSC [\%] & 81,82 & 74,09 & -- & 80,00 & \color{red}{82,73} &\color{gray}{61,82}\\ 
+   \hline
+\multirow{4}{15mm}{stock} & VUS [\%] & 53,97 & 73,12 & -- & 56,53 & \color{red}{96,01} &\color{gray}{0,01}\\ 
+   & ACC [\%] & 58,95 & 72,63 & 83,16 & 81,40 & \color{red}{91,58} &\color{gray}{86,67}\\ 
+   & ABS \color{white}{[\%]} & 0,42 & 0,28 & 0,18 & 0,19 & \color{red}{0,08} &\color{gray}{0,14}\\ 
+   & BSC [\%] & 93,07 & 95,51 & -- & 94,31 & \color{red}{99,42} &\color{gray}{50,69}\\ 
+   \hline
+\multirow{4}{15mm}{triazines} & VUS [\%] & 1,72 & 0,00 & -- & 0,61 & \color{red}{1,83}&\color{gray}{0,00} \\ 
+   & ACC [\%] & 51,79 & 39,29 & 39,29 & \color{red}{53,57} & 51,79 &\color{gray}{44,64}\\ 
+   & ABS \color{white}{[\%]} & 0,64 & 0,91 & 0,71 & \color{red}{0,61} & 0,64 &\color{gray}{0,88}\\ 
+   & BSC [\%] & 62,86 & 45,58 & -- & \color{red}{66,46} & 58,33 &\color{gray}{42,49}\\ 
+   \hline
+\multirow{4}{15mm}{wpbc} & VUS [\%] & \color{red}{4,44} & 3,99 & -- & 0,59 & 1,80 &\color{gray}{0,00}\\ 
+   & PPK [\%] & 33,90 & 30,51 & \color{red}{35,59} & 28,81 & 28,81 &\color{gray}{25,42}\\ 
+   & ABS \color{white}{[\%]} & 1,12 & 1,25 & \color{red}{0,86} & 1,02 & 0,92 &\color{gray}{1,29}\\ 
+   & BSC [\%] & \color{red}{67,59} & 61,29 & -- & 62,67 & 57,53 &\color{gray}{40,48}\\ 
+   \hline
+\end{tabular}
+\caption{Tabela wyników. Kolumny odpowiadają kolejnym metodom modelowania, natomiast wiersze kolejnym zbiorom danych oraz wskaźnikom diagnostycznym. Na czerwono zaznaczony jest najlepszy wynik w każdym wierszu (nie uwzględnia on szarej kolumny, która odpowiada metodzie niezwiązanej z regresją porządkową).}
+\label{wyniki} 
+\end{table}
 
-\begin{figure}[h!t]
+\begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.6]{graphics/rozklad_odpowiedzi.png}
+\includegraphics[width=\textwidth]{graphics/rozklad_odpowiedzi.png}
 \end{center}
 \caption{Rozkłady odpowiedzi poszczególnych zbiorów danych.}
 \label{rozkladdanych}
 \end{figure}
 
-Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing, machine, pyrim, stock, triazines} oraz \textit{wpbc}) o różnej liczbie klas ($5$ lub $10$), różnej liczbie obserwacji oraz różnym rozkładzie klas (patrz Rys. \ref{rozkladdanych}). Zbiory znaleźć można tu: \cite{zbiorki}. 
+W poprzednich rozdziałach poznaliśmy różne metody radzenia sobie z problemem regresji porządkowej. Znamy już również wskaźniki, które pozwalają takie metody oceniać. Wszystko jednak zostało przedstawione w sposób bardzo teoretyczny. W tym rozdziale spróbujemy zobaczyć, jak poznane przez nas techniki modelowania i diagnostyki zachowują się na danych rzeczywistych. W tym celu przeprowadzimy następujący eksperyment.
 
-Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie, na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze testowym. Dla każdego zbioru i każdej metody otrzymaliśmy współczynniki VUS, PPK i ABSerr (por. równania \ref{dop1}, \ref{dop2}, \ref{dop3}). Wszystkie wyniki zobaczyć można w tabeli \ref{wyniki}.
+Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing, machine, pyrim, stock, triazines} oraz \textit{wpbc}). Są to standardowe i ogólnodostępne zbiory danych, wykorzystywane przy testowaniu regresji porządkowej, które znaleźć można na tych stornach internetowych: \cite{zbiorki} i \cite{zbiorki2}. Każdy z nich charakteryzuje się inną liczbą obserwacji, inną strukturą macierzy obserwacji, inną liczbą klas zmiennej odpowiedzi oraz innym ich rozkładem. Większość z tych cech zaobserwować można na Rysunku \ref{rozkladdanych}. Widać na przykład, że zbiór \textit{abalone} ma klas~$10$, natomiast zbiór \textit{housing} klas $5$ oraz że rozkład zmiennej odpowiedzi zbioru \textit{machine} jest bardziej skośny niż analogiczny rozkład w zbiorze \textit{stock}. 
 
-\begin{comment}
-\begin{table}[h!t]
-\centering
-\begin{tabular}{rrrrrrr}
-  &   & \rotatebox{70}{Procesy gaussowskie} & \rotatebox{70}{\parbox{35mm}{Model proporcjonalnych szans}} & \rotatebox{70}{Sieci neuronowe} &\rotatebox{70}{Metoda Franka i Halla} & \rotatebox{70}{\parbox{40mm}{Wektory maszyn\\ podpierających (SVM)}} \\ 
-  \hline
-\multirow{3}{15mm}{abalone} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 \\ 
-   & PPK [\%] & 56,38 & 55,18 & \color{red}{56,86} & 55,18 & 56,30 \\ 
-   & ABSerr & 0,55 & 0,55 & \color{red}{0,51} & 0,55 & 0,52 \\ 
-   \hline
-\multirow{3}{15mm}{auto} & VUS [\%] & \color{red}{3,54} & 1,13 & -- & 0,25 & 0,81 \\ 
-   & PPK [\%] & 37,29 & \color{red}{49,15} & 48,31 & 43,22 & 38,98 \\ 
-   & ABSerr & 1,08 & \color{red}{0,63} & 0,66 & 0,73 & 0,90 \\ 
-   \hline
-\multirow{3}{15mm}{diabetes} & VUS [\%] & 5,00 & 5,00 & -- & \color{red}{15,00} & 5,00 \\ 
-   & PPK [\%] & \color{red}{23,08} & \color{red}{23,08} & \color{red}{23,08} & 15,38 & \color{red}{23,08} \\ 
-   & ABSerr & 1,46 & 1,31 & \color{red}{1,23} & \color{red}{1,23} & 1,38 \\ 
-   \hline
-\multirow{3}{15mm}{housing} & VUS [\%] & 54,46 & \color{red}{55,31} & -- & 42,06 & 51,33 \\ 
-   & PPK [\%] & 67,11 & 67,11 & \color{red}{75,00} & 72,37 & 72,37 \\ 
-   & ABSerr & 0,36 & 0,35 & \color{red}{0,26} & 0,28 & 0,29 \\ 
-   \hline
-\multirow{3}{15mm}{machine} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 \\ 
-   & PPK [\%] & 57,14 & \color{red}{68,25} & 66,67 & 66,67 & 60,32 \\ 
-   & ABSerr & 1,17 & 0,52 & \color{red}{0,51} & 0,67 & 0,73 \\ 
-   \hline
-\multirow{3}{15mm}{pyrim} & VUS [\%] & \color{red}{1,11} & 0,00 & -- & 0,56 & 0,93 \\ 
-   & PPK [\%] & 21,74 & 8,70 & \color{red}{52,17} & 30,43 & 47,83 \\ 
-   & ABSerr & 1,30 & 1,65 & \color{red}{0,91} & \color{red}{0,91} & 0,96 \\ 
-   \hline
-\multirow{3}{15mm}{stock} & VUS [\%] & 53,97 & 73,12 & -- & 56,53 & \color{red}{96,01} \\ 
-   & PPK [\%] & 58,95 & 72,63 & 83,16 & 81,40 & \color{red}{91,58} \\ 
-   & ABSerr & 0,42 & 0,28 & 0,18 & 0,19 & \color{red}{0,08} \\ 
-   \hline
-\multirow{3}{15mm}{triazines} & VUS [\%] & 1,84 & 1,83 & -- & \color{red}{5,45} & 1,96 \\ 
-   & PPK [\%] & 51,79 & 39,29 & 39,29 & \color{red}{53,57} & 51,79 \\ 
-   & ABSerr & 0,64 & 0,91 & 0,71 & \color{red}{0,61} & 0,64 \\ 
-   \hline
-\multirow{3}{15mm}{wpbc} & VUS [\%] & \color{red}{4,44} & 3,99 & -- & 0,63 & 1,88 \\ 
-   & PPK [\%] & 33,90 & 30,51 & \color{red}{35,59} & 28,81 & 28,81 \\ 
-   & ABSerr & 1,12 & 1,25 & \color{red}{0,86} & 1,02 & 0,92 \\ 
-   \hline
-\end{tabular}
-\caption{Tabela wyników. Na czerwono zaznaczony jest najlepszy wynik dla każdego wskaźnika każdego zbioru. Dla sieci neuronowych nie da się niestety obliczyć współczynnika VUS.}
-\label{wyniki} 
-\end{table}
-\end{comment}
+Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie, na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze testowym. Dla każdego zbioru i każdej metody otrzymaliśmy współczynniki VUS, ACC i ABS (por. równania \eqref{dop1}, \eqref{dop2}, \eqref{dop3}). Wszystkie wyniki zobaczyć można w~Tabeli \ref{wyniki}. Dodatkowo, by móc porównać, czy metody regresji porządkowej rzeczywiście są potrzebne, zbudowany został również model klasyfikacji wieloklasowej. W Tabeli \ref{wyniki} został on zaznaczony szarym kolorem, by móc go łatwo odróżnić i dzięki temu łatwiej odczytać tabelę.
 
+\section{Wstępna analiza wyników}
 
+Przyjrzyjmy się dokładniej Tabeli \ref{wyniki}. Pierwszą rzeczą, która rzuca się w oczy, jest bardzo słaba jakość współczynnika VUS. W większości przypadków jest on równy zero lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ nie byłby zadowalający. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}. Warto więc zadać sobie pytanie, dlaczego tak się dzieje.  Żeby zrozumieć to ,,dziwne'' zachowanie współczynnika VUS, przeanalizujmy dwa poniższe przykłady.
 
-\section{Analiza wyników}
-
-\subsection*{Słaby współczynnik VUS}
-
-Pierwszą rzeczą, która rzuca się w oczy, patrząc na tabelę wyników (Tabela \ref{wyniki}), jest niska jakość współczynnika VUS. W większości przypadków jest on zerowy lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ byłby nienajlepszy, a co dopiero $0\%$. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}. Warto więc zadać sobie pytanie, dlaczego tak się dzieje? Żeby zrozumieć to "dziwne" zachowanie współczynnika VUS, przeanalizujmy dwa poniższe przykłady.
-
-Załóżmy, że chcemy przyporządkować klasy pewnym obserwacjom ze zbioru testowego. Nich zbiorem klas będzie $\lbrace 1, \ldots, 5\rbrace$. Dopasowaliśmy pewien model, który działa w ten sposób, że dla danej nowej obserwacji wylicza najpierw wartość pewnej funkcji rzeczywistej $f$, a następnie, korzystając z pewnych progów, dzieli zbiór liczb rzeczywistych na pięć klas. W zależności od tego, między jakimi dwoma progami znajdzie się wartość funkcji $f$ dla danej obserwacji, to taką estymowaną klasę $\hat{y}$ jej przydzielimy. Funkcja $f$ oraz wartości progów zostały nauczone podczas budowy modelu. 
-
-Rozważmy najpierw przypadek z rysunku \ref{vus01}. Wszystkie klasy -- oprócz jednej -- zostały prawidłowo przyporządkowane. Podkreślmy, że pomyliliśmy się tylko w jednym przypadku. Co prawda pomyłka jest poważna (bo przyporządkowaliśmy skrajnie różną wartość), ale wciąż jest to tylko jeden przypadek. Korzystając ze wzoru \ref{dop3} i pamiętając, że VUS to procent dobrze uporządkowanych , w naszym przypadku, piątek $(1, 2, 3, 4, 5)$, bardzo łatwo zauważyć, że współczynnik VUS w naszym przypadku wyniesie $0$. Wynika to z faktu, że jedyna piątka wśród zmiennej odpowiedzi uplasowała się na samum początku.
-
-Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym błędem, więc dobrze, że VUS wyszedł taki słaby. Przyjrzyjmy się zatem przykładowi z rysunku \ref{vus02}. Tutaj sytuacja jest podobna - tym razem również została pomylona tylko jedna wartość (obserwacja o rzeczywistym nr 5 dostała nr 4). Tym razem błąd jest niewielki, a nie skrajny, jak w poprzednim przykładzie, i -- chciałoby się powiedzieć -- dopuszczalny i nieszkodliwy. Jednak w tym przypadku również nie znajdziemy ani jednej dobrze posortowanej piątki, współczynnik VUS wyniesie więc $0$.      
-
-\begin{figure}[h]
-\begin{subfigure}{0.5\textwidth}
+\begin{figure}[!h]
+\begin{subfigure}{\textwidth}
 \begin{center}
 \begin{tikzpicture}
 \node(gora){
@@ -789,11 +786,11 @@ Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym bł
 \path[draw, -latex',thick](gora) -- node[midway, right] {Sortujemy po $f$} (dol);		
 \end{tikzpicture}
 \end{center}
-\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $1$.}
+\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $1$.\\  }
 \label{vus01}
 \end{subfigure}
 \hspace{1cm}
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{\textwidth}
 \begin{center}
 \begin{tikzpicture}
 \node(gora){
@@ -820,16 +817,21 @@ Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym bł
 \caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $4$.}
 \label{vus02}
 \end{subfigure}
-\caption{Tabele pokazują przykładowe zbiory testowe. W kolumnach przedstawione są kolejne obserwacje. $y$ reprezentuje prawdziwą klasę, a $\hat{y}$ oszacowaną przez nas klasę na podstawie wartości funkcji rzeczywistej $f$. Następnie kolumny tabeli są sortowane według wartości tej funkcji.}
+\caption{Tabele pokazują przykładowe zbiory testowe. W kolumnach przedstawione są kolejne obserwacje. $y$ reprezentuje prawdziwą klasę, a $\hat{y}$ klasę oszacowaną przez nas na podstawie wartości funkcji rzeczywistej $f$. Następnie, kolumny tabeli są sortowane według wartości funkcji $f$.}
+\label{vusprzyklad}
 \end{figure}
 
-Współczynnik VUS, który ma bardzo ładną interpretację i znakomicie sprawdza się w przypadku klasyfikacji dwuetykietowej, w przypadku regresji porządkowej nie spełnia niestety swojej roli. Przypomnijmy sobie jeszcze raz, jaka ta rola powinna być. W przeciwieństwie do PPK, VUS nie pokazuje, ile obserwacji zostało poprawnie sklasyfikowanych. Wręcz możliwa jest sytuacja, że VUS wyniesie $100\%$, mimo że wszystkie obserwacje zaklasyfikowaliśmy źle. Co więc daje nam ten wskaźnik? Daje nam pojęcie, czy obserwacje zostały poprawnie posortowane. Patrząc na powyższe dwa przykłady wyraźnie widać, że -- szczególnie w przypadku nierównolicznych klas -- ta intuicja nie do końca zgadza się z rzeczywistością.
+Załóżmy, że chcemy przyporządkować klasy pewnym obserwacjom ze zbioru testowego. Niech zbiorem klas będzie $\lbrace 1, \ldots, 5\rbrace$. Dopasowaliśmy pewien model, który działa w ten sposób, że dla danej nowej obserwacji wylicza najpierw wartość pewnej funkcji rzeczywistej $f(\cdot)$, a następnie, korzystając z pewnych progów, przyporządkowuje jej jedną z pięciu klas, w~zależności od tego, między jakimi dwoma progami znajdzie się wartość funkcji $f(\cdot)$ dla tej obserwacji. Otrzymaną w ten sposób klasę oznaczmy przez $\hat{y}$. Funkcja $f(\cdot)$ oraz wartości progów zostały nauczone podczas budowy modelu. 
 
-\subsection*{Współczynnik SB (Sortowanie Bąbelkowe)}
+Przejdźmy do omówienia przykładów. Rozważmy najpierw przypadek z Rysunku \ref{vus01}. Wszystkie klasy -- oprócz jednej -- zostały prawidłowo przyporządkowane. Podkreślmy, że pomyliliśmy się tylko w jednym przypadku. Co prawda pomyłka jest poważna (gdyż przyporządkowaliśmy klasie nr $5$ skrajnie różną wartość), ale wciąż jest to tylko jeden przypadek. Skorzystajmy ze~wzoru \eqref{dop3}, pamiętając jednocześnie, że VUS to procent dobrze uporządkowanych -- w~naszym przypadku -- piątek $(1, 2, 3, 4, 5)$ powstałych po posortowaniu wektora prawdziwych klas $y$ według rosnących wartości $f$. Bardzo łatwo zauważyć, że współczynnik VUS wyniesie~$0$. Wynika to z faktu, że jedyna odpowiedź o numerze klasy $5$ wśród zmiennej odpowiedzi uplasowała się na samym początku, tym samym uniemożliwiając znalezienie choćby jednej poprawnie uszeregowanej piątki.
 
-Chciałabym więc zaproponować współczynnik, który posiadałby interpretację współczynnika VUS i jednocześnie rozwiązywał problem jego słabej jakości. Nazwałam go SB (od sortowania bąbelkowego). 
+Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym błędem, więc dobrze, że VUS wyszedł taki słaby. Przyjrzyjmy się zatem przykładowi z Rysunku \ref{vus02}. Tutaj sytuacja jest podobna -- tym razem również została pomylona tylko jedna wartość (obserwacja o rzeczywistym nr 5 dostała nr 4). Błąd ten jest jednak niewielki i -- chciałoby się powiedzieć -- dopuszczalny i nieszkodliwy. Jednak w tym przypadku również nie znajdziemy ani jednej dobrze posortowanej piątki, współczynnik VUS wyniesie więc $0$.      
 
-Idea jest bardzo prosta (patrz Algorytm \ref{algo:bubble_sort}) -- podobnie jak w przypadku VUS, sortujemy rzeczywiste klasy obserwacji ze zbioru testowego malejąco. Następnie, stosując algorytm sortowania bąbelkowego, zliczamy ile przestawień sąsiednich wyrazów będzie potrzeba, by poprawnie uporządkować wejściowy wektor obserwacji. Porównujemy to do maksymalnej liczby przestawień (czyli do takiej, która jest potrzebna do rosnącego posortowania tego samego wektora, lecz uporządkowanego malejąco). W rezultacie otrzymujemy liczbę wahającą się od $0$, reprezentującego najgorszy przypadek, do $1$, reprezentującej przypadek najlepszy. 
+Podsumowując, współczynnik VUS, który ma bardzo ładną interpretację i znakomicie sprawdza się w przypadku klasyfikacji dwuetykietowej, w przypadku regresji porządkowej nie spełnia niestety swojej roli. Pozostaje nam zatem oparcie oceny klasyfikatorów jedynie na współczynnikach ACC i ABS. Nie jest to jednak satysfakcjonujące, gdyż VUS miał dawać nam pojęcie nie tyle o dokładnej poprawności klasyfikacji, ile o tym, czy obserwacje zostały poprawnie posortowane (por. Rozdział \ref{rozdz2}). Jest to aspekt bardzo istotny, gdyż tym właściwie różni się regresja porządkowa od innych rodzajów regresji czy klasyfikacji. Istnieje zatem silna potrzeba stworzenia współczynnika, który mógłby temu zadaniu sprostać. I właśnie w tym celu powstał współczynnik BSC (ang. Bubble Sorting Coefficient). 
+
+\section{Współczynnik BSC}
+
+Zaproponowany przeze mnie współczynnik BSC ma niemal tę samą funkcjonalność, co wskaźnik VUS. Mianowicie, pokazuje nam, w jakim stopniu nasz model prawidłowo posortował dane testowe. Jednocześnie jest on odporny na takie odchylenia danych, które automatycznie powodują wyzerowanie współczynnika VUS, a które szczegółowo omawiane były w poprzednim podrozdziale. Zyskując tę odporność, tracimy jednak na jego teoretycznej interpretacji. Bowiem o ile VUS reprezentował pewne prawdopodobieństwo (por. Rozdział \ref{rozdz2}), o tyle BSC jest tylko jego pewnym przybliżeniem. Zanim wgłębimy się jednak w jego wady i zalety, zdefiniujmy najpierw, czym właściwie ten współczynnik jest.  
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -848,139 +850,60 @@ Idea jest bardzo prosta (patrz Algorytm \ref{algo:bubble_sort}) -- podobnie jak 
 \eindent
 \STATE \textbf{end function}
 \STATE
-\STATE $w1$ jest wektorem klas posortowanym ze względu na wartość funkcji $f$
+\STATE $w1$ jest wektorem klas posortowanym ze względu na wartość funkcji $f(\cdot)$
 \STATE $w2$ jest wektorem klas posortowanym malejąco
 \STATE
 \STATE \textbf{return} $1-(\texttt{liczba\_przestawien}(w1)/\texttt{liczba\_przestawien}(w2))$
-
 \end{algorithmic}
-\caption{Wyznaczanie współczynnika SB}
+\caption{Wyznaczanie współczynnika BSC}
 \label{algo:bubble_sort}
 \end{algorithm}
 
-Widać więc, że -- podobnie jak VUS -- SB nie bierze pod uwagę dokładnej wartości przypisanej klasy, jedynie ich kolejność. Nie ma jednak tej wady, że jedna lekko źle zaklasyfikowana obserwacja może sprawić, że zostanie on wyzerowany. Niestety -- podobnie jak VUS -- nie da się go zastosować do metod, których krokiem pośrednim nie jest wyznaczenie pomocniczej funkcji $f$, co jest jego niewątpliwą wadą.
+Współczynnik BSC najprościej będzie zdefiniować przy pomocy algorytmu (por. Algorytm~\ref{algo:bubble_sort}). Podobnie jak w przypadku VUS, sortujemy rzeczywiste klasy obserwacji według odpowiadających im i posortowanym rosnąco wartościom funkcji pomocniczej $f(\cdot)$. Następnie, stosując algorytm sortowania bąbelkowego, zliczamy ile przestawień sąsiednich wyrazów będzie potrzeba, by poprawnie uporządkować wejściowy wektor obserwacji. Porównujemy to do~maksymalnej liczby przestawień (czyli do takiej, która jest potrzebna do rosnącego posortowania tego samego wektora, lecz uporządkowanego malejąco, a nie według wartości funkcji $f(\cdot)$). W rezultacie otrzymujemy liczbę wahającą się od $0$, reprezentującego najgorszy przypadek, do $1$, reprezentującej przypadek najlepszy. 
 
-Wróćmy znów do przykładów z rysunku \ref{vus01} i \ref{vus02}. W pierwszym z nich współczynnik SB wynosi $67\%$, w drugim zaś $94\%$, co niejako zgadza się z naszą intuicją. Podobnie, w przypadku tabeli \ref{wyniki}, gdzie współczynnik SB, w przeciwieństwie do VUS, daje nam już jakąś informację.
+Przyjrzyjmy się teraz Tabeli \ref{bsc}. Przedstawia ona $12$ przykładowych wektorów klas oraz~policzone dla nich współczynniki VUS i BSC. Łatwo zauważyć, że w większości przypadków są~one równe. Różnią się za to znacznie tam, gdzie -- wbrew intuicji -- VUS jest równy zero np. w przykładach nr $5$ i $8$, które odpowiadają tym z omawianego przez nas wcześniej Rysunku \ref{vusprzyklad}. 
 
-Warto wreszcie podkreślić, że nie trzeba stosować tylko jednego współczynnika. Czasem warto spojrzeć zarówno na PPK, VUS i SB i zastanowić się, na czym najbardziej nam zależy -- na precyzji czy na kolejności dopasowania. Może czasem warto zrezygnować z doskonałej kolejności, by zyskać dużo większą precyzję? I odwrotnie. To już kwestia indywidualnego przypadku i charakteru danych. 
-
-\begin{table}[th!]
-\centering
-\begin{tabular}{rrrrrrr}
-  &   & \rotatebox{90}{\parbox{25mm}{\hspace{2cm}\\ \hspace{2cm}\\Procesy\\ gaussowskie}} & \rotatebox{90}{\parbox{25mm}{\hspace{2cm}\\ \hspace{2cm}\\Model\\ proporcjonalnych \\szans}} & \rotatebox{90}{\parbox{25mm}{\hspace{2cm}\\ \hspace{2cm}\\Sieci\\ neuronowe}} &\rotatebox{90}{\parbox{25mm}{\hspace{2cm}\\ \hspace{2cm}\\Metoda\\ Franka \\i Halla}} & \rotatebox{90}{\parbox{25mm}{\hspace{2cm}\\ \hspace{2cm}\\Wektory\\ maszyn\\ podpierających\\ (SVM)}} \\ 
-  \hline
-\multirow{4}{15mm}{abalone} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 \\ 
-   & PPK [\%] & 56,38 & 55,18 & \color{red}{56,86} & 55,18 & 56,30 \\ 
-   & ABS & 0,55 & 0,55 & \color{red}{0,51} & 0,55 & 0,52 \\ 
-   & SB [\%] & 83,45 & 83,66 & -- & 76,45 & \color{red}{85,34} \\ 
-   \hline
-\multirow{4}{15mm}{auto} & VUS [\%] & \color{red}{3,54} & 1,13 & -- & 0,25 & 0,81 \\ 
-   & PPK [\%] & 37,29 & \color{red}{49,15} & 48,31 & 43,22 & 38,98 \\ 
-   & ABS & 1,08 & \color{red}{0,63} & 0,66 & 0,73 & 0,90 \\ 
-   & SB [\%] & \color{red}{94,16} & 94,12 & -- & 88,77 & 87,96 \\ 
-   \hline
-\multirow{4}{15mm}{diabetes} & VUS [\%] & 5,00 & 5,00 & -- & \color{red}{15,00} & 5,00 \\ 
-   & PPK [\%] & \color{red}{23,08} & \color{red}{23,08} & \color{red}{23,08} & 15,38 & \color{red}{23,08} \\ 
-   & ABS & 1,46 & 1,31 & \color{red}{1,23} & \color{red}{1,23} & 1,38 \\ 
-   & SB [\%] & 51,61 & 51,61 & -- & \color{red}{72,58} & 40,32 \\ 
-   \hline
-\multirow{4}{15mm}{housing} & VUS [\%] & 54,46 & \color{red}{55,31} & -- & 42,06 & 51,33 \\ 
-   & PPK [\%] & 67,11 & 67,11 & \color{red}{75,00} & 72,37 & 72,37 \\ 
-   & ABS & 0,36 & 0,35 & \color{red}{0,26} & 0,28 & 0,29 \\ 
-   & SB [\%] & 91,86 & \color{red}{92,25} & -- & 86,92 & 91,98 \\ 
-   \hline
-\multirow{4}{15mm}{machine} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 \\ 
-   & PPK [\%] & 57,14 & \color{red}{68,25} & 66,67 & 66,67 & 60,32 \\ 
-   & ABS & 1,17 & 0,52 & \color{red}{0,51} & 0,67 & 0,73 \\ 
-   & SB [\%] & 90,50 & \color{red}{92,87} & -- & 91,34 & 87,36 \\ 
-   \hline
-\multirow{4}{15mm}{pyrim} & VUS [\%] & \color{red}{1,11} & 0,00 & -- & 0,56 & 0,93 \\ 
-   & PPK [\%] & 21,74 & 8,70 & \color{red}{52,17} & 30,43 & 47,83 \\ 
-   & ABS & 1,30 & 1,65 & \color{red}{0,91} & \color{red}{0,91} & 0,96 \\ 
-   & SB [\%] & 81,82 & 74,09 & -- & 80,00 & \color{red}{82,73} \\ 
-   \hline
-\multirow{4}{15mm}{stock} & VUS [\%] & 53,97 & 73,12 & -- & 56,53 & \color{red}{96,01} \\ 
-   & PPK [\%] & 58,95 & 72,63 & 83,16 & 81,40 & \color{red}{91,58} \\ 
-   & ABS & 0,42 & 0,28 & 0,18 & 0,19 & \color{red}{0,08} \\ 
-   & SB [\%] & 93,07 & 95,51 & -- & 94,31 & \color{red}{99,42} \\ 
-   \hline
-\multirow{4}{15mm}{triazines} & VUS [\%] & 1,84 & 1,83 & -- & \color{red}{5,45} & 1,96 \\ 
-   & PPK [\%] & 51,79 & 39,29 & 39,29 & \color{red}{53,57} & 51,79 \\ 
-   & ABS & 0,64 & 0,91 & 0,71 & \color{red}{0,61} & 0,64 \\ 
-   & SB [\%] & 62,86 & 45,58 & -- & \color{red}{66,46} & 58,33 \\ 
-   \hline
-\multirow{4}{15mm}{wpbc} & VUS [\%] & \color{red}{4,44} & 3,99 & -- & 0,63 & 1,88 \\ 
-   & PPK [\%] & 33,90 & 30,51 & \color{red}{35,59} & 28,81 & 28,81 \\ 
-   & ABS & 1,12 & 1,25 & \color{red}{0,86} & 1,02 & 0,92 \\ 
-   & SB [\%] & \color{red}{67,59} & 61,29 & -- & 62,67 & 57,53 \\ 
-   \hline
-\end{tabular}
-\caption{Tabela wyników. Na czerwono zaznaczony jest najlepszy wynik dla każdego wskaźnika każdego zbioru. Dla sieci neuronowych nie da się niestety obliczyć współczynnika VUS ani SB.}
-\label{wyniki} 
-\end{table}
-
-\subsection*{Dalsze wnioski}
-
-Wróćmy do wniosków płynących z symulacji.
-
-Warto zwrócić uwagę na niespodziewanie dobre zachowanie sieci neuronowych. Osiągają one najlepszy procent poprawnej klasyfikacji w $56\%$ zbiorów, a w $22\%$ niewiele odbiegają  od najlepszego wyniku. Niestety nie możemy tutaj porównać współczynnika VUS ani SB. 
-
-No i w końcu, widać wyraźnie, że nie ma jednej najlepszej metody. Każda analizowana metoda ,,wygrywa" na którymś ze zbiorów, każda ma swoje wady i zalety.
-
-\begin{comment}
-
-Analizując powyższe wyniki, nasuwają się na myśl ciekawe pytania. Przede wszystkim dlaczego współczynnik VUS wychodzi taki słaby? Czy może zależy to od liczby klas zmiennej odpowiedzi? Czy każda z metod też od tego zależy? W następnym podrozdziale spróbujemy sobie na te pytania odpowiedzieć. 
-
-
-
-%\section{Dane o różnej liczbie klas}
-
-Weźmy pod uwagę zbiór danych \textit{machine}. Zmienna odpowiedzi jest tu zmienną ciągłą, która w powyższej analizie została -- w sposób lekko szutuczny -- zdyskretyzowana. Zróbmy teraz to samo, ale dyskretyzując zbiór na, odpowiednio, $3$, $5$, $7$, i $10$ klas. By sprawdzić dodatkowo, czy różnice zależą od liczby klas, czy może jednak od ich liczności, rozważać będziemy dwa rodzaje dyskretyzacji: równomierną (tzn. taką, która do każdej klasy przydziela tyle samo obserwacji) i klastrową (tzn. taką, która szuka w danych naturalnych klastrów). 
-
-
-\begin{landscape}
 \begin{table}[ht]
 \centering
-\begin{tabular}{r|rrr|rrr|rrr|rrr|rrr}
-\multicolumn{1}{c}{}& \multicolumn{3}{c}{\rotatebox{40}{Procesy gaussowskie}} & \multicolumn{3}{c}{\rotatebox{40}{Sieci neuronowe}} & \multicolumn{3}{c}{\rotatebox{40}{\parbox{3.5cm}{Model proporcjonalnych szans}}}& \multicolumn{3}{c}{\rotatebox{40}{Metoda Franka i Halla}} & \multicolumn{3}{c}{\rotatebox{40}{\parbox{4cm}{Wektory maszyn\\ podpierających (SVM)}}}\\
-\hline
-Liczba klastrów & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr \\ 
-\hline
-3 & 81,55 & 66,67 & 0,33 &  --  & 71,43 & 0,29 & 97,62 & 92,86 & 0,07 & 36,67 & 88,1 & 0,12 & 65,77 & 61,9 & 0,38 \\ 
-5 & 22,85 & 21,43 & 1,88 &  --  & 52,38 & 0,52 & 50,75 & 76,19 & 0,26 & 0,08 & 76,19 & 0,36 & 12,79 & 38,1 & 0,76 \\ 
-7 & 9,38 & 38,1 & 1,1 &  --  & 42,86 & 0,6 & 35,94 & 54,76 & 0,48 & 0 & 61,9 & 0,52 & 1,88 & 16,67 & 1,31 \\ 
-10 & 0,7 & 33,33 & 1,88 &  --  & 35,71 & 0,9 & 5,1 & 50 & 0,64 & 0 & 45,24 & 0,95 & 0,01 & 19,05 & 1,62 \\ 
-\hline
-\end{tabular}
-\caption{Wyniki analizy zbioru \textit{machine} dla różnej liczby klas zmiennej odpowiedzi, stosując \textbf{dyskretyzację klastrową}.}
-\label{tttt}
-\end{table}
-
-
-\begin{table}[h!t]
-\centering
-\begin{tabular}{r|rrr|rrr|rrr|rrr|rrr}
-\multicolumn{1}{c}{} & \multicolumn{3}{c}{\rotatebox{40}{Procesy gaussowskie}} & \multicolumn{3}{c}{\rotatebox{40}{Sieci neuronowe}} & \multicolumn{3}{c}{\rotatebox{40}{\parbox{3.5cm}{Model proporcjonalnych szans}}}& \multicolumn{3}{c}{\rotatebox{40}{Metoda Franka i Halla}} & \multicolumn{3}{c}{\rotatebox{40}{\parbox{4cm}{Wektory maszyn\\ podpierających (SVM)}}}\\
+\begin{tabular}{rrrrrrrrrrr}
   \hline
-Liczba klastrów & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr & VUS & PPK & ABSerr \\ 
-\hline
-  3 & 0,48 & 83,33 & 0,19 &  --  & 95,24 & 0,05 & 81,62 & 71,43 & 0,29 & 41,52 & 64,29 & 0,36 & 91,43 & 88,1 & 0,12 \\ 
-  5 & 28,83 & 2,38 & 3,43 &  --  & 80,95 & 0,21 & 35,97 & 64,29 & 0,38 & 10,11 & 47,62 & 0,57 & 32,33 & 76,19 & 0,29 \\ 
-  7 & 0 & 19,05 & 1,81 &  --  & 54,76 & 0,48 & 8,54 & 45,24 & 0,64 & 0,16 & 33,33 & 0,86 & 6,89 & 30,95 & 0,86 \\ 
-  10 & 0,45 & 2,38 & 5,45 &  --  & 47,62 & 0,64 & 0,8 & 38,1 & 0,88 & 0 & 23,81 & 1,38 & 0,05 & 30,95 & 1,14 \\ 
+Nr && \multicolumn{7}{c}{\parbox{4cm}{\centering\vspace{2mm}Posortowany według $f(\cdot)$ wektor prawdziwych klas\vspace{2mm}}}   & VUS [\%] & BSC [\%] \\ 
+  \hline
+1&&  1 &   2 &   3 &   4 &   5 &   6 &   7 & \color{red}{100,00} & \color{blue}{100.00} \\ 
+2& &   1 &   1 &   1 &   2 &   3 &   4 &   5 & \color{red}{100,00} & \color{blue}{100,00} \\ 
+3& &   7 &   6 &   5 &   4 &   3 &   2 &   1 & \color{red}{0,00} & \color{blue}{0,00} \\ 
+4& &   5 &   4 &   3 &   2 &   1 &   1 &   1 & \color{red}{0,00} & \color{blue}{0,00} \\ 
+5& &   1 &   1 &   1 &   2 &   3 &   5 &   4 & \color{red}{0,00} & \color{blue}{94,44} \\ 
+6&&    5 &   1 &   1 &   1 &   2 &   3 &   4 & \color{red}{0,00} & \color{blue}{66,67} \\ 
+7& &   5 &   1 &   1 &   1 &   1 &   1 &   1 & \color{red}{0,00} & \color{blue}{0,00} \\ 
+8& &   5 &   1 &   1 &   1 &   1 &   1 &   6 & \color{red}{0,00} & \color{blue}{54,55} \\ 
+9&&    5 &   1 &   1 &   1 &   1 &   1 &   5 & \color{red}{50,00} & \color{blue}{50,00} \\ 
+10&&    1 &   1 &   1 &   5 &   1 &   1 &   1 & \color{red}{50,00} & \color{blue}{50,00} \\ 
+11& &   5 &   1 &   1 &   5 &   1 &   1 &   1 & \color{red}{20,00} & \color{blue}{20,00} \\ 
+12&&    1 &   5 &   2 &   3 &   4 &   5 &   4 & \color{red}{25,00} & \color{blue}{73,68} \\ 
    \hline
 \end{tabular}
-\caption{Wyniki analizy zbioru \textit{machine} dla różnej liczby klas zmiennej odpowiedzi, stosując \textbf{dyskretyzację równomierną}.}
-\label{ttt}
+\caption{Porównanie wskaźników VUS i BSC}
+\label{bsc}
 \end{table}
-\end{landscape}
-
-Przyjrzyjmy się tabelom \ref{tttt} i \ref{ttt}. Widać wyraźnie, że -- niezależnie od sposobu dyskretyzacji danych -- wraz ze wzrostem liczby klas, dopasowanie modelu maleje. O ile jednak współczynnik PPK zachowuje się w miarę sensownie nawet aż przy dziesięciu klasach, o tyle VUS przy tej samej liczbie klas, staje się całkowicie bezużyteczny.    Niemniej jednak, w przypadku, gdy współczynnik VUS jest w miarę sensowny, należy wziąć go pod uwagę. Czasami warto zgodzić się na niższy PPK, żeby zyskać wyższy VUS.
 
 
-Zastanówmy się teraz, jaki wpływ na poszczególne metody ma równoliczność klas. Widać wyraźnie, że metodami, które odniosły duże korzyści ze zbalansowania zbioru danych są sieci neuronowe i SVM-y. W metodzie Franka i Halla znacząco polepszył się współczynnik VUS, jednak spadł procent poprawnej klasyfikacji. Przypatrując się wynikom procesów gaussowskich i modelowi proporcjonalnych szans, wygląda na to, że metody mające duże założenia co do rozkłądów (normalność w procesie gaussowskim i założenie proporcjonalnych szans) nie działają najlepiej dla sztucznie wprowadzonych (mimo, że równolicznych) klas. Wskazuje to na wagę tych założeń.
+Zalety współczynnika BSC są więc bardzo duże. Posiada on bowiem interpretację VUS, która jest niezwykle ważna w regresji porządkowej, a jednocześnie jest bardzo odporny na nietypowe sytuacje w danych. Szczególnie, że takie sytuacje (jak np. w przykładzie nr $5$ z Tabeli \ref{bsc}) pojawiają się bardzo często, gdy rozkład klas w danych jest nierównomierny. 
 
-\end{comment}
+Warto jednak podkreślić, że ,,dziedzicząc'' po współczynniku VUS bardzo jasną intuicję, BSC przejmuje również niektóre jego wady. Przykładowo, gdy przyporządkujemy każdej z obserwacji klasę o jeden niższą, niż ma w rzeczywistości, wtedy zarówno VUS jak i BSC wyniosą $100\%$, gdyż wektor klas faktycznie będzie posortowany poprawnie. Jednak żadna klasa nie będzie przyporządkowana właściwie. Wadą jest również to, że i ten współczynnik stosować można jedynie do metod, które posługują się funkcją pomocniczą $f(\cdot)$ przy wyznaczaniu klasy. Jest to niejakie utrudnienie, gdyż na przykład sieci neuronowe takiej funkcji nie zwracają.
+
+Trzeba jednak być świadomym, że w analizie wyników nie należy stosować tylko jednego współczynnika. Najbardziej skuteczne jest łączenie informacji. Warto spojrzeć zarówno na~ACC, VUS, ABS i wreszcie BSC i zastanowić się, na czym najbardziej nam zależy -- na~precyzji czy na kolejności dopasowania. Może czasem warto zrezygnować z doskonałej kolejności, by zyskać dużo większą precyzję? I odwrotnie. To już kwestia indywidualnego przypadku i charakteru naszych danych. 
+
+\section{Dalsze wnioski}
+
+Wróćmy do wniosków płynących z eksperymentu i jego podsumowania zawartego w Tabeli~\ref{wyniki}.
+
+Na początku przyjrzyjmy się ostatniej kolumnie nazwanej \textit{Klasyfikacja wieloklasowa} i zaznaczonej szarym kolorem. Jako jedyna z kolumn nie odpowiada ona żadnej z metod regresji porządkowej. Jest to prosty model wielomianowy dla danych nominalnych o więcej niż dwóch klasach. Krótko mówiąc, nie uwzględnia on uporządkowania naszej zmiennej odpowiedzi. Zauważmy, że współczynnik ACC jest dla metod regresji porządkowej i klasyfikacji wieloklasowej bardzo podobny - czasem trochę mniejszy, czasem większy, ale podobny. Nasuwa się zatem pytanie, po co komplikować modele i tworzyć różne metody przeznaczone specjalnie dla regresji porządkowej, skoro zwykła i znana klasyfikacja wieloklasowa daje taki sam efekt. Odpowiedź nasuwa się sama, gdy tylko przyjrzymy się współczynnikowi BSC. Otóż w większości  przypadków jest on znacznie różny (a konkretnie znacznie mniejszy) od tego wyliczonego dla metod regresji porządkowej. Świadczy to o tym, że o ile stosując klasyfikację wieloklasową, popełniamy mniej więcej tyle samo błędów, to te błędy, które popełniamy są znacznie poważniejsze niż w pozostałych metodach (czyli przykładowo częściej mylimy skrajne wartości). Jednoznacznie potwierdza to skuteczność regresji porządkowej, która stworzona została właśnie po to, by być odporną na tego typu błędy.
+
+Warto zwrócić również uwagę na niespodziewanie dobre zachowanie sieci neuronowych. Osiągają one najlepszy procent poprawnej klasyfikacji w $56\%$ zbiorów, a w $22\%$ niewiele odbiegają od najlepszego wyniku. Niestety nie możemy tutaj porównać współczynnika VUS ani BSC. Dlatego ryzykujemy, że uporządkowanie klas będzie słabej jakości. Trzeba jednak pamiętać, że metoda ta została specjalnie stworzona, by brać porządek klas pod uwagę, dlatego nie ma podstaw sądzić, że współczynniki te odbiegałyby bardzo od tych uzyskanych na tych samych danych dla innych metod. 
+
+Wreszcie, widać wyraźnie, że nie ma jednej najlepszej metody. Każda ,,wygrywa" na którymś ze zbiorów oraz każda ma swoje wady i zalety. Dlatego, przeprowadzając analizę na~konkretnych danych, powinno się wziąć pod uwagę kilka istniejących sposobów modelowania, by następnie porównać je na zbiorze testowym i dopiero wtedy zadecydować, która z metod jest w naszym przypadku najlepsza. Zresztą takie podejście nie dotyczy tylko regresji porządkowej, ale wszystkich analiz statystycznych.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

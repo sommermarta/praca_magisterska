@@ -13,10 +13,12 @@
 \contentsline {section}{\numberline {2.4}Krzywa ROC w przypadku regresji porz\IeC {\k a}dkowej}{23}{section.2.4}
 \contentsline {section}{\numberline {2.5}Wsp\IeC {\'o}\IeC {\l }czynnik VUS}{24}{section.2.5}
 \contentsline {chapter}{\numberline {3}Por\IeC {\'o}wnanie metod modelowania i wsp\IeC {\'o}\IeC {\l }czynnik\IeC {\'o}w diagnostycznych}{27}{chapter.3}
-\contentsline {section}{\numberline {3.1}Opis danych}{27}{section.3.1}
-\contentsline {section}{\numberline {3.2}Analiza wynik\IeC {\'o}w}{27}{section.3.2}
-\contentsline {chapter}{Podsumowanie}{33}{section*.17}
-\contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{35}{appendix.A}
-\contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{35}{section.A.1}
-\contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{35}{section.A.2}
-\contentsline {chapter}{Literatura}{37}{section*.18}
+\contentsline {section}{\numberline {3.1}Opis eksperymentu}{27}{section.3.1}
+\contentsline {section}{\numberline {3.2}Wst\IeC {\k e}pna analiza wynik\IeC {\'o}w}{27}{section.3.2}
+\contentsline {section}{\numberline {3.3}Wsp\IeC {\'o}\IeC {\l }czynnik BSC}{31}{section.3.3}
+\contentsline {section}{\numberline {3.4}Dalsze wnioski}{33}{section.3.4}
+\contentsline {chapter}{Podsumowanie}{35}{section*.15}
+\contentsline {chapter}{\numberline {A}Wyprowadzenia pomocniczych twierdze\IeC {\'n}}{37}{appendix.A}
+\contentsline {section}{\numberline {A.1}Wz\IeC {\'o}r Bayesa dla wi\IeC {\k e}cej ni\IeC {\.z} jednego warunku}{37}{section.A.1}
+\contentsline {section}{\numberline {A.2}Ca\IeC {\l }ka z iloczynu dystrybuanty i g\IeC {\k e}sto\IeC {\'s}ci rozk\IeC {\l }adu normalnego}{37}{section.A.2}
+\contentsline {chapter}{Literatura}{39}{section*.16}
