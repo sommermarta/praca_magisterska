@@ -5,7 +5,7 @@
 \contentsline {section}{\numberline {1.1}Postawienie problemu i podstawowe oznaczenia}{11}{section.1.1}
 \contentsline {section}{\numberline {1.2}Model proporcjonalnych szans}{11}{section.1.2}
 \contentsline {section}{\numberline {1.3}Wektory maszyn podpieraj\IeC {\k a}cych (SVM)}{12}{section.1.3}
-\contentsline {section}{\numberline {1.4}Sieci neuronowe}{14}{section.1.4}
+\contentsline {section}{\numberline {1.4}Sieci neuronowe}{15}{section.1.4}
 \contentsline {section}{\numberline {1.5}Metoda Franka i Halla}{17}{section.1.5}
 \contentsline {section}{\numberline {1.6}Procesy gaussowskie}{18}{section.1.6}
 \contentsline {chapter}{\numberline {2}Diagnostyka modelu}{25}{chapter.2}

@@ -14,6 +14,7 @@
 \usepackage{verbatim}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{icomma}
 %\usepackage[noend]{algpseudocode}
 \usepackage{caption}
 
@@ -59,11 +60,11 @@
 
 \chapter*{Streszczenie}
 
-Uczenie maszynowe często natrafia na problem klasyfikacji wieloklasowej (ang. \textit{multinomial regression}), w której zmienna odpowiedzi jest w pewien naturalny sposób uporządkowana. Mamy wtedy do czynienia z tzw. regresją porządkową (ang. \textit{ordinal regression}). 
+W uczeniu maszynowym często natrafia się na problem klasyfikacji wieloklasowej (ang. \textit{multinomial regression}), w której zmienna odpowiedzi jest w pewien naturalny sposób uporządkowana. Mamy wtedy do czynienia z tzw. regresją porządkową (ang. \textit{ordinal regression}). 
 
 Głównym celem mojej pracy jest zebranie, omówienie i porównanie dostępnych w literaturze metod modelowania regresji porządkowej. Opisanych zostało w ten sposób pięć klasyfikatorów: model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i~Halla, sieci neuronowe oraz wektory maszyn podpierających (SVM). 
 
-Dodatkowo, praca zawiera opracowanie różnych wskaźników diagnostycznych, które pomagają w ocenie wyżej wymienionych metod klasyfikacji. Wreszcie, zarówno metody budowania modeli, jak i same współczynniki oceny ich jakości zostały przedstawione i porównane na~danych rzeczywistych. 
+Oprócz tego praca zawiera opis trzech różnych wskaźników diagnostycznych, które pomagają w ocenie wyżej wymienionych metod klasyfikacji, jak również ocenę tych metod na danych rzeczywistych wraz z porównaniem skuteczności samych współczynników.
 
 \subsection*{Słowa kluczowe:}
 
@@ -71,23 +72,27 @@ regresja porządkowa, SVM, sieci neuronowe, model proporcjonalnych szans, proces
 
 \chapter*{Abstract}
 
-bla bla bla
+A commonly encoutered problem in~the~field of machine learning is multinomial regression, where the dependent variable is ordered in~a~natural, non-mathematical progression. This presents the~issue of~ordinal regression.
+
+The main focus of~my~thesis is to~put~together, explain and~compare methods of~ordinal regression modelling currently available in~professional literature. There are~five classifiers described: the~proportional odds model, Gaussian processes, the~Frank-Hall method, neural networks and~Support Vector Machines (SVM).
+
+In addition, my thesis desribes three different diagnostic coeffecients which help to assess these methods of classification, as~well as~an~assessment and~comparison of~these~methods -- and~the~coefficients themselves -- using real data.
 
 \subsection*{Keywords}
 
-ordinal regression, SVM, neural networks, proportional odds model, gaussian processes, ROC~curve, AUC, VUS
+ordinal regression, SVM, neural networks, proportional odds model, Gaussian processes, ROC~curve, AUC, VUS
 
 \chapter*{Wstęp}
 
-Uczenie maszynowe jest bardzo szybko rozwijającym się zagadnieniem z pogranicza matematyki i informatyki. Główną przyczyną tego zjawiska jest jego szeroka gama zastosowań. Już nawet prosta regresja i klasyfikacja pomagają w odkrywaniu pewnych zależności oraz pozwalają prognozować różne wielkości. Z uczeniem maszynowym bardzo często -- choć nie zawsze świadomie -- spotykamy się w życiu codziennym np. korzystając z systemów rekomendacyjnych, czy używając wyszukiwarki internetowej. To właśnie z tych praktycznych zastosowań wynikła potrzeba stworzenia tzw. regresji porządkowej (ang. \textit{ordinal regression}). Zanim poznamy formalną definicję tego zagadnienia i zagłębimy się w temat, prześledźmy poniższy przykład, by wyrobić sobie pewną intuicję, czym właściwie jest regresja porządkowa.  
+Uczenie maszynowe jest bardzo szybko rozwijającą się dziedziną nauki z pogranicza matematyki i informatyki, głównie ze względu na szeroką gamę jej zastosowań. Nawet prosta regresja i klasyfikacja pomagają w odkrywaniu pewnych zależności oraz pozwalają prognozować różne wielkości. Z uczeniem maszynowym bardzo często -- choć nie zawsze świadomie -- spotykamy się w życiu codziennym, np. w systemach rekomendacyjnych czy wyszukiwarkach internetowych. To właśnie do tych praktycznych zastosowań potrzebne było stworzenie tzw. regresji porządkowej (ang. \textit{ordinal regression}). Zanim poznamy formalną definicję tego pojęcia i dalsze szczegóły na jego temat, prześledźmy poniższy przykład, by bardziej intuicyjnie zrozumieć, czym właściwie jest regresja porządkowa.  
 
-Wyobraźmy sobie sytuację, że chcielibyśmy przewidzieć, w jakim stopniu potencjalnemu klientowi spodoba się sprzedawany przez nas produkt. Mając taką wiedzę, moglibyśmy bowiem przewidywać, co opłaca się mu polecić bądź zareklamować. Chcąc uprościć analizę, skupimy się na następujących możliwych odpowiedziach klienta: \textit{zdecydowanie mi się nie podoba}, \textit{nie podoba mi się}, \textit{nie mam zdania}, \textit{podoba mi się}, \textit{zdecydowanie mi się podoba}. Z jednej strony mamy do dyspozycji pewne cechy danego klienta. Przykładowo, mogą to być jego wiek, płeć czy wykształcenie. Nie zawsze jednak potrafimy uzyskać takie dane -- szczególnie, gdy~nie mamy bezpośredniego kontaktu z klientem, bo prowadzimy np. sklep internetowy. Wtedy jako wektor cech możemy przyjąć np. jego historię zakupów na naszej stronie. Z drugiej strony mamy też pewną grupę klientów, o których wiemy, co myślą o danym produkcie (bo np. zapytaliśmy ich o to wprost lub za pomocą ankiety). Metoda działania powinna być więc następująca. Najpierw -- na danych historycznych -- dopasowujemy pewien model, a następnie, gdy przychodzi do nas klient o konkretnych cechach, używając wcześniej skonstruowanego modelu, dostajemy odpowiedź, czy produkt mu się spodoba czy nie. 
+Wyobraźmy sobie następującą sytuację: chcielibyśmy przewidzieć, w jakim stopniu potencjalnemu klientowi spodoba się sprzedawany przez nas produkt. Mając taką wiedzę, moglibyśmy przewidywać, co opłaca się mu polecić bądź zareklamować. W celu uproszczenia analizy, skupimy się na następujących możliwych odpowiedziach klienta: \textit{zdecydowanie mi się nie podoba}, \textit{nie podoba mi się}, \textit{nie mam zdania}, \textit{podoba mi się}, \textit{zdecydowanie mi się podoba}. Mamy również do dyspozycji pewne cechy danego klienta; może to być na przykład jego wiek, płeć czy~wykształcenie. Nie zawsze jednak potrafimy uzyskać takie dane -- szczególnie, gdy~nie mamy z~nim bezpośredniego kontaktu, na przykład w sytuacji, gdy prowadzimy sklep internetowy. Wtedy za wektor cech możemy przyjąć np. jego historię zakupów na naszej stronie. Jako dane do tworzenia modelu możemy użyć informacje na temat pewnej grupy klientów, których opinię o danym produkcie znamy (gdyż np. zapytaliśmy ich o to wprost lub za pomocą ankiety). Metoda działania powinna być więc następująca: najpierw dopasowujemy pewien model w~oparciu o~dane historyczne, a następnie, gdy mamy do czynienia z nowym klientem o znanych cechach, model pozwala przewidzieć reakcję tego klienta na proponowany przez nas produkt. 
 
-Analizę powyższego problemu można przeprowadzić na kilka różnych sposobów. Najbardziej naturalnym wydawałoby się zastosowanie klasyfikacji wieloklasowej (tzn. takiej, gdzie odpowiedź jest nominalna i ma więcej niż dwa poziomy; ang. \textit{multinomial regression}). Tracimy wtedy jednak istotną informację o tym, że odpowiedzi tworzą pewien naturalny porządek. Chcąc niejako wziąć to pod~uwagę, można potraktować nasz problem jak zwykłą regresję, zamieniając zmienną odpowiedzi w pewną zmienną ciągłą (np. \textit{zdecydowanie mi się nie podoba} odpowiadałoby cyfrze $1$, a \textit{zdecydowanie mi się podoba} cyfrze $5$) i to ją modelować, a następnie z powrotem dyskretyzować. Pojawia się tu jednak problem, jak optymalnie zrobić taką transformację, uwzględniając chociażby fakt, że nasze odpowiedzi niekoniecznie są od siebie jednakowo odległe (tzn. np. różnica między \textit{nie podoba mi się} a \textit{nie mam zdania} wcale mnie musi być taka sama, jak~między \textit{podoba mi się} a \textit{zdecydowanie mi się podoba}). Podstawowe zagadnienia uczenia maszynowego nie znajdują tu zatem zastosowania i stąd wynikło zapotrzebowanie rozwinięcia problemu regresji porządkowej. 
+Analizę powyższego problemu można przeprowadzić na kilka różnych sposobów. Najbardziej naturalnym wydawałoby się zastosowanie klasyfikacji wieloklasowej (tzn. takiej, gdzie odpowiedź jest nominalna i ma więcej niż dwa poziomy; ang. \textit{multinomial regression}). W tym procesie tracimy wtedy jednak istotną informację o naturalnym porządku otrzymanych odpowiedzi. Jeśli chcielibyśmy wziąć go pod~uwagę, możemy potraktować nasz problem jak zwykłą regresję, zastępując zmienną odpowiedzi pewną zmienną ciągłą (np. \textit{zdecydowanie mi się nie podoba} odpowiadałoby wartości liczbowej $1$, a \textit{zdecydowanie mi się podoba} wartości~$5$) i modelować właśnie tę zmienną ciągłą, a następnie z powrotem zamienić ją na uporządkowaną zmienną nominalną. Pojawia się tu jednak problem optymalnego wykonania takiej transformacji, z uwzględnieniem wielu czynników, m.in. tego, że możliwe odpowiedzi niekoniecznie są od siebie jednakowo odległe (np. różnica między \textit{nie podoba mi się} a \textit{nie mam zdania} wcale nie musi być taka sama, jak~między \textit{podoba mi się} a \textit{zdecydowanie mi się podoba}). Podstawowe zagadnienia uczenia maszynowego nie znajdują tu zatem zastosowania i stąd wynikła konieczność rozwinięcia problemu regresji porządkowej. 
 
-Powyższy przykład wyrobił nam pewną intuicję co do tego, czym jest regresja porządkowa. Krótko określić można by ją było jako problem klasyfikacji wieloklasowej, w którym zmienna odpowiedzi tworzy pewien naturalny porządek. Formalne sformułowanie problemu przedstawimy na początku rozdziału pierwszego.
+Powyższy przykład zilustrował kwestię regresji porządkowej. W skrócie można określić ją jako problem klasyfikacji wieloklasowej, w którym zmienna odpowiedzi jest w pewnym naturalnym porządku. Formalne sformułowanie problemu przedstawimy na początku rozdziału pierwszego.
 
-Celem mojej pracy jest teoretyczne i praktyczne omówienie regresji porządkowej. Praca ma zatem następującą strukturę. Rozdział pierwszy poświęcony został zebraniu, opisaniu i usystematyzowaniu dostępnych w literaturze metod modelowania tego zagadnienia. Pokazane są w nim również wady i zalety różnych podejść do tematu oraz różnice między nimi. W~rozdziale drugim opisane zostały metody diagnostyki modelu oraz ich mocne i słabe strony. W~ostatnim rozdziale, który -- w przeciwieństwie do bardzo teoretycznych pierwszych dwóch -- opiera się na danych rzeczywistych, porównamy metody modelowania regresji porządkowej oraz ocenimy jakość współczynników diagnostycznych.       
+Celem mojej pracy jest omówienie teoretycznych zagadnień oraz praktycznych zastosowań regresji porządkowej. Praca ma zatem następującą strukturę: rozdział pierwszy poświęcony jest zebraniu, opisaniu i usystematyzowaniu dostępnych w literaturze metod tworzenia modeli; pokazane są w nim również wady i zalety poszczególnych z nich oraz dzielące je różnice. W~rozdziale drugim w podobny sposób opisane są metody diagnostyki modelu. W~ostatnim rozdziale, który -- w przeciwieństwie do pierwszych dwóch, w dużej mierze teoretycznych -- opiera się na danych rzeczywistych, zawiera porównanie metod modelowania regresji porządkowej oraz ocenę jakości współczynników diagnostycznych.       
 
 
 %Możemy wyróżnić dwa główne nurty w regresji porządkowej:
@@ -111,11 +116,11 @@ Mamy dany zbiór $\mathcal{D} = (\mathbf{x}^{(i)}, y^{(i)})_{i=1}^n$, składają
 \end{itemize}
 Naszym celem będzie stworzenie modelu, który pozwoli na wybranie najlepszej (nieznanej) kategorii $y_{\ast}\in\mathcal{Y}$ dla nowej obserwacji o zadanym wektorze cech $\mathbf{x}_{\ast}$. 
 
-W tym rozdziale opracujemy kilka rozwiązań, które pozwolą nam się z tym problemem uporać.
+W tym rozdziale opracujemy kilka rozwiązań, które pozwolą nam uporać się z tym problemem.
 
 \section{Model proporcjonalnych szans}
 
-Najbardziej rozpowszechnionym sposobem modelowania regresji porządkowej jest model proporcjonalnych szans (ang. \textit{proportional odds model}). Informacje na jego temat znaleźć można na przykład tu: \cite{pom}. Jest to jedna z metod uogólnionych modeli liniowych, bardzo silnie opierająca się na regresji logistycznej. Interesują nas prawdopodobieństwa: 
+Najbardziej rozpowszechnionym sposobem modelowania regresji porządkowej jest model proporcjonalnych szans (ang. \textit{proportional odds model}). Informacje na jego temat znaleźć można na przykład tu: \cite{pom}. Jest to jedna z metod uogólnionych modeli liniowych, ściśle związana z~regresją logistyczną. Interesują nas następujące prawdopodobieństwa: 
 $$
 \Pi_j(\mathbf{x}):=\mathbb{P}(y=j\hspace{1mm}|\hspace{1mm}\mathbf{x}),\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r.
 $$
@@ -129,7 +134,7 @@ $$
 $$
 gdzie $\alpha_j\in \mathbb{R}$ i $\mathbf{\beta}\in \mathbb{R}^K$ są parametrami modelu. Należy zauważyć, że parametr $\beta$ jest stały dla każdego $j=1, \ldots, r-1$.
 
-Współczynniki modelu -- jak w przypadku regresji logistycznej -- wyliczamy metodą Raphsona-Newtona, a skumulowane prawdopodobieństwa -- po prostym przeliczeniu -- dostaniemy ze~wzoru:
+Współczynniki modelu -- tak jak w przypadku regresji logistycznej -- wyliczamy metodą Raphsona-Newtona, a skumulowane prawdopodobieństwa -- po prostym przeliczeniu -- otrzymamy ze~wzoru:
 $$
 \mathbb{P}(y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})=\dfrac{e^{\alpha_j+\mathbf{\beta}^T\mathbf{x}}}{1+e^{\alpha_j+\mathbf{\beta}^T\mathbf{x}}},\quad \textrm{dla}\hspace{3mm} j=1,\ldots,r-1.
 $$ 
@@ -146,11 +151,11 @@ Dla nowej obserwacji $\mathbf{x}_{\ast}$ wybieramy oczywiście tę klasę $y_{\a
 
 \section{Wektory maszyn podpierających (SVM)}
 
-Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji (por. np. \cite{koronacki}). W dużym uproszczeniu, polega ona na~konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn rozdzielających klasy. By móc obsługiwać przypadki, w których brak liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym (por.~Rysunek~\ref{svm1}) budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
+Wektory maszyn podpierających (ang. \textit{Support Vector Machine}) to bardzo znana i powszechnie stosowana metoda klasyfikacji (patrz np. \cite{koronacki}). W dużym uproszczeniu polega ona na~konstrukcji dwóch równoległych i maksymalnie oddalonych od siebie hiperpłaszczyzn rozdzielających klasy. By metoda działała dla przypadków, w których brak jest liniowej separowalności, wprowadza się dodatkowo karę za nieidealne rozdzielenie klas. W przypadku dwuklasowym (patrz~rys.~\ref{svm1}) budowa modelu sprowadza się do rozwiązania następującego problemu optymalizacyjnego:
 $$
 \min_{\mathbf{w}, b}\left\lbrace\dfrac{1}{2}||\textbf{w}||^2+C\sum_{i=1}^{n}\xi_i\right\rbrace,
 $$
-przy ograniczeniach:
+przy następujących ograniczeniach:
 $$
 \begin{cases}
 \mathbf{x}^T_{1i}\textbf{w}+b &\geq +1-\xi_i, \hspace{6mm} \text{dla}\hspace{3mm}i=1\ldots n_1 \\
@@ -162,43 +167,43 @@ gdzie $\mathbf{w}\in\mathbb{R}^K$, $b\in\mathbb{R}$ i $C\in\mathbb{R}$ są param
 \begin{figure}[!hb]
   \begin{subfigure}[]{\textwidth}
     \includegraphics[width=\textwidth]{graphics/svm1.png}
-    \caption{Przypadek separowalny.}
+    \caption{Przypadek separowalny}
   \end{subfigure}
   %\hfill
   \begin{subfigure}[]{\textwidth}
     \includegraphics[width=\textwidth]{graphics/svm1eps.png}
-    \caption{Przypadek nieseparowalny.}
+    \caption{Przypadek nieseparowalny}
   \end{subfigure}
-  \caption{Przykładowe rozdzielenie klas metodą SVM. W przypadku nieseparowalnym dokładamy karę, będącą odległością źle zaklasyfikowanej obserwacji od odpowiedniego marginesu.}
+  \caption{Przykładowe rozdzielenie klas metodą SVM. W przypadku nieseparowalnym stosujemy dodatkowo karę będącą odległością źle zaklasyfikowanej obserwacji od odpowiedniego marginesu}
   \label{svm1}
 \end{figure}
 
-Powyżej krótko przypomniana została metoda SVM w przypadku dwuklasowym. Przyjrzyjmy się teraz, jak w łatwy sposób można zaadaptować powyższą metodę do rozważanej przez nas regresji porządkowej.
+Powyżej krótko przypomniana została metoda SVM w przypadku dwuklasowym. Przyjrzyjmy się teraz, jak w łatwy sposób można dostosować powyższą metodę do rozważanej przez nas regresji porządkowej.
 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=\textwidth]{graphics/svm3.png}
 \end{center}
-\caption{Przykładowa klasyfikacja metodą SVM w przypadku trzyklasowym.}
+\caption{Przykładowa klasyfikacja metodą SVM w przypadku trzyklasowym}
 \label{svm}
 \end{figure}
 
-Tym razem, będziemy rozwiązywać następujący problem optymalizacyjny (por. \cite{pom} i \cite{svm}):
+Tym razem będziemy rozwiązywać następujący problem optymalizacyjny (patrz \cite{pom} i \cite{svm}):
 $$
 \min_{\textbf{w}, b_1, \ldots, b_{r-1}}\left\lbrace \dfrac{1}{2}||\textbf{w}||^2+C\sum_{j=1}^{r-1}\left( \sum_{k=1}^{j}\sum_{i=1}^{n_k}\xi_{ki}^j+\sum_{k=j+1}^{r}\sum_{i=1}^{n_k}\xi_{ki}^{*j}\right)\right\rbrace,
 $$
-przy ograniczeniach:
+przy następujących ograniczeniach:
 $$
 \begin{cases}
 \mathbf{x}^T_{ki}\textbf{w}-b_j&\leq -1 +\xi^j_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=1,\ldots,j \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k \\
 \mathbf{x}^T_{ki\textbf{w}}-b_j&\geq +1 -\xi^{*j}_{ki}, \hspace{6mm} \textrm{dla}\hspace{3mm} k=j+1,\ldots,r \hspace{3mm}\textrm{oraz}\hspace{3mm} i=1,\ldots,n_k, 
 \end{cases}
 $$
-gdzie $\textbf{w}\in \mathbb{R}^K, b_1\in\mathbb{R}, \ldots, b_{r-1}\in\mathbb{R}, C\in\mathbb{R}$ są parametrami modelu, $\mathbf{x}^T_{ki}$ oznacza $i-$tą obserwację należącą do $k-$tej klasy, $n_k$ to liczność $k-$tej klasy, $j=1\ldots r-1$, a $\xi$ to kary, których konstrukcję wyjaśnimy poniżej.
+gdzie $\textbf{w}\in \mathbb{R}^K, b_1\in\mathbb{R}, \ldots, b_{r-1}\in\mathbb{R}, C\in\mathbb{R}$ są parametrami modelu, $\mathbf{x}^T_{ki}$ oznacza $i$-tą obserwację należącą do $k$-tej klasy, $n_k$ to liczność $k$-tej klasy, $j=1\ldots r-1$, a $\xi$ to kary, których konstrukcję wyjaśnimy poniżej.
 
-Przyjrzyjmy się, czym różni się nasz nowy problem od problemu optymalizacyjnego w standardowej klasyfikacji. Przede wszystkim -- podobnie jak w modelu proporcjonalnych szans -- mamy tu do czynienia z $(r-1)$--hiperpłaszczyznami, rzutowanymi na jeden, wspólny dla~wszystkich obserwacji, kierunek $\mathbf{w}$. Przy wyznaczaniu kolejnych hiperpłaszczyzn, bierzemy pod~uwagę wszystkie klasy. Kary naliczane są więc w następujący sposób (por. Rysunek~\ref{svm}). Dla ustalonego progu $b_j$ obserwujemy wartości funkcji $\mathbf{x}_{ki}^T\textbf{w}$. Dla obserwacji z~niższych klas (tzn.~klas $1,\ldots, j$), wartości te powinny być niższe niż dolna granica $b_j-1$. Jeśli tak nie jest, wtedy jako błąd obserwacji dla progu $b_j$ uznaje się $\xi^j_{ki}$, czyli odległość tego punktu od rozpatrywanej dolnej granicy. Analogicznie, dla obserwacji z wyższych klas wartości $\mathbf{x}_{ki}^T\textbf{w}$ powinny być wyższe niż górna granica $b_j+1$. Jeśli tak nie jest, to otrzymujemy błędy~$\xi^{*j}_{ki}$.
+Przyjrzyjmy się, czym różni się nasz nowy problem od problemu optymalizacyjnego w standardowej klasyfikacji. Przede wszystkim -- podobnie jak w modelu proporcjonalnych szans -- mamy tu do czynienia z $(r-1)$--hiperpłaszczyznami, rzutowanymi na jeden, wspólny dla~wszystkich obserwacji, kierunek $\mathbf{w}$. Przy wyznaczaniu kolejnych hiperpłaszczyzn bierzemy pod~uwagę wszystkie klasy. Kary naliczane są w dość prosty sposób (patrz rys.~\ref{svm}). Dla ustalonego progu $b_j$ obserwujemy wartości funkcji $\mathbf{x}_{ki}^T\textbf{w}$. Dla obserwacji z~niższych klas (tzn.~klas $1,\ldots, j$), wartości te powinny być niższe niż dolna granica $b_j-1$. Jeśli tak nie jest, wtedy za błąd obserwacji dla progu $b_j$ uznaje się $\xi^j_{ki}$, czyli odległość tego punktu od rozpatrywanej dolnej granicy. Analogicznie dla obserwacji z wyższych klas wartości $\mathbf{x}_{ki}^T\textbf{w}$ powinny być wyższe niż górna granica $b_j+1$. Jeśli tak nie jest, to otrzymujemy błędy~$\xi^{*j}_{ki}$.
 
-Budowa modelu i tym razem sprowadza się więc do problemu optymalizacyjnego. Wyznaczywszy -- przy użyciu dowolnego algorytmu znajdującego minimum -- szukane parametry, dostaniemy równania $r-1$ hiperpłaszczyzn:
+Budowa modelu i tym razem sprowadza się więc do problemu optymalizacyjnego. Wyznaczywszy -- przy użyciu dowolnego algorytmu znajdującego minimum -- szukane parametry, otrzymujemy równania $r-1$ hiperpłaszczyzn:
 
 $$\begin{cases}
 \textbf{x}^T\textbf{w}-b_1 &=0\\
@@ -207,19 +212,19 @@ $$\begin{cases}
 \end{cases}.
 $$
 
-Dla nowej obserwacji $\textbf{x}_\ast$ wystarczy wtedy policzyć $\textbf{x}_\ast^T\textbf{w}$, sprawdzić, między którymi dwoma hiperpłaszczyznami się znajduje i wreszcie przypisać jej odpowiednią klasę.
+Dla nowej obserwacji $\textbf{x}_\ast$ wystarczy wtedy policzyć $\textbf{x}_\ast^T\textbf{w}$, sprawdzić, między którymi dwoma hiperpłaszczyznami się znajduje, wreszcie przypisać jej odpowiednią klasę.
 
 \section{Sieci neuronowe}
  
-Sieci neuronowe to bardzo proste i szeroko stosowane narzędzie zarówno w problemach regresji, jak i klasyfikacji. Znalazło ono również swoje zastosowanie w regresji porządkowej (por.~\cite{nna}). 
+Sieci neuronowe to narzędzie bardzo proste i powszechnie stosowane zarówno w problemach regresji, jak i klasyfikacji. Znalazły one również zastosowanie w regresji porządkowej (patrz~\cite{nna}). 
 
-W dotychczasowych metodach na wejściu otrzymywaliśmy zbiór uczący w postaci $n$ par $(\textbf{x},y)$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ był wektorem cech, a $y$ numerem klasy. Tym razem jednak, dodatkowo zmodyfikujemy zmienną odpowiedzi w taki sposób, by zamiast liczby rzeczywistej otrzymać zero-jedynkowy wektor odpowiedzi $\textbf{y} = (y_1, \ldots, y_r)^T$ reprezentujący klasę, do której należy dana obserwacja, tzn. $y_i = \mathbb{I}\lbrace y =i \rbrace$.
+W dotychczasowych metodach jako dane wejściowe otrzymywaliśmy zbiór uczący w postaci $n$~par $(\textbf{x},y)$, gdzie $\textbf{x} = (x_1, \ldots, x_K)^T$ był wektorem cech, a $y$ numerem klasy. Tym razem jednak dodatkowo zmodyfikujemy zmienną odpowiedzi w taki sposób, by zamiast liczby rzeczywistej otrzymać zerojedynkowy wektor odpowiedzi $\textbf{y} = (y_1, \ldots, y_r)^T$ reprezentujący klasę, do której należy dana obserwacja, tzn. $y_i = \mathbb{I}\lbrace y =i \rbrace$.
 
-W przeciwieństwie do sieci nieuronowych wykorzystywanych przy zwykłej klasyfikacji, nasza sieć neuronowa zakładać będzie porządek zmiennej odpowiedzi. W jaki sposób? Mianowicie, jako wektor wyjściowy, zamiast wektora $\textbf{y} = (\underbrace{0, \ldots, 0}_{i-1}, 1, \ldots, 0)^T$, mającego jedynkę na $i$-tym miejscu, jeśli obserwacja należała do $i$-tej klasy, rozważać będziemy wektor $\textbf{y} = (\underbrace{1, \ldots, 1}_{i}, 0, \ldots, 0)^T$, mający jedynki na miejscach od pierwszego do $i$-tego.
+W przeciwieństwie do sieci nieuronowych wykorzystywanych przy zwykłej klasyfikacji, nasza sieć neuronowa zakładać będzie porządek zmiennej odpowiedzi. Jako wektor wyjściowy zamiast wektora $\textbf{y} = (\underbrace{0, \ldots, 0}_{i-1}, 1, \ldots, 0)^T$, mającego wartość $i$-tej współrzędnej równą $1$, jeśli obserwacja należała do $i$-tej klasy, rozważać będziemy wektor $\textbf{y} = (\underbrace{1, \ldots, 1}_{i}, 0, \ldots, 0)^T$, mający wartość $1$ współrzędnych o numerach od $1$ do $i$.
 
 Otrzymamy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej (z których każdy reprezentuje inną cechę z wektora $\textbf{x}$), jednej (bądź więcej) warstwie ukrytej o $m$ neuronach i warstwie wyjściowej, zawierającej $r$ neuronów, które reprezentują odpowiedź $\textbf{y}$ w~formie opisanej powyżej. Za funkcję przejścia przyjmiemy funkcję sigmoidalną $f(x) = \frac{1}{1+e^{-x}}$, dobrze reprezentującą przynależność do danej klasy jako prawdopodobieństwo. 
 
-\begin{figure}[h]
+\begin{figure}[!hb]
 \begin{center}
 
 	\def\layersep{6cm}
@@ -260,11 +265,11 @@ Otrzymamy w ten sposób sieć neuronową o $K$ neuronach w warstwie wejściowej 
 
 \end{tikzpicture}
 \end{center}
-\caption{Przykładowa sieć neuronowa.}
+\caption{Przykładowa sieć neuronowa}
 \label{siec}
 \end{figure}
 
-Uczenie sieci neuronowej będzie się odbywało algorytmem propagacji wstecznej (por. Algorytm \ref{bp}) z kwadratową funkcją straty (można też użyć jakiejś innej, np. entropii). 
+Uczenie sieci neuronowej będzie odbywało się za pomocą algorytmu propagacji wstecznej (patrz algorytm \ref{bp}) z kwadratową funkcją straty (można też wykorzystać inną, \mbox{np. entropię}). 
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -294,7 +299,7 @@ Uczenie sieci neuronowej będzie się odbywało algorytmem propagacji wstecznej 
 %\item Dopóki nie osiągniemy zadowalająco niskiego błędu, wracamy %do punktu $2)$.
 %\end{enumerate} 
 
-Aby dokładnie zrozumieć zasadę działania Algorytmu \ref{bp} w przypadku regresji porządkowej, poniżej przeanalizujemy najważniejsze jego kroku po kolei. Dodatkowo, pomocne może się okazać jednoczesne śledzenie Rysunku \ref{siec}. 
+Aby dokładnie zrozumieć zasadę działania algorytmu \ref{bp} w przypadku regresji porządkowej, poniżej przeanalizujemy najważniejsze jego kroki po kolei. Dodatkowo pomocne może okazać się jednoczesne śledzenie rysunku \ref{siec}. 
 
 \underline{Ad. $3)$} 
 
@@ -330,7 +335,7 @@ Predykcja polega już tylko na przejściu algorytmu w przód z nowymi obserwacja
 
 \section{Metoda Franka i Halla}
 
-Podejście zaproponowane przez E. Franka i M. Halla (por. \cite{fh}) do zagadnienia regresji porządkowej jest nieco inne, niż w metodach przedstawionych do tej pory metody. Polega bowiem nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a~następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwiema klasami. Dokładniej, przekształcamy $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji (por. Algorytm \ref{algfh}).
+Podejście zaproponowane przez E. Franka i M. Halla (patrz \cite{fh}) do zagadnienia regresji porządkowej jest nieco inne, niż w metodach przedstawionych do tej pory metody. Polega bowiem nie na stworzeniu nowego modelu, ale na odpowiednim przedefiniowaniu zbioru danych, a~następnie na sprowadzeniu zadania do problemu zwykłej klasyfikacji z dwiema klasami. Dokładniej, przekształcamy $r$--klasowy model regresji porządkowej do $(r-1)$ dwuklasowych problemów klasyfikacji (patrz algorytm \ref{algfh}).
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -386,16 +391,16 @@ Podejście zaproponowane przez E. Franka i M. Halla (por. \cite{fh}) do zagadnie
 		\path[draw, -latex',thick] (gora) -- (prawo);
 	\end{tikzpicture}
 \end{center}
-\caption{Modyfikacja przykładowego zbioru uczącego w metodzie Franka i Halla.}
+\caption{Modyfikacja przykładowego zbioru uczącego w metodzie Franka i Halla}
 \label{fh}
 \end{figure}
 
-Przyjrzyjmy się teraz kolejnym krokom Algorytmu \ref{algfh} dokładniej.
+Przyjrzyjmy się teraz kolejnym krokom algorytmu \ref{algfh} dokładniej.
 
 \underline{Ad. $1)$}
 
-Chcemy otrzymać $r-1$ nowych zbiorów o zero-jedynkowej zmiennej odpowiedzi. W jaki sposób to zrobić?
-Macierz atrybutów pozostaje bez zmian, a zmienia się jedynie wektor zmiennej odpowiedzi (por. Rysunek \ref{fh}) według zasady:
+Chcemy otrzymać $r-1$ nowych zbiorów o zerojedynkowej zmiennej odpowiedzi. W jaki sposób to zrobić?
+Macierz atrybutów pozostaje bez zmian, a zmienia się jedynie wektor zmiennej odpowiedzi (patrz rys. \ref{fh}) według zasady:
 \begin{eqnarray*}
 y_i^{(1)} &=& \mathbb{I}\lbrace y_i>1 \rbrace\\
 &\vdots& \\
@@ -416,11 +421,11 @@ Nas natomiast interesują prawdopodobieństwa: $\mathbb{P}(y = 1), \ldots, \math
 \mathbb{P}(y = r) &=& \mathbb{P}(y > r-1).\\
 \end{eqnarray*}
 
-Ostatecznie, nowej obserwacji przypisujemy klasę będącą wynikiem $\underset{i}\argmax \left\lbrace\mathbb{P}(y=i)\right\rbrace$.
+Ostatecznie nowej obserwacji przypisujemy klasę będącą wynikiem $\underset{i}\argmax \left\lbrace\mathbb{P}(y=i)\right\rbrace$.
 
 \section{Procesy gaussowskie}
 
-Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloklasowej. Chu i Ghahramani w pracy \cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
+Kolejną metodą modelowania problemu regresji porządkowej jest użycie procesu gaussowskiego. Jest to metoda popularna szczególne przy zwykłej regresji, znalazła ona jednak również zastosowanie w klasyfikacji zarówno jedno, jak i wieloklasowej. Chu i Ghahramani w pracy~\cite{reg} pokazują, jak rozszerzyć ją na regresję porządkową. 
 
 Pomysł modelowania regresji porządkowej polega na wprowadzeniu tzw. zmiennej ukrytej, będącej niejako krokiem pośrednim w modelowaniu zmiennej odpowiedzi. Mianowicie, zamiast dawać od razu odpowiedź, do której klasy przypisujemy daną obserwację, próbujemy ją najpierw scharakteryzować jako liczbę rzeczywistą, by móc ją niejako umieścić na prostej. Dzięki temu uzyskamy pewne uporządkowanie między naszymi obserwacjami, by następnie wybrać progi, które będą już klasyfikować obserwacje. W celu wyrobienia sobie intuicji przeanalizujmy całe rozumowanie ,,od tyłu", zaczynając od predykcji. Podstawowym założeniem \textit{a priori} tej metody jest to, że zmienna ukryta $F$ jest procesem gaussowskim tzn., że jej rozkłady skończenie wymiarowe są normalne. Pełną charakteryzację takiego procesu tworzą dwie informacje -- średnia (standardowo przyjmuje się $0$) oraz macierz kowariancji $\mathbf{\Sigma}$. Dla~celów tej pracy przyjmiemy, że elementy macierzy kowariancji definiowane są w następujący sposób:
 $$
@@ -450,7 +455,7 @@ Analogicznie:
 
 By móc policzyć powyższe całki, poszukamy kolejno prawdopodobieństw, których iloczyny je~tworzą.
 
-Korzystając z informacji, że zmienna $f$ jest procesem gaussowskim, czyli:
+Korzystając z informacji, że zmienna $F$ jest procesem gaussowskim, czyli:
 $$
 \left[
 	\begin{array}{c}
@@ -572,7 +577,7 @@ otrzymujemy
 $$
 \mathbb{P}(\mathbf{y} | \textbf{X}) \simeq e^{-S(\mathbf{\hat{f}})} \left\vert \mathbf{I} + \mathbf{\Sigma}\mathbf{\hat{\Lambda}} \right\vert^{-\frac{1}{2}},
 $$
-gdzie $\mathbf{I}$ jest macierzą jednostkową $n\times n$. Bez problemu możemy teraz znaleźć maksimum prawdopodobieństwa $\mathbb{P}(\mathbf{y} | \textbf{X})$ iteracyjnie lub nawet analitycznie (por.\cite{reg}).  
+gdzie $\mathbf{I}$ jest macierzą jednostkową $n\times n$. Bez problemu możemy teraz znaleźć maksimum prawdopodobieństwa $\mathbb{P}(\mathbf{y} | \textbf{X})$ iteracyjnie lub nawet analitycznie (patrz \cite{reg}).  
 
 Wróćmy teraz do szukanych całek \eqref{calka1} i \eqref{calka2}. Korzystając z równań \eqref{calka21} i \eqref{calka22} dostaniemy, że w przybliżeniu:
 $$
@@ -698,7 +703,7 @@ Jego zaletami są niewątpliwie prostota i intuicyjność. Niestety, ma on takż
 
 Załóżmy, że rozpatrujemy przypadek trzyklasowy, w którym rozkład zmiennej odpowiedzi jest taki, że prawdopodobieństwo wystąpienia klasy pierwszej jest równe $0,9$, drugiej $0,05$, a trzeciej też $0,05$. Załóżmy również, że nasz klasyfikator jest bardzo prosty i -- niezależnie od wektora cech -- zawsze przyporządkowuje konkretnej obserwacji klasę pierwszą. Łatwo policzyć, że współczynnik ACC wyniesie wtedy aż $90\%$, mimo że klasyfikator jest bardzo słaby. Warto byłoby wziąć więc jakoś informację o niezbilansowaniu klas pod uwagę.  
 
-Kolejną jego wadą jest to, że traktuje każdy błąd zero-jedynkowo. Przykładowo, gdy rozważamy dziesięcioklasową regresję porządkową, ACC tak samo traktować będzie błąd spowodowany przypisaniu obserwacji o rzeczywistej klasie $10$, jedynki jak i dziewiątki. Jako że klasy są z założenia uporządkowane, intuicja jest taka, że przyporządkowanie w powyższym przykładzie jedynki, powinno być niejako bardziej karane.
+Kolejną jego wadą jest to, że traktuje każdy błąd zerojedynkowo. Przykładowo, gdy rozważamy dziesięcioklasową regresję porządkową, ACC tak samo traktować będzie błąd spowodowany przypisaniu obserwacji o rzeczywistej klasie $10$, jedynki jak i dziewiątki. Jako że klasy są z~założenia uporządkowane, intuicja jest taka, że przyporządkowanie w powyższym przykładzie jedynki, powinno być niejako bardziej karane.
 
 \section{Średni błąd bezwzględny}
 
@@ -716,7 +721,7 @@ Wciąż nie jest jednak odporny na niezbilansowane klasy. Co więcej, współczy
 
 W przypadku dwuklasowym najczęściej stosowaną metodą oceny modelu jest porównywanie krzywych ROC (ang. \textit{Receiver Operating Characteristic}) i pól pod tą krzywą, czyli AUC (ang. \textit{Area Under the Curve}). Okazuje się, że można tę metodę uogólnić na nasz przypadek. Przyjrzyjmy się temu dokładniej. 
 
-Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy sobie najpierw, jak otrzymać ją w najprostszym -- dwuklasowym -- przypadku. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (por. Rysunek \ref{tabeladopasowania}).
+Żeby łatwiej zrozumieć konstrukcję krzywej ROC w przypadku regresji porządkowej, przypomnijmy sobie najpierw, jak otrzymać ją w najprostszym -- dwuklasowym -- przypadku. Załóżmy, że mamy już dopasowany model, a nasza zmienna odpowiedzi jest binarna z odpowiedzią pozytywną lub negatywną. Na zbiorze testowym możemy wtedy otrzymać tabelę jakości dopasowania (patrz rys. \ref{tabeladopasowania}).
 
 \begin{figure}[!h]
 		%\begin{large}
@@ -735,7 +740,7 @@ W przypadku dwuklasowym najczęściej stosowaną metodą oceny modelu jest poró
 		\end{tabular}
 		\end{center}
 		%\end{large}
-	\caption{Tabela jakości dopasowania. TP (ang. \textit{True Positives}) to liczba rekordów z klasy pozytywnej, które zostały zakwalifikowane przez nas jako klasa pozytywna. Analogicznie, TN~(ang. \textit{True Negatives}) to liczba rekordów z klasy negatywnej, które zostaly zakwalifikowane przez nas jako klasa negatywna. FP (ang. \textit{False Positives}) oznacza rekordy z klasy negatywnej, zakwalifikowane jako klasa pozytywna i wreszcie, FN (ang. \textit{False Negatives}) to~rekordy z klasy pozytywnej, które błędnie zakwalifikowane zostały jako klasa negatywna.}
+	\caption{Tabela jakości dopasowania. TP (ang. \textit{True Positives}) to liczba rekordów z klasy pozytywnej, które zostały zakwalifikowane przez nas jako klasa pozytywna. Analogicznie, TN~(ang. \textit{True Negatives}) to liczba rekordów z klasy negatywnej, które zostaly zakwalifikowane przez nas jako klasa negatywna. FP (ang. \textit{False Positives}) oznacza rekordy z klasy negatywnej, zakwalifikowane jako klasa pozytywna i wreszcie, FN (ang. \textit{False Negatives}) to~rekordy z klasy pozytywnej, które błędnie zakwalifikowane zostały jako klasa negatywna}
 \label{tabeladopasowania}	
 \end{figure}
 
@@ -743,25 +748,25 @@ W przypadku dwuklasowym najczęściej stosowaną metodą oceny modelu jest poró
 	\begin{center}
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{graphics/roc1.png}
-    \caption{Duże TPR, ale małe TNR.}
+    \caption{Duże TPR, ale małe TNR}
     \label{fig:f11}
   \end{subfigure}\\
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{graphics/roc2.png}
-    \caption{Zrównoważone TPR i TNR.}
+    \caption{Zrównoważone TPR i TNR}
     \label{fig:f22}
   \end{subfigure}\\
   \begin{subfigure}[h]{\textwidth}
     \includegraphics[width=\textwidth]{graphics/roc3.png}
-    \caption{Małe TPR, ale duże TNR.}
+    \caption{Małe TPR, ale duże TNR}
     \label{fig:f22}
   \end{subfigure}
   \end{center}
-  \caption{Sposób konstruowania krzywej ROC w przypadku dwuklasowym.}
+  \caption{Sposób konstruowania krzywej ROC w przypadku dwuklasowym}
   \label{wszystkietrzy}
 \end{figure}
 
-Do stworzenia krzywej ROC potrzebne nam będą dwa wskaźniki -- \textbf{czułość} (TPR, ang.~\textit{True Positive Rate}) i \textbf{specyficzność} (TNR, ang. \textit{True Negative Rate}). Czułość definiować będziemy jako prawdopodobieństwo, że pozytywny rekord zostanie poprawnie zakwalifikowany jako pozytywny, a specyficzność jako prawdopodobieństwo, że negatywny rekord zostanie poprawnie zakwalifikowany jako negatywny. Inaczej mówiąc, czułość i specyficzność to procent poprawnie sklasyfikowanych rekordów, odpowiednio w grupie pozytywnej i negatywnej. Korzystając z tabeli jakości dopasowania (por. Rysunek \ref{tabeladopasowania}), otrzymujemy:
+Do stworzenia krzywej ROC potrzebne nam będą dwa wskaźniki -- \textbf{czułość} (TPR, ang.~\textit{True Positive Rate}) i \textbf{specyficzność} (TNR, ang. \textit{True Negative Rate}). Czułość definiować będziemy jako prawdopodobieństwo, że pozytywny rekord zostanie poprawnie zakwalifikowany jako pozytywny, a specyficzność jako prawdopodobieństwo, że negatywny rekord zostanie poprawnie zakwalifikowany jako negatywny. Inaczej mówiąc, czułość i specyficzność to procent poprawnie sklasyfikowanych rekordów, odpowiednio w grupie pozytywnej i negatywnej. Korzystając z tabeli jakości dopasowania (patrz rys. \ref{tabeladopasowania}), otrzymujemy:
 \begin{eqnarray*}
 	TPR&=&\dfrac{TP}{TP+FN},\\
 	TNR&=&\dfrac{TN}{FP+TN}.		
@@ -772,22 +777,22 @@ Krzywa ROC to wykres punktów ($1-$TNR, TPR), wyliczonych dla różnych progów 
 \begin{figure}[h]
   \begin{subfigure}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{graphics/roc1.pdf}
-    \caption{Standardowy sposób rysowania krzywej ROC.}
+    \caption{Standardowy sposób rysowania krzywej ROC}
     \label{fig:f1}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{graphics/roc2.pdf}
-    \caption{Krzywa ROC z TNR (zamiast FPR) na osi OX.}
+    \caption{Krzywa ROC z TNR (zamiast FPR) na osi OX}
     \label{fig:f2}
   \end{subfigure}
-  \caption{Przykładowe krzywe ROC.}
+  \caption{Przykładowe krzywe ROC}
   \label{krzyweroc}
 \end{figure}
 
-Przyjrzyjmy się Rysunkowi \ref{wszystkietrzy}. Mamy tu wykresy gęstości obserwacji pozytywnych i negatywnych, w zależności od przyjętego progu odcięcia. Większość obserwacji pozytywnych osiąga około $60-$procentowe prawdopodobieństwo przynależności do klasy pozytywnej, a~negatywnych $40-$procentowe. Z wykresów wyraźnie widać, że poruszanie progiem odcięcia w~prawo zwiększy nam czułość, ale zmniejszy specyficzność, natomiast poruszanie w lewo odwrotnie. Krzywa ROC łączy niejako te informacje, przedstawiając je na jednym wykresie. Patrząc na~nią, możemy łatwo wybrać taki próg, jaki nam najbardziej odpowiada (najczęściej taki, który jest dobrym kompromisem między czułością a specyficznością). Standardowo, krzywą ROC rysuje się nie w zależności od specyficzności, tylko od jej dopełnienia (tzn.~$1-$specyficzności), nazywanego FPR (ang. \textit{False Positive Rate}). My jednak -- by łatwiej było nam uogólnić krzywą ROC na więcej wymiarów -- zastosujemy tę mniej popularną reprezentację, czyli na osi OX będziemy przedstawiać specyficzność. Jak widać na Rysunku \ref{krzyweroc} nie zmienia to interpretacji krzywej.
+Przyjrzyjmy się rysunkowi \ref{wszystkietrzy}. Mamy tu wykresy gęstości obserwacji pozytywnych i negatywnych, w zależności od przyjętego progu odcięcia. Większość obserwacji pozytywnych osiąga około $60-$procentowe prawdopodobieństwo przynależności do klasy pozytywnej, a~negatywnych $40-$procentowe. Z wykresów wyraźnie widać, że poruszanie progiem odcięcia w~prawo zwiększy nam czułość, ale zmniejszy specyficzność, natomiast poruszanie w lewo odwrotnie. Krzywa ROC łączy niejako te informacje, przedstawiając je na jednym wykresie. Patrząc na~nią, możemy łatwo wybrać taki próg, jaki nam najbardziej odpowiada (najczęściej taki, który jest dobrym kompromisem między czułością a specyficznością). Standardowo, krzywą ROC rysuje się nie w zależności od specyficzności, tylko od jej dopełnienia (tzn.~$1-$specyficzności), nazywanego FPR (ang. \textit{False Positive Rate}). My jednak -- by łatwiej było nam uogólnić krzywą ROC na więcej wymiarów -- zastosujemy tę mniej popularną reprezentację, czyli na osi OX będziemy przedstawiać specyficzność. Jak widać na rysunku \ref{krzyweroc} nie zmienia to interpretacji krzywej.
 
-Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat jednostkowy. Zła krzywa, czyli taka, która powstaje, gdy model daje losowe wyniki, to taka, która jest przekątną tego kwadratu. Ponieważ -- patrząc na dwie (często wielokrotnie przecinające się) krzywe ROC odpowiadające różnym modelom -- ciężko jest stwierdzić, która krzywa jest lepsza, wprowadzono współczynnik AUC, czyli pole pod tą krzywą, który pozwala łatwiej to ocenić. Idealny model ma współczynnik AUC równy $1$ (pole kwadratu jednostkowego), a~model losowy charakteryzuje się AUC równym $0,5$. Na Rysunku \ref{krzyweroc} widać wyraźnie, że~w~naszym przypadku (czyli z inaczej zdefiniowaną osią OX) współczynnik AUC definiuje się identycznie.       
+Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat jednostkowy. Zła krzywa, czyli taka, która powstaje, gdy model daje losowe wyniki, to taka, która jest przekątną tego kwadratu. Ponieważ -- patrząc na dwie (często wielokrotnie przecinające się) krzywe ROC odpowiadające różnym modelom -- ciężko jest stwierdzić, która krzywa jest lepsza, wprowadzono współczynnik AUC, czyli pole pod tą krzywą, który pozwala łatwiej to~ocenić. Idealny model ma współczynnik AUC równy $1$ (pole kwadratu jednostkowego), a~model losowy charakteryzuje się AUC równym $0,5$. Na rysunku \ref{krzyweroc} widać wyraźnie, że~w~naszym przypadku (czyli z inaczej zdefiniowaną osią OX) współczynnik AUC definiuje się identycznie.       
 
 \section{Krzywa ROC w przypadku regresji porządkowej}
 
@@ -800,7 +805,7 @@ Idealna krzywa to taka, która ma duże TPR i małe FPR, tworzy zatem kwadrat je
     \includegraphics[width=\textwidth]{graphics/roc_trzy2.png}
   \end{subfigure}
   \end{center}
-  \caption{Sposób konstruowania krzywej ROC w przypadku trzyklasowym.}
+  \caption{Sposób konstruowania krzywej ROC w przypadku trzyklasowym}
   \label{trzyklasowy}
 \end{figure}
 
@@ -810,13 +815,13 @@ Można próbować robić to parami tzn. traktować jedną z klas jako pozytywną
 
 Wyobraźmy sobie na przykład, że chcemy sprawdzić, czy komuś spodobałaby się sprzedawana przez nas książka. Możliwe odpowiedzi to: \textit{bardzo mi się podoba, podoba mi się, nie mam zdania, nie podoba mi się, bardzo mi się nie podoba}. Jasne jest, że wolelibyśmy oddzielić klientów, którym bardzo spodobałaby się książka od tych, którym bardzo by się nie spodobała, a nie na przykład tych, którym by się nie spodobała od tych, którym by się bardzo nie spodobała. Żeby udało nam się poradzić sobie z takim problemem, trzeba spojrzeć na niego nieco bardziej globalnie.   
 
-Opisując krzywą ROC w przypadku dwuklasowym, powiedzieliśmy sobie, że będziemy rozważać nie zależność TPR od FPR, ale TPR od TNR. Dlaczego? Właśnie po to, żebyśmy teraz mogli ją łatwiej uogólnić. Zarówno TPR, jak i TNR jest to procent poprawnie sklasyfikowanych odpowiednio pozytywnych bądź negatywnych obserwacji. Nic nie staje zatem na przeszkodzie, by stworzyć $r$ takich współczynników ($\text{TPR}1, \ldots, \text{TPR}r$), każdy odpowiadający procentowi poprawnie sklasyfikowanych obserwacji z $i-$tej klasy. Przyjmując różne progi odcięcia (por. Rysunek \ref{trzyklasowy}), których tym razem będzie $r-1$, możemy narysować wielowymiarowy odpowiednik krzywej ROC, czyli pewną hiperpowierzchnię. Oczywiście jest to~możliwe tylko w przypadku trzyklasowym (por. Rysunek \ref{3d}), a i tak rysunek taki jest mało czytelny. 
+Opisując krzywą ROC w przypadku dwuklasowym, powiedzieliśmy sobie, że będziemy rozważać nie zależność TPR od FPR, ale TPR od TNR. Dlaczego? Właśnie po to, żebyśmy teraz mogli ją łatwiej uogólnić. Zarówno TPR, jak i TNR jest to procent poprawnie sklasyfikowanych odpowiednio pozytywnych bądź negatywnych obserwacji. Nic nie staje zatem na~przeszkodzie, by stworzyć $r$ takich współczynników ($\text{TPR}1, \ldots, \text{TPR}r$), każdy odpowiadający procentowi poprawnie sklasyfikowanych obserwacji z $i-$tej klasy. Przyjmując różne progi odcięcia (patrz rys. \ref{trzyklasowy}), których tym razem będzie $r-1$, możemy narysować wielowymiarowy odpowiednik krzywej ROC, czyli pewną hiperpowierzchnię. Oczywiście jest to~możliwe tylko w przypadku trzyklasowym (patrz rys. \ref{3d}), a i tak rysunek taki jest mało czytelny. 
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.5]{graphics/roc3d.png}
 \end{center}
-\caption{Hiperpowierzchnia ROC w przypadku trzyklasowym.}
+\caption{Hiperpowierzchnia ROC w przypadku trzyklasowym}
 \label{3d}
 \end{figure}
 
@@ -824,7 +829,7 @@ Opisując krzywą ROC w przypadku dwuklasowym, powiedzieliśmy sobie, że będzi
 
 Po co zatem tworzyć wielowymiarową krzywą ROC, skoro i tak trudno cokolwiek z niej odczytać (w przypadku trzyklasowym) albo w ogóle narysowanie jej jest niemożliwe (w przypadku więcej niż trzyklasowym)? Otóż głównie po to, by otrzymać współczynnik AUC, który -- będąc konkretną liczbą -- jest znacznie prostszy w interpretacji. W przypadku więcej niż dwuwymiarowym będziemy go nazywać VUS (ang. \textit{Volume Under the Surface}). 
 
-Jako że liczenie objętości pod hiperpłaszczyzną jest numerycznie trudnym zadaniem, w celu wyliczenia współczynnika VUS, skorzystamy z jego nieco innej interpretacji niż tylko pole pod krzywą ROC. Wróćmy znów do przypadku dwuklasowego i przyjrzyjmy się Rysunkowi~\ref{fig:f2}. Na osi OY mamy współczynnik TNR, czyli prawdopodobieństwo, że wyestymujemy klasę negatywną pod warunkiem, że klasa rzeczywiście jest negatywna. Równoważnie, można to zapisać jako prawdopodobieństwo, że zwracany przez model procent pewności, że obserwacja należy do klasy pozytywnej, jest mniejszy niż pewien próg odcięcia. Analogicznie TPR to prawdopodobieństwo, że zwracany przez model procent pewności, że obserwacja należy do klasy pozytywnej, jest większy niż pewien próg odcięcia. Łącząc oba wyniki otrzymamy, że współczynnik AUC to nic innego tylko prawdopodobieństwo, że dwie losowo wybrane obserwacje (jedna pozytywna, a druga negatywna) będą poprawnie uporządkowane. Taką interpretację łatwo już uogólnić na więcej wymiarów. VUS będzie zatem prawdopodobieństwem, że losowo wybrane $r$ obserwacji (każda z innej klasy) będzie dobrze posortowane. Interesować nas będzie oczywiście pewna estymacja tego prawdopodobieństwa -- będzie nią tzw. statystyka $U$  Manna–Whitney'a–Wilcoxona (por. \cite{roc2}, \cite{roc1}), czyli wyrażenie:
+Jako że liczenie objętości pod hiperpłaszczyzną jest numerycznie trudnym zadaniem, w celu wyliczenia współczynnika VUS, skorzystamy z jego nieco innej interpretacji niż tylko pole pod krzywą ROC. Wróćmy znów do przypadku dwuklasowego i przyjrzyjmy się rysunkowi~\ref{fig:f2}. Na osi OY mamy współczynnik TNR, czyli prawdopodobieństwo, że wyestymujemy klasę negatywną pod warunkiem, że klasa rzeczywiście jest negatywna. Równoważnie, można to zapisać jako prawdopodobieństwo, że zwracany przez model procent pewności, że obserwacja należy do klasy pozytywnej, jest mniejszy niż pewien próg odcięcia. Analogicznie TPR to prawdopodobieństwo, że zwracany przez model procent pewności, że obserwacja należy do klasy pozytywnej, jest większy niż pewien próg odcięcia. Łącząc oba wyniki otrzymamy, że współczynnik AUC to nic innego tylko prawdopodobieństwo, że dwie losowo wybrane obserwacje (jedna pozytywna, a druga negatywna) będą poprawnie uporządkowane. Taką interpretację łatwo już uogólnić na więcej wymiarów. VUS będzie zatem prawdopodobieństwem, że losowo wybrane $r$ obserwacji (każda z innej klasy) będzie dobrze posortowane. Interesować nas będzie oczywiście pewna estymacja tego prawdopodobieństwa -- będzie nią tzw. statystyka $U$  Manna–Whitney'a–Wilcoxona (patrz \cite{roc2}, \cite{roc1}), czyli wyrażenie:
 
 \begin{equation}\label{dop3}
 VUS = \dfrac{1}{n_1n_2\cdot\ldots\cdot n_r}\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\ldots\sum_{i_r=1}^{n_r}\mathbb{I}_{\lbrace f(\mathbf{x}_{i_1}^1)<\ldots<f(\mathbf{x}_{i_r}^r)\rbrace},
@@ -832,7 +837,7 @@ VUS = \dfrac{1}{n_1n_2\cdot\ldots\cdot n_r}\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\
 
 gdzie $\textbf{x}_i^j$ oznacza $i-$ty wektor cech pewnej obserwacji o prawdziwej klasie $j$, $n_i$ to liczba obserwacji o rzeczywistej klasie $i$, a $f(\cdot)$ to pewna funkcja, która zwraca liczbę rzeczywistą, mającą estymować uporządkowanie obserwacji (w większości przypadków wygląda to tak, że dla konkretnej obserwacji model zwraca $r$ prawdopodobieństw przynależności do każdej z~klas; wtedy jako $f$ przyjmuje się maksimum z tych prawdopodobieństw).
 
-Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpretowalnym i pomocnym narzędziem do oceny jakości modelu i podejmowania decyzji, który model jest najlepszy. Największą jego wadą wydaje się konieczność znania prawdopodobieństw przynależności do klas (lub po prostu funkcji, która pozwoli nasze obserwacje uporządkować), a nie każda metoda takie prawdopodobieństwa pozwala wyliczyć (np. nie robią tego poznane przez nas sieci neuronowe). Trzeba wtedy odwołać się do prostszych metod (takich jak ACC, czy MAE). Większość modeli oferuje jednak taką możliwość, więc niewątpliwie warto z tego narzędzia diagnostycznego korzystać.
+Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpretowalnym i pomocnym narzędziem do oceny jakości modelu i podejmowania decyzji, który model jest najlepszy. Największą jego wadą wydaje się konieczność znania prawdopodobieństw przynależności do klas (lub po prostu funkcji, która pozwoli nasze obserwacje uporządkować), a~nie każda metoda takie prawdopodobieństwa pozwala wyliczyć (np. nie robią tego poznane przez nas sieci neuronowe). Trzeba wtedy odwołać się do prostszych metod (takich jak ACC, czy MAE). Większość modeli oferuje jednak taką możliwość, więc niewątpliwie warto z tego narzędzia diagnostycznego korzystać.
 
 \chapter{Porównanie metod modelowania i współczynników diagnostycznych}
 
@@ -845,51 +850,51 @@ Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpr
   \hline
 \multirow{4}{15mm}{abalone} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 &\color{gray}{0,00}\\ 
    & ACC [\%] & 56,38 & 55,18 & \color{red}{56,86} & 55,18 & 56,30 &\color{gray}{57,58}\\ 
-   & ABS \color{white}{[\%]} & 0,55 & 0,55 & \color{red}{0,51} & 0,55 & 0,52 &\color{gray}{0,53}\\ 
+   & MAE \color{white}{[\%]} & 0,55 & 0,55 & \color{red}{0,51} & 0,55 & 0,52 &\color{gray}{0,53}\\ 
    & BSC [\%] & 83,45 & 83,66 & -- & 76,45 & \color{red}{85,34} &\color{gray}{28,99}\\ 
    \hline
 \multirow{4}{15mm}{auto} & VUS [\%] & \color{red}{3,48} & 1,11 & -- & 0,24 & 0,81 &\color{gray}{0,00}\\ 
    & ACC [\%] & 37,29 & \color{red}{49,15} & 48,31 & 43,22 & 38,98 &\color{gray}{50,00}\\ 
-   & ABS \color{white}{[\%]} & 1,08 & \color{red}{0,63} & 0,66 & 0,73 & 0,90 &\color{gray}{0,64}\\ 
+   & MAE \color{white}{[\%]} & 1,08 & \color{red}{0,63} & 0,66 & 0,73 & 0,90 &\color{gray}{0,64}\\ 
    & BSC [\%] & \color{red}{94,16} & 94,12 & -- & 88,77 & 87,96 &\color{gray}{33,80}\\ 
    \hline
 \multirow{4}{15mm}{diabetes} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 &\color{gray}{0,00}\\ 
    & ACC [\%] & \color{red}{23,08} & \color{red}{23,08} & \color{red}{23,08} & 15,38 & \color{red}{23,08} &\color{gray}{30,77}\\ 
-   & ABS \color{white}{[\%]} & 1,46 & 1,31 & \color{red}{1,23} & \color{red}{1,23} & 1,38 &\color{gray}{1,15}\\ 
+   & MAE \color{white}{[\%]} & 1,46 & 1,31 & \color{red}{1,23} & \color{red}{1,23} & 1,38 &\color{gray}{1,15}\\ 
    & BSC [\%] & 51,61 & 51,61 & -- & \color{red}{72,58} & 40,32 &\color{gray}{48,39}\\ 
    \hline
 \multirow{4}{15mm}{housing} & VUS [\%] & 54,46 & \color{red}{55,31} & -- & 42,06 & 51,33 &\color{gray}{0,02}\\ 
    & ACC [\%] & 67,11 & 67,11 & \color{red}{75,00} & 72,37 & 72,37 &\color{gray}{65,13}\\ 
-   & ABS \color{white}{[\%]} & 0,36 & 0,35 & \color{red}{0,26} & 0,28 & 0,29 &\color{gray}{0,40}\\ 
+   & MAE \color{white}{[\%]} & 0,36 & 0,35 & \color{red}{0,26} & 0,28 & 0,29 &\color{gray}{0,40}\\ 
    & BSC [\%] & 91,86 & \color{red}{92,25} & -- & 86,92 & 91,98 &\color{gray}{51,15}\\ 
    \hline
 \multirow{4}{15mm}{machine} & VUS [\%] & 0,00 & 0,00 & -- & 0,00 & 0,00 &\color{gray}{0,00}\\ 
    & ACC [\%] & 57,14 & \color{red}{68,25} & 66,67 & 66,67 & 60,32 &\color{gray}{69,84}\\ 
-   & ABS \color{white}{[\%]} & 1,17 & 0,52 & \color{red}{0,51} & 0,67 & 0,73 &\color{gray}{0,48}\\ 
+   & MAE \color{white}{[\%]} & 1,17 & 0,52 & \color{red}{0,51} & 0,67 & 0,73 &\color{gray}{0,48}\\ 
    & BSC [\%] & 90,50 & \color{red}{92,87} & -- & 91,34 & 87,36 &\color{gray}{29,20}\\ 
    \hline
 \multirow{4}{15mm}{pyrim} & VUS [\%] & \color{red}{0,74} & 0,00 & -- & 0,00 & \color{red}{0,74} &\color{gray}{0,00}\\ 
    & ACC [\%] & 21,74 & 8,70 & \color{red}{52,17} & 30,43 & 47,83 &\color{gray}{47,83}\\ 
-   & ABS \color{white}{[\%]} & 1,30 & 1,65 & \color{red}{0,91} & \color{red}{0,91} & 0,96 &\color{gray}{0,87}\\ 
+   & MAE \color{white}{[\%]} & 1,30 & 1,65 & \color{red}{0,91} & \color{red}{0,91} & 0,96 &\color{gray}{0,87}\\ 
    & BSC [\%] & 81,82 & 74,09 & -- & 80,00 & \color{red}{82,73} &\color{gray}{61,82}\\ 
    \hline
 \multirow{4}{15mm}{stock} & VUS [\%] & 53,97 & 73,12 & -- & 56,53 & \color{red}{96,01} &\color{gray}{0,01}\\ 
    & ACC [\%] & 58,95 & 72,63 & 83,16 & 81,40 & \color{red}{91,58} &\color{gray}{86,67}\\ 
-   & ABS \color{white}{[\%]} & 0,42 & 0,28 & 0,18 & 0,19 & \color{red}{0,08} &\color{gray}{0,14}\\ 
+   & MAE \color{white}{[\%]} & 0,42 & 0,28 & 0,18 & 0,19 & \color{red}{0,08} &\color{gray}{0,14}\\ 
    & BSC [\%] & 93,07 & 95,51 & -- & 94,31 & \color{red}{99,42} &\color{gray}{50,69}\\ 
    \hline
 \multirow{4}{15mm}{triazines} & VUS [\%] & 1,72 & 0,00 & -- & 0,61 & \color{red}{1,83}&\color{gray}{0,00} \\ 
    & ACC [\%] & 51,79 & 39,29 & 39,29 & \color{red}{53,57} & 51,79 &\color{gray}{44,64}\\ 
-   & ABS \color{white}{[\%]} & 0,64 & 0,91 & 0,71 & \color{red}{0,61} & 0,64 &\color{gray}{0,88}\\ 
+   & MAE \color{white}{[\%]} & 0,64 & 0,91 & 0,71 & \color{red}{0,61} & 0,64 &\color{gray}{0,88}\\ 
    & BSC [\%] & 62,86 & 45,58 & -- & \color{red}{66,46} & 58,33 &\color{gray}{42,49}\\ 
    \hline
 \multirow{4}{15mm}{wpbc} & VUS [\%] & \color{red}{4,44} & 3,99 & -- & 0,59 & 1,80 &\color{gray}{0,00}\\ 
-   & PPK [\%] & 33,90 & 30,51 & \color{red}{35,59} & 28,81 & 28,81 &\color{gray}{25,42}\\ 
-   & ABS \color{white}{[\%]} & 1,12 & 1,25 & \color{red}{0,86} & 1,02 & 0,92 &\color{gray}{1,29}\\ 
+   & ACC [\%] & 33,90 & 30,51 & \color{red}{35,59} & 28,81 & 28,81 &\color{gray}{25,42}\\ 
+   & MAE \color{white}{[\%]} & 1,12 & 1,25 & \color{red}{0,86} & 1,02 & 0,92 &\color{gray}{1,29}\\ 
    & BSC [\%] & \color{red}{67,59} & 61,29 & -- & 62,67 & 57,53 &\color{gray}{40,48}\\ 
    \hline
 \end{tabular}
-\caption{Tabela wyników. Kolumny odpowiadają kolejnym metodom modelowania, natomiast wiersze kolejnym zbiorom danych oraz wskaźnikom diagnostycznym. Na czerwono zaznaczony jest najlepszy wynik w każdym wierszu (nie uwzględnia on szarej kolumny, która odpowiada metodzie niezwiązanej z regresją porządkową).}
+\caption{Tabela wyników. Kolumny odpowiadają kolejnym metodom modelowania, natomiast wiersze kolejnym zbiorom danych oraz wskaźnikom diagnostycznym. Na czerwono zaznaczony jest najlepszy wynik w każdym wierszu (nie uwzględnia on szarej kolumny, która odpowiada metodzie niezwiązanej z regresją porządkową)}
 \label{wyniki} 
 \end{table}
 
@@ -897,19 +902,19 @@ Krzywa ROC i współczynnik VUS jest więc dość prostym, bardzo łatwo interpr
 \begin{center}
 \includegraphics[width=\textwidth]{graphics/rozklad_odpowiedzi.png}
 \end{center}
-\caption{Rozkłady odpowiedzi poszczególnych zbiorów danych.}
+\caption{Rozkłady odpowiedzi poszczególnych zbiorów danych}
 \label{rozkladdanych}
 \end{figure}
 
 W poprzednich rozdziałach poznaliśmy różne metody radzenia sobie z problemem regresji porządkowej. Znamy już również wskaźniki, które pozwalają takie metody oceniać. Wszystko jednak zostało przedstawione w sposób bardzo teoretyczny. W tym rozdziale spróbujemy zobaczyć, jak poznane przez nas techniki modelowania i diagnostyki zachowują się na danych rzeczywistych. W tym celu przeprowadzimy następujący eksperyment.
 
-Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing, machine, pyrim, stock, triazines} oraz \textit{wpbc}). Są to standardowe i ogólnodostępne zbiory danych, wykorzystywane przy testowaniu regresji porządkowej, które znaleźć można na tych stornach internetowych: \cite{zbiorki} i \cite{zbiorki2}. Każdy z nich charakteryzuje się inną liczbą obserwacji, inną strukturą macierzy obserwacji, inną liczbą klas zmiennej odpowiedzi oraz innym ich rozkładem. Większość z tych cech zaobserwować można na Rysunku \ref{rozkladdanych}. Widać na przykład, że zbiór \textit{abalone} ma klas~$10$, natomiast zbiór \textit{housing} klas $5$ oraz że rozkład zmiennej odpowiedzi zbioru \textit{machine} jest bardziej skośny niż analogiczny rozkład w zbiorze \textit{stock}. 
+Do dyspozycji mamy dziewięć zbiorów (\textit{abalone, auto, diabetes, housing, machine, pyrim, stock, triazines} oraz \textit{wpbc}). Są to standardowe i ogólnodostępne zbiory danych, wykorzystywane przy testowaniu regresji porządkowej, które znaleźć można na tych stornach internetowych: \cite{zbiorki} i \cite{zbiorki2}. Każdy z nich charakteryzuje się inną liczbą obserwacji, inną strukturą macierzy obserwacji, inną liczbą klas zmiennej odpowiedzi oraz innym ich rozkładem. Większość z tych cech zaobserwować można na rysunku \ref{rozkladdanych}. Widać na przykład, że zbiór \textit{abalone} ma klas~$10$, natomiast zbiór \textit{housing} klas $5$ oraz że rozkład zmiennej odpowiedzi zbioru \textit{machine} jest bardziej skośny niż analogiczny rozkład w zbiorze \textit{stock}. 
 
-Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie, na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze testowym. Dla każdego zbioru i każdej metody otrzymaliśmy współczynniki VUS, ACC i ABS (por. równania \eqref{dop1}, \eqref{dop2}, \eqref{dop3}). Wszystkie wyniki zobaczyć można w~Tabeli \ref{wyniki}. Dodatkowo, by móc porównać, czy metody regresji porządkowej rzeczywiście są potrzebne, zbudowany został również model klasyfikacji wieloklasowej. W Tabeli \ref{wyniki} został on zaznaczony szarym kolorem, by móc go łatwo odróżnić i dzięki temu łatwiej odczytać tabelę.
+Każdy ze zbiorów został losowo podzielony na zbiór treningowy (do budowy modelu) i zbiór testowy (do oceny jakości modelu) w proporcji $7:3$. Następnie, na każdym zbiorze treningowym zbudowany został każdy z pięciu modeli (model proporcjonalnych szans, model oparty o procesy gaussowskie, model Franka i Halla, sieci neuronowe oraz SVM) i przetestowany na zbiorze testowym. Dla każdego zbioru i każdej metody otrzymaliśmy współczynniki VUS, ACC i MAE (patrz równania \eqref{dop1}, \eqref{dop2}, \eqref{dop3}). Wszystkie wyniki zobaczyć można w~tabeli \ref{wyniki}. Dodatkowo, by móc porównać, czy metody regresji porządkowej rzeczywiście są potrzebne, zbudowany został również model klasyfikacji wieloklasowej. W tabeli \ref{wyniki} został on zaznaczony szarym kolorem, by móc go łatwo odróżnić i dzięki temu łatwiej odczytać tabelę.
 
 \section{Wstępna analiza wyników}
 
-Przyjrzyjmy się dokładniej Tabeli \ref{wyniki}. Pierwszą rzeczą, która rzuca się w oczy, jest bardzo słaba jakość współczynnika VUS. W większości przypadków jest on równy zero lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ nie byłby zadowalający. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}. Warto więc zadać sobie pytanie, dlaczego tak się dzieje.  Żeby zrozumieć to ,,dziwne'' zachowanie współczynnika VUS, przeanalizujmy dwa poniższe przykłady.
+Przyjrzyjmy się dokładniej tabeli \ref{wyniki}. Pierwszą rzeczą, która rzuca się w oczy, jest bardzo słaba jakość współczynnika VUS. W większości przypadków jest on równy zero lub bardzo mały. Przypomnijmy, że reprezentuje on pewne prawdopodobieństwo, wobec czego już nawet wynik $50\%$ nie byłby zadowalający. Sensowny wynik współczynnika VUS zobaczyć możemy tak naprawdę jedynie w przypadku zbiorów \textit{housing} i \textit{stock}. Warto więc zadać sobie pytanie, dlaczego tak się dzieje.  Żeby zrozumieć to ,,dziwne'' zachowanie współczynnika VUS, przeanalizujmy dwa poniższe przykłady.
 
 \begin{figure}[!h]
 \begin{subfigure}{\textwidth}
@@ -936,7 +941,7 @@ Przyjrzyjmy się dokładniej Tabeli \ref{wyniki}. Pierwszą rzeczą, która rzuc
 \path[draw, -latex',thick](gora) -- node[midway, right] {Sortujemy po $f$} (dol);		
 \end{tikzpicture}
 \end{center}
-\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $1$.\\  }
+\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $1$\\  }
 \label{vus01}
 \end{subfigure}
 \hspace{1cm}
@@ -964,24 +969,24 @@ Przyjrzyjmy się dokładniej Tabeli \ref{wyniki}. Pierwszą rzeczą, która rzuc
 \path[draw, -latex',thick](gora) -- node[midway, right] {Sortujemy po $f$} (dol);	
 \end{tikzpicture}
 \end{center}
-\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $4$.}
+\caption{Przypadek, w którym źle sklasyfikowana jest tylko jedna obserwacja. Zamiast klasy nr $5$, została przyporządkowana klasa nr $4$}
 \label{vus02}
 \end{subfigure}
-\caption{Tabele pokazują przykładowe zbiory testowe. W kolumnach przedstawione są kolejne obserwacje. $y$ reprezentuje prawdziwą klasę, a $\hat{y}$ klasę oszacowaną przez nas na podstawie wartości funkcji rzeczywistej $f$. Następnie, kolumny tabeli są sortowane według wartości funkcji $f$.}
+\caption{Tabele pokazują przykładowe zbiory testowe. W kolumnach przedstawione są kolejne obserwacje. $y$ reprezentuje prawdziwą klasę, a $\hat{y}$ klasę oszacowaną przez nas na podstawie wartości funkcji rzeczywistej $f$. Następnie, kolumny tabeli są sortowane według wartości funkcji $f$}
 \label{vusprzyklad}
 \end{figure}
 
-Załóżmy, że chcemy przyporządkować klasy pewnym obserwacjom ze zbioru testowego. Niech zbiorem klas będzie $\lbrace 1, \ldots, 5\rbrace$. Dopasowaliśmy pewien model, który działa w ten sposób, że dla danej nowej obserwacji wylicza najpierw wartość pewnej funkcji rzeczywistej $f(\cdot)$, a następnie, korzystając z pewnych progów, przyporządkowuje jej jedną z pięciu klas, w~zależności od tego, między jakimi dwoma progami znajdzie się wartość funkcji $f(\cdot)$ dla tej obserwacji. Otrzymaną w ten sposób klasę oznaczmy przez $\hat{y}$. Funkcja $f(\cdot)$ oraz wartości progów zostały nauczone podczas budowy modelu. 
+Załóżmy, że chcemy przyporządkować klasy pewnym obserwacjom ze zbioru testowego. Niech zbiorem klas będzie $\lbrace 1, \ldots, 5\rbrace$. Dopasowaliśmy pewien model, który działa w ten sposób, że~dla danej nowej obserwacji wylicza najpierw wartość pewnej funkcji rzeczywistej $f(\cdot)$, a~następnie, korzystając z pewnych progów, przyporządkowuje jej jedną z pięciu klas, w~zależności od tego, między jakimi dwoma progami znajdzie się wartość funkcji $f(\cdot)$ dla tej obserwacji. Otrzymaną w ten sposób klasę oznaczmy przez $\hat{y}$. Funkcja $f(\cdot)$ oraz wartości progów zostały nauczone podczas budowy modelu. 
 
-Przejdźmy do omówienia przykładów. Rozważmy najpierw przypadek z Rysunku \ref{vus01}. Wszystkie klasy -- oprócz jednej -- zostały prawidłowo przyporządkowane. Podkreślmy, że pomyliliśmy się tylko w jednym przypadku. Co prawda pomyłka jest poważna (gdyż przyporządkowaliśmy klasie nr $5$ skrajnie różną wartość), ale wciąż jest to tylko jeden przypadek. Skorzystajmy ze~wzoru \eqref{dop3}, pamiętając jednocześnie, że VUS to procent dobrze uporządkowanych -- w~naszym przypadku -- piątek $(1, 2, 3, 4, 5)$ powstałych po posortowaniu wektora prawdziwych klas $y$ według rosnących wartości $f$. Bardzo łatwo zauważyć, że współczynnik VUS wyniesie~$0$. Wynika to z faktu, że jedyna odpowiedź o numerze klasy $5$ wśród zmiennej odpowiedzi uplasowała się na samym początku, tym samym uniemożliwiając znalezienie choćby jednej poprawnie uszeregowanej piątki.
+Przejdźmy do omówienia przykładów. Rozważmy najpierw przypadek z rysunku \ref{vus01}. Wszystkie klasy -- oprócz jednej -- zostały prawidłowo przyporządkowane. Podkreślmy, że pomyliliśmy się tylko w jednym przypadku. Co prawda pomyłka jest poważna (gdyż przyporządkowaliśmy klasie nr $5$ skrajnie różną wartość), ale wciąż jest to tylko jeden przypadek. Skorzystajmy ze~wzoru \eqref{dop3}, pamiętając jednocześnie, że VUS to procent dobrze uporządkowanych -- w~naszym przypadku -- piątek $(1, 2, 3, 4, 5)$ powstałych po posortowaniu wektora prawdziwych klas $y$ według rosnących wartości $f$. Bardzo łatwo zauważyć, że współczynnik VUS wyniesie~$0$. Wynika to z faktu, że jedyna odpowiedź o numerze klasy $5$ wśród zmiennej odpowiedzi uplasowała się na samym początku, tym samym uniemożliwiając znalezienie choćby jednej poprawnie uszeregowanej piątki.
 
-Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym błędem, więc dobrze, że VUS wyszedł taki słaby. Przyjrzyjmy się zatem przykładowi z Rysunku \ref{vus02}. Tutaj sytuacja jest podobna -- tym razem również została pomylona tylko jedna wartość (obserwacja o rzeczywistym nr 5 dostała nr 4). Błąd ten jest jednak niewielki i -- chciałoby się powiedzieć -- dopuszczalny i nieszkodliwy. Jednak w tym przypadku również nie znajdziemy ani jednej dobrze posortowanej piątki, współczynnik VUS wyniesie więc $0$.      
+Ktoś mógłby powiedzieć, że pomylenie skrajnych wartości jest poważnym błędem, więc dobrze, że VUS wyszedł taki słaby. Przyjrzyjmy się zatem przykładowi z rysunku \ref{vus02}. Tutaj sytuacja jest podobna -- tym razem również została pomylona tylko jedna wartość (obserwacja o rzeczywistym nr 5 dostała nr 4). Błąd ten jest jednak niewielki i -- chciałoby się powiedzieć -- dopuszczalny i nieszkodliwy. Jednak w tym przypadku również nie znajdziemy ani jednej dobrze posortowanej piątki, współczynnik VUS wyniesie więc $0$.      
 
-Podsumowując, współczynnik VUS, który ma bardzo ładną interpretację i znakomicie sprawdza się w przypadku klasyfikacji dwuetykietowej, w przypadku regresji porządkowej nie spełnia niestety swojej roli. Pozostaje nam zatem oparcie oceny klasyfikatorów jedynie na współczynnikach ACC i ABS. Nie jest to jednak satysfakcjonujące, gdyż VUS miał dawać nam pojęcie nie tyle o dokładnej poprawności klasyfikacji, ile o tym, czy obserwacje zostały poprawnie posortowane (por. Rozdział \ref{rozdz2}). Jest to aspekt bardzo istotny, gdyż tym właściwie różni się regresja porządkowa od innych rodzajów regresji czy klasyfikacji. Istnieje zatem silna potrzeba stworzenia współczynnika, który mógłby temu zadaniu sprostać. I właśnie w tym celu powstał współczynnik BSC (ang. Bubble Sorting Coefficient). 
+Podsumowując współczynnik VUS, który ma bardzo ładną interpretację i znakomicie sprawdza się w przypadku klasyfikacji dwuetykietowej, w przypadku regresji porządkowej nie spełnia niestety swojej roli. Pozostaje nam zatem oparcie oceny klasyfikatorów jedynie na współczynnikach ACC i MAE. Nie jest to jednak satysfakcjonujące, gdyż VUS miał dawać nam pojęcie nie tyle o dokładnej poprawności klasyfikacji, ile o tym, czy obserwacje zostały poprawnie posortowane (patrz rozdział \ref{rozdz2}). Jest to aspekt bardzo istotny, gdyż tym właściwie różni się regresja porządkowa od innych rodzajów regresji czy klasyfikacji. Istnieje zatem silna potrzeba stworzenia współczynnika, który mógłby temu zadaniu sprostać. I właśnie w tym celu powstał współczynnik BSC (ang. Bubble Sorting Coefficient). 
 
 \section{Współczynnik BSC}
 
-Zaproponowany przeze mnie współczynnik BSC ma niemal tę samą funkcjonalność, co wskaźnik VUS. Mianowicie, pokazuje nam, w jakim stopniu nasz model prawidłowo posortował dane testowe. Jednocześnie jest on odporny na takie odchylenia danych, które automatycznie powodują wyzerowanie współczynnika VUS, a które szczegółowo omawiane były w poprzednim podrozdziale. Zyskując tę odporność, tracimy jednak na jego teoretycznej interpretacji. Bowiem o ile VUS reprezentował pewne prawdopodobieństwo (por. Rozdział \ref{rozdz2}), o tyle BSC jest tylko jego pewnym przybliżeniem. Zanim wgłębimy się jednak w jego wady i zalety, zdefiniujmy najpierw, czym właściwie ten współczynnik jest.  
+Zaproponowany przeze mnie współczynnik BSC ma niemal tę samą funkcjonalność, co wskaźnik VUS. Mianowicie, pokazuje nam, w jakim stopniu nasz model prawidłowo posortował dane testowe. Jednocześnie jest on odporny na takie odchylenia danych, które automatycznie powodują wyzerowanie współczynnika VUS, a które szczegółowo omawiane były w poprzednim podrozdziale. Zyskując tę odporność, tracimy jednak na jego teoretycznej interpretacji. Bowiem o ile VUS reprezentował pewne prawdopodobieństwo (patrz rozdział \ref{rozdz2}), o tyle BSC jest tylko jego pewnym przybliżeniem. Zanim wgłębimy się jednak w jego wady i zalety, zdefiniujmy najpierw, czym właściwie ten współczynnik jest.  
 
 \begin{algorithm}
 \begin{algorithmic}
@@ -1009,9 +1014,9 @@ Zaproponowany przeze mnie współczynnik BSC ma niemal tę samą funkcjonalnoś�
 \label{algo:bubble_sort}
 \end{algorithm}
 
-Współczynnik BSC najprościej będzie zdefiniować przy pomocy algorytmu (por. Algorytm~\ref{algo:bubble_sort}). Podobnie jak w przypadku VUS, sortujemy rzeczywiste klasy obserwacji według odpowiadających im i posortowanym rosnąco wartościom funkcji pomocniczej $f(\cdot)$. Następnie, stosując algorytm sortowania bąbelkowego, zliczamy ile przestawień sąsiednich wyrazów będzie potrzeba, by poprawnie uporządkować wejściowy wektor obserwacji. Porównujemy to do~maksymalnej liczby przestawień (czyli do takiej, która jest potrzebna do rosnącego posortowania tego samego wektora, lecz uporządkowanego malejąco, a nie według wartości funkcji $f(\cdot)$). W rezultacie otrzymujemy liczbę wahającą się od $0$, reprezentującego najgorszy przypadek, do $1$, reprezentującej przypadek najlepszy. 
+Współczynnik BSC najprościej będzie zdefiniować przy pomocy algorytmu (patrz algorytm~\ref{algo:bubble_sort}). Podobnie jak w przypadku VUS, sortujemy rzeczywiste klasy obserwacji według odpowiadających im i posortowanym rosnąco wartościom funkcji pomocniczej $f(\cdot)$. Następnie, stosując algorytm sortowania bąbelkowego, zliczamy ile przestawień sąsiednich wyrazów będzie potrzeba, by poprawnie uporządkować wejściowy wektor obserwacji. Porównujemy to do~maksymalnej liczby przestawień (czyli do takiej, która jest potrzebna do rosnącego posortowania tego samego wektora, lecz uporządkowanego malejąco, a nie według wartości funkcji $f(\cdot)$). W rezultacie otrzymujemy liczbę wahającą się od $0$, reprezentującego najgorszy przypadek, do $1$, reprezentującej przypadek najlepszy. 
 
-Przyjrzyjmy się teraz Tabeli \ref{bsc}. Przedstawia ona $12$ przykładowych wektorów klas oraz~policzone dla nich współczynniki VUS i BSC. Łatwo zauważyć, że w większości przypadków są~one równe. Różnią się za to znacznie tam, gdzie -- wbrew intuicji -- VUS jest równy zero np. w przykładach nr $5$ i $8$, które odpowiadają tym z omawianego przez nas wcześniej Rysunku \ref{vusprzyklad}. 
+Przyjrzyjmy się teraz tabeli \ref{bsc}. Przedstawia ona $12$ przykładowych wektorów klas oraz~policzone dla nich współczynniki VUS i BSC. Łatwo zauważyć, że w większości przypadków są~one równe. Różnią się za to znacznie tam, gdzie -- wbrew intuicji -- VUS jest równy zero np. w przykładach nr $5$ i $8$, które odpowiadają tym z omawianego przez nas wcześniej rysunku~\ref{vusprzyklad}. 
 
 \begin{table}[ht]
 \centering
@@ -1038,15 +1043,15 @@ Nr && \multicolumn{7}{c}{\parbox{4cm}{\centering\vspace{2mm}Posortowany według 
 \end{table}
 
 
-Zalety współczynnika BSC są więc bardzo duże. Posiada on bowiem interpretację VUS, która jest niezwykle ważna w regresji porządkowej, a jednocześnie jest bardzo odporny na nietypowe sytuacje w danych. Szczególnie, że takie sytuacje (jak np. w przykładzie nr $5$ z Tabeli \ref{bsc}) pojawiają się bardzo często, gdy rozkład klas w danych jest nierównomierny. 
+Zalety współczynnika BSC są więc bardzo duże. Posiada on bowiem interpretację VUS, która jest niezwykle ważna w regresji porządkowej, a jednocześnie jest bardzo odporny na nietypowe sytuacje w danych. Szczególnie, że takie sytuacje (jak np. w przykładzie nr $5$ z tabeli \ref{bsc}) pojawiają się bardzo często, gdy rozkład klas w danych jest nierównomierny. 
 
 Warto jednak podkreślić, że ,,dziedzicząc'' po współczynniku VUS bardzo jasną intuicję, BSC przejmuje również niektóre jego wady. Przykładowo, gdy przyporządkujemy każdej z obserwacji klasę o jeden niższą, niż ma w rzeczywistości, wtedy zarówno VUS jak i BSC wyniosą $100\%$, gdyż wektor klas faktycznie będzie posortowany poprawnie. Jednak żadna klasa nie będzie przyporządkowana właściwie. Wadą jest również to, że i ten współczynnik stosować można jedynie do metod, które posługują się funkcją pomocniczą $f(\cdot)$ przy wyznaczaniu klasy. Jest to niejakie utrudnienie, gdyż na przykład sieci neuronowe takiej funkcji nie zwracają.
 
-Trzeba jednak być świadomym, że w analizie wyników nie należy stosować tylko jednego współczynnika. Najbardziej skuteczne jest łączenie informacji. Warto spojrzeć zarówno na~ACC, VUS, ABS i wreszcie BSC i zastanowić się, na czym najbardziej nam zależy -- na~precyzji czy na kolejności dopasowania. Może czasem warto zrezygnować z doskonałej kolejności, by zyskać dużo większą precyzję? I odwrotnie. To już kwestia indywidualnego przypadku i charakteru naszych danych. 
+Trzeba jednak być świadomym, że w analizie wyników nie należy stosować tylko jednego współczynnika. Najbardziej skuteczne jest łączenie informacji. Warto spojrzeć zarówno na~ACC, VUS, MAE i wreszcie BSC i zastanowić się, na czym najbardziej nam zależy -- na~precyzji czy na kolejności dopasowania. Może czasem warto zrezygnować z doskonałej kolejności, by zyskać dużo większą precyzję? I odwrotnie. To już kwestia indywidualnego przypadku i charakteru naszych danych. 
 
 \section{Dalsze wnioski}
 
-Wróćmy do wniosków płynących z eksperymentu i jego podsumowania zawartego w Tabeli~\ref{wyniki}.
+Wróćmy do wniosków płynących z eksperymentu i jego podsumowania zawartego w tabeli~\ref{wyniki}.
 
 Na początku przyjrzyjmy się ostatniej kolumnie nazwanej \textit{Klasyfikacja wieloklasowa} i zaznaczonej szarym kolorem. Jako jedyna z kolumn nie odpowiada ona żadnej z metod regresji porządkowej. Jest to prosty model wielomianowy dla danych nominalnych o więcej niż dwóch klasach. Krótko mówiąc, nie uwzględnia on uporządkowania naszej zmiennej odpowiedzi. Zauważmy, że współczynnik ACC jest dla metod regresji porządkowej i klasyfikacji wieloklasowej bardzo podobny - czasem trochę mniejszy, czasem większy, ale podobny. Nasuwa się zatem pytanie, po co komplikować modele i tworzyć różne metody przeznaczone specjalnie dla regresji porządkowej, skoro zwykła i znana klasyfikacja wieloklasowa daje taki sam efekt. Odpowiedź nasuwa się sama, gdy tylko przyjrzymy się współczynnikowi BSC. Otóż w większości  przypadków jest on znacznie różny (a konkretnie znacznie mniejszy) od tego wyliczonego dla metod regresji porządkowej. Świadczy to o tym, że o ile stosując klasyfikację wieloklasową, popełniamy mniej więcej tyle samo błędów, to te błędy, które popełniamy są znacznie poważniejsze niż w pozostałych metodach (czyli przykładowo częściej mylimy skrajne wartości). Jednoznacznie potwierdza to skuteczność regresji porządkowej, która stworzona została właśnie po to, by być odporną na tego typu błędy.
 
