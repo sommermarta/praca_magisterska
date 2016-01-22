@@ -48,6 +48,7 @@
 \definecolor{cztery}{RGB}{63,191,0}
 \definecolor{piec}{RGB}{0, 255, 0}
 \definecolor{mojkolor}{rgb}{0.99, 1, 0.99}
+\definecolor{szary}{RGB}{200, 200, 200}
 
 \title{STATYSTYCZNE METODY \newline REGRESJI PORZĄDKOWEJ}
 \author{Marta Sommer}
@@ -90,12 +91,36 @@
 \frametitle{\textbf{MOTYWACJA}}
 
 \begin{columns}[T]
+\begin{column}{0.7\textwidth}
+\centering
+\textcolor{blue}{\fbox{SZUKANE}}
+\end{column}
 
-\begin{column}{0.5\textwidth}
+\begin{column}{0.3\textwidth}
+\centering
+\textcolor{blue}{\fbox{DANE}}
+\end{column}
+\end{columns}
+
+
+\begin{columns}[T]
+
+\begin{column}{0.3\textwidth}
 \begin{center}
-\textcolor{blue}{SZUKANE}
+\textcolor{blue}{ZWYKŁA KLASYFIKACJA}
 \end{center}
-W jakim stopniu spodoba się naszemu klientowi dana książka?
+Czy klientowi spodoba się dana książka?
+\begin{enumerate}[1)]
+\item \textcolor{jeden}{nie}
+\item \textcolor{piec}{tak}
+\end{enumerate}
+\end{column}
+
+\begin{column}{0.4\textwidth}
+\begin{center}
+\textcolor{blue}{REGRESJA PORZĄDKOWA}
+\end{center}
+W jakim stopniu klientowi spodoba się dana książka?
 \begin{enumerate}[1)]
 \item \textcolor{jeden}{bardzo się nie spodoba}
 \item \textcolor{dwa}{raczej się nie spodoba}
@@ -104,12 +129,14 @@ W jakim stopniu spodoba się naszemu klientowi dana książka?
 \item \textcolor{piec}{bardzo się spodoba}
 \end{enumerate}
 \end{column}
-
-\begin{column}{0.5\textwidth}
-\begin{center}
-\textcolor{blue}{DANE}
-\end{center}
-
+\hspace{-4mm}
+\textcolor{szary}{\vrule{}}
+\hspace{1mm}
+\begin{column}{0.3\textwidth}
+%\begin{center}
+%\textcolor{white}{DANE kadsn kasdn}
+%\end{center}
+\vspace{1cm}
 Co wiemy o kliencie?
 \vspace{0.5cm}
 \begin{itemize}
@@ -134,7 +161,7 @@ Co wiemy o kliencie?
 $$
 \log\dfrac{\mathbb{P}(Y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})}{1-\mathbb{P}(Y\leq j \hspace{1mm}|\hspace{1mm} \mathbf{x})} = \alpha_j+\mathbf{\beta}^T\mathbf{x}
 $$
-\item procesy gaussowskie
+
 \end{itemize}
 \end{frame}
 
@@ -164,7 +191,7 @@ $$
     \tikzstyle{annot} = [text width=5em, text centered]
 
     \foreach \name / \y in {1/1,K/3}
-        \node[input neuron] (I-\y) at (0,-3*\y) {$\text{wyjscie}^{(0)}_\name$};
+        \node[input neuron] (I-\y) at (0,-3*\y) {$\text{wejscie}^{(0)}_\name$};
     \node[draw=none, scale=4, text height=0.333cm] (I-2) at (0,-3*2) {$\vdots$};
 
 	\foreach \name / \y in {1/1, 2/2, m/4}
@@ -261,20 +288,6 @@ MAE = \frac{1}{n}\sum_{i=1}^n | y_i - \hat{y}_i |
 \begin{equation*}
 VUS = \dfrac{1}{n_1n_2\cdot\ldots\cdot n_r}\sum_{i_1=1}^{n_1}\sum_{i_2=1}^{n_2}\ldots\sum_{i_r=1}^{n_r}\mathbb{I}_{\lbrace f(\mathbf{x}_{i_1}^1)<\ldots<f(\mathbf{x}_{i_r}^r)\rbrace}
 \end{equation*}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\begin{figure}[h]
-\begin{center}
-\includegraphics[scale=0.35]{roc3d.png}
-\end{center}
-\end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{\textbf{NOWY WSPÓŁCZYNNIK}}
-\begin{itemize}
 \item współczynnik BSC (oparty na sortowaniu bąbelkowym)
 \end{itemize}
 \end{frame}
